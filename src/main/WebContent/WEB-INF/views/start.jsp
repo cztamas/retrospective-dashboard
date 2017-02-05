@@ -40,7 +40,8 @@
     </nav>
 	
 	<div id="qrCodeContainer" class="centered">
-		<img style="float: right; margin-bottom: 8px; cursor: pointer;" onClick="hideQrCode();" src="../resources/images/close.png" /><br/>
+		<img style="float: right; margin-bottom: 8px; cursor: pointer;" onClick="hideQrCode();" src="../resources/images/close.png" />
+		<a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/join/<c:out value="${code}"/>/<c:out value="${token}"/>" target="enter_room">enter room</a><br/>
     	<div id="qrcode"></div>
     </div>
     

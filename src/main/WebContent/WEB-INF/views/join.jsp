@@ -14,7 +14,13 @@
   <body style="margin-left: 120px;">
 
 
+<script>
 
+ParticipantService.initialize(${code}, '${token}');
+
+</script>
+
+<button onClick="ParticipantService.join();">asd</button>
 	
   </body>
 </html>

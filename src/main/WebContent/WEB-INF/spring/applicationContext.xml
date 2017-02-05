@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="
    http://www.springframework.org/schema/beans     
-   http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
    http://www.springframework.org/schema/context 
-   http://www.springframework.org/schema/context/spring-context-3.1.xsd
-   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+   http://www.springframework.org/schema/context/spring-context-4.0.xsd
+   http://www.springframework.org/schema/websocket
+   http://www.springframework.org/schema/websocket/spring-websocket.xsd
+   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
     <!-- Database -->
 	<bean id="hikingDao" class="com.retrospective.dao.HostDaoImpl">
@@ -46,10 +50,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- 
+	<websocket:handlers>
+        <websocket:mapping path="/myHandler" handler="myHandler"/>
+    </websocket:handlers>
+
+    <bean id="myHandler" class="com.retrospective.controller.websocket.WebsocketHandler"/>
+	 -->
 
 	<!-- Configure bean to convert JSON to POJO and vice versa -->
 	<bean id="jsonMessageConverter"
-		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 	</bean>
 
 </beans>

@@ -11,8 +11,6 @@ Board.GladSadMad = {
 	stickerThemes: [ '#ff9999', '#99ff99' ],
 		
 	initialize: function() {
-		this.stickers.push({ sentBy: '12', id: '1239821398123', message: 'Team showing commitment and delivers fast', glad: 1.0, noControl: 0.9 * 0.5 });
-		this.stickers.push({ sentBy: '12', id: '1239821398121', message: 'ASAP Driven Development', glad: 1.0, noControl: 0.9 * 0.5 });
 		this.resize();
 	},
 	
@@ -32,7 +30,8 @@ Board.GladSadMad = {
 			$("#boardContent").append('<div id='+controlId+' ' 
 					+ 'onMouseOver="$(\'#'+controlId+'\').css(\'z-index\', \'10\')" class="sticker" '
 					+ 'onMouseOut="$(\'#'+controlId+'\').css(\'z-index\', \'\')" class="sticker" '
-					+ 'style="background-color: #FFC300; ' 
+					+ 'style="' 
+					+ 'background-color: #FFC300; ' 
 					+ 'height: '+this.stickerHeight+'px; ' 
 					+ 'width: '+this.stickerWidth+'px; ' 
 					+ 'position: absolute; '
@@ -45,7 +44,11 @@ Board.GladSadMad = {
 	reveal: function(code) {
 		var self = this;
 		BoardService.getSessionDetails(code, function(stickers) {
-			self.stickers = stickers;
+			//self.stickers = stickers;
+			
+			self.stickers.push({ sentBy: '12', id: '1239821398123', message: 'Team showing commitment and delivers fast', glad: 1.0, noControl: 0.9 * 0.5 });
+			self.stickers.push({ sentBy: '12', id: '1239821398121', message: 'ASAP Driven Development', glad: 1.0, noControl: 0.9 * 0.5 });
+			
 			self.showStickers();
 		});
 	},

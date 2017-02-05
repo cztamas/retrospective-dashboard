@@ -72,6 +72,10 @@ public class IndexController {
 			return new ModelAndView("session-timeout");
 		}
 		
-		return new ModelAndView("join");
+		ModelAndView page = new ModelAndView("join");
+		page.addObject("code", code);
+		page.addObject("token", token);
+		
+		return page;
 	}
 }
