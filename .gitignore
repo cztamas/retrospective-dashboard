@@ -1,0 +1,4 @@
+/src/main/WebContent/WEB-INF/lib
+/src/main/WebContent/resources/bower_components
+/target/dependency
+/src/main/WebContent/WEB-INF/classes
