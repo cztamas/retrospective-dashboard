@@ -1,4 +1,4 @@
-	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery/dist/jquery.min.js"></script>
+	
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/angular/angular.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/qrcodejs/qrcode.min.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/sockjs/sockjs.min.js"></script>

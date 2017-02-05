@@ -8,6 +8,7 @@
    
     <title>Retrospective Dashboard</title>
 
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery/dist/jquery.min.js"></script>
 	<%@include file="dependencies.jsp" %>
 
   </head>

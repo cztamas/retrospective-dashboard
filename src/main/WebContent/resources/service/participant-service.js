@@ -33,7 +33,14 @@ var ParticipantService = {
 	
 	join: function(username) {
 		this.username = username;
-		this.stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': username, 'id': 'afsdf'}));
+		
+		try {
+			this.stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': username, 'id': 'afsdf'}));	
+		}
+		catch (error) {
+			console.log(error);
+		}
+		
 		this.keepalive();
 	},
 	

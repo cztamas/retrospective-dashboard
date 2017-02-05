@@ -31,6 +31,7 @@ Board.GladSadMad = {
 		}
 		
 		$('#boardParticipants').html('Participants: ');
+		var activeParticipants = 0;
 		for (var i=0; i!=BoardService.participants.length; i++) {
 			
 			if (BoardService.participants[i].age == -1) {
@@ -41,6 +42,12 @@ Board.GladSadMad = {
 			$('#boardParticipants').append('<span class="board-participant">'
 					+ BoardService.participants[i].username
 					+'</span>');	
+			
+			activeParticipants += 1;
+		}
+		
+		if (activeParticipants == 0) {
+			$('#boardParticipants').html('');
 		}
 		
 	},
