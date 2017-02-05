@@ -17,6 +17,9 @@ import com.retrospective.model.websocket.ParticipantJoinedMessage;
 @Controller
 public class ParticipantController {
 
+	/**
+	 * TODO: purge all participants periodically where lastSeen is long enough
+	 */
 	private Hashtable<String, Participant> participants;
 	
 	@Autowired 
@@ -35,7 +38,10 @@ public class ParticipantController {
 		synchronized (this.participants) {
 			String participantKey = this.getParticipantKey(code, token, message.getId());
 			if (participants.containsKey(participantKey)) {
-				result.setReconnect(true);
+				long lastSeen = System.currentTimeMillis() / 1000L;
+				result.setKeepalive(true);
+				result.setLastSeen(lastSeen);
+				this.participants.get(participantKey).setLastSeen(lastSeen);
 				simpMessagingTemplate.convertAndSend("/topic/join/" + code + "/" + token, result);
 				return;
 			}

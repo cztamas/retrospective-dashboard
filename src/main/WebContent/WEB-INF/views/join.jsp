@@ -13,14 +13,19 @@
   
   <body style="margin-left: 120px;">
 
-
+<div id="existance"></div>
 <script>
 
 ParticipantService.initialize(${code}, '${token}');
 
+window.onbeforeunload = function(){
+	alert('e');
+}
+
 </script>
 
-<button onClick="ParticipantService.join();">asd</button>
+<input type="text" id="username" />
+<button onClick="ParticipantService.join($('#username').val());">asd</button>
 	
   </body>
 </html>

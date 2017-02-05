@@ -4,28 +4,51 @@ var ParticipantService = {
 	webSocketUrl: null,
 	code: null,
 	token: null,
+	username: null,
+	
+	// event to be fired when someone joined
+	onJoin: null,
 		
 	initialize: function(code, token) {
-		this.code = code;
-		this.token = token;
 		
 		var self = this;
+		this.code = code;
+		this.token = token;
 	
 		var socket = new SockJS(app.rootUrl + '/ws');
-	    stompClient = Stomp.over(socket);
-	    stompClient.connect({}, function (frame) {
+	    this.stompClient = Stomp.over(socket);
+	    this.stompClient.connect({}, function (frame) {
 	        
-	        console.log('Connected: ' + frame);
-	        
-	        stompClient.subscribe('/topic/join/' + self.code + '/' + self.token, function (greeting) {
-	        	console.log(JSON.parse(greeting.body).content);
+	        self.stompClient.subscribe('/topic/join/' + self.code + '/' + self.token, function (greeting) {
+	        	var participantJoinedBroadcastMessage = JSON.parse(greeting.body);
+	        	
+	        	if (self.onJoin) {
+	        		self.onJoin(participantJoinedBroadcastMessage);
+	        	}
 	        });
 	    });
+	    
+	
 	},
 	
-	join: function() {
+	join: function(username) {
+		this.username = username;
+		this.stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': username, 'id': 'afsdf'}));
+		this.keepalive();
+	},
+	
+	keepalive: function() {
+		var self = this;
 		
-		stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': 'void', 'id': 'afsdf'}));
+		if ($('#existance').length == 0) {
+			return;
+		}
+		
+		setTimeout(function(){ 
+			self.stompClient.send("/app/board/join/" + self.code + '/' + self.token, {}, JSON.stringify({'username': self.username, 'id': 'afsdf'}));
+			console.log('Keepalive message sent in the name of ' + self.username);
+			self.keepalive();
+		}, 3000);
 	}
 		
 };

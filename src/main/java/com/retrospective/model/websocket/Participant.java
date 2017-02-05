@@ -7,6 +7,8 @@ public class Participant {
 	private SessionDetails session;
 	
 	private ParticipantJoinedMessage participantDetails;
+	
+	private long lastSeen;
 
 	public SessionDetails getSession() {
 		return session;
@@ -22,6 +24,14 @@ public class Participant {
 
 	public void setParticipantDetails(ParticipantJoinedMessage participantDetails) {
 		this.participantDetails = participantDetails;
+	}
+
+	public long getLastSeen() {
+		return lastSeen;
+	}
+
+	public void setLastSeen(long lastSeen) {
+		this.lastSeen = lastSeen;
 	}
 	
 	

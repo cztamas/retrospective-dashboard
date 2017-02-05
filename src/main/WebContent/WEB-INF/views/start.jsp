@@ -64,7 +64,7 @@
 		showQrCode();
 	
    		new QRCode(document.getElementById("qrcode"), {
-		    text: app.domain + app.rootUrl + "/join/<c:out value="${code}"/>/<c:out value="${token}"/>",
+		    text: app.domain + app.rootUrl + "/join/${code}/${token}",
 		    width: 640,
 		    height: 640,
 		    colorDark : "#000000",
@@ -72,7 +72,16 @@
 		    correctLevel : QRCode.CorrectLevel.H
 		});
 		
+		BoardService.initialize();
 		Board.Current.initialize();
+		
+		ParticipantService.initialize(${code}, '${token}');
+		ParticipantService.onJoin = function(participantDetails) {
+			BoardService.addParticipant(participantDetails);
+			Board.Current.refreshParticipants();
+		}
+		
+		Board.Current.startRefreshingParticipants();
 	});
 	
 	$(window).resize(function() {

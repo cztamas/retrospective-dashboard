@@ -10,7 +10,10 @@
 	<span id="no-control" class="floating-label">NO CONTROL</span>
 
 	<div id="boardContent" class="board"></div>
+	
 </div>
+
+<div id="boardParticipants" class="board-participants"></div>
 
 <script>
 

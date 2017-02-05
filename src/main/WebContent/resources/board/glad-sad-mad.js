@@ -14,6 +14,37 @@ Board.GladSadMad = {
 		this.resize();
 	},
 	
+	startRefreshingParticipants: function() {
+		var self = this;
+		setTimeout(function(){ 
+			self.refreshParticipants();
+			console.log('Refresh participants loop');
+			self.startRefreshingParticipants();
+		}, 3000);
+	},
+	
+	refreshParticipants: function() {
+		
+		$('#boardParticipants').html('');
+		if (BoardService.participants.length == 0) {
+			return;
+		}
+		
+		$('#boardParticipants').html('Participants: ');
+		for (var i=0; i!=BoardService.participants.length; i++) {
+			
+			if (BoardService.participants[i].age == -1) {
+				// timed out
+				continue;
+			}
+			
+			$('#boardParticipants').append('<span class="board-participant">'
+					+ BoardService.participants[i].username
+					+'</span>');	
+		}
+		
+	},
+	
 	showStickers: function() {
 		
 		$('#boardContent').html('');
