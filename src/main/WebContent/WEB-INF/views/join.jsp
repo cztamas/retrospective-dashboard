@@ -88,7 +88,7 @@
 			<button onClick="$.mobile.changePage('#feedbackPage'); $('#commentAddOrEdit').data('mode', 'add'); JoinController.clearForm();" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
 		</div>
   		<ul id="stickersContainer" data-role="listview" data-inset="true"></ul>
-  		<button class="ui-btn ui-icon-action ui-btn-icon-left">Publish All</button>
+  		<!-- <button class="ui-btn ui-icon-action ui-btn-icon-left">Publish All</button> -->
   </div>
   
   <!-- DIALOGS ===================================================  -->

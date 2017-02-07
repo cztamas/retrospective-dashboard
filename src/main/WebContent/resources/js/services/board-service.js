@@ -2,9 +2,21 @@ var BoardService = {
 	
 	participants: [],
 	participantMaxAge: 10, // after this many seconds, participant is considered to be timed out
+	stompClient: null,
 		
 	initialize: function() {
+		var self = this;
 		this.aging();
+		
+		var socket = new SockJS(app.rootUrl + '/ws');
+	    this.stompClient = Stomp.over(socket);
+	    this.stompClient.connect({}, function (frame) {
+	        
+	        self.stompClient.subscribe('/topic/sticker/' + Context.code + '/' + Context.token, function (sticker) {
+	        	debugger;
+	        	Board.Current.refreshStickers();
+	        });
+	    });
 	},
 	
 	aging: function() {
@@ -72,7 +84,7 @@ var BoardService = {
 			stickersForUi.push({
 				sentBy: stickersFromServer[i].userId, 
 				id: stickersFromServer[i].id, 
-				message: stickersFromServer[i].message, 
+				message: stickersFromServer[i].comment, 
 				glad: stickersFromServer[i].glad, 
 				noControl: stickersFromServer[i].noControl
 			});

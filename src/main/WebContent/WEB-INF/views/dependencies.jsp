@@ -9,6 +9,7 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/utils.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/host/host.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/services/board-service.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/services/keepalive-service.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/services/participant-service.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/board/glad-sad-mad.js"></script>
 	

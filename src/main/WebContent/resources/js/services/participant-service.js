@@ -4,7 +4,6 @@ var ParticipantService = {
 	webSocketUrl: null,
 	code: null,
 	token: null,
-	username: null,
 	
 	onJoin: null,
 		
@@ -41,7 +40,7 @@ var ParticipantService = {
 		    
 		    statusCode: {
 		    	200: function(data) {
-		    		debugger;
+		    		
 		    		if (data.errorCode !== 0) {
 		    			console.log(data);
 		    			return;
@@ -60,36 +59,10 @@ var ParticipantService = {
 	},
 	
 	join: function(username) {
-		this.username = username;
-		
-		try {
-			this.stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': username, 'id': 'afsdf'}));	
-		}
-		catch (error) {
-			console.log(error);
-		}
-		
-		this.keepalive();
+		KeepaliveService.code = this.code;
+		KeepaliveService.token = this.token;
+		KeepaliveService.username = username;
+		KeepaliveService.start();
 	},
 	
-	keepalive: function() {
-		var self = this;
-		
-		if ($('#existance').length == 0) {
-			return;
-		}
-		
-		setTimeout(function(){ 
-			try {
-				self.stompClient.send("/app/board/join/" + self.code + '/' + self.token, {}, JSON.stringify({'username': self.username, 'id': 'afsdf'}));	
-			}
-			catch (error) {
-				console.log(error);
-			}
-			
-			console.log('Keepalive message sent in the name of ' + self.username);
-			self.keepalive();
-		}, 3000);
-	}
-		
 };

@@ -5,6 +5,7 @@ Board.GladSadMad = {
 	axisYLeft: 150,
 	stickerWidth: 200,
 	stickerHeight: 200,
+	isRevealed: false,
 	
 	stickers: [],
 	
@@ -12,6 +13,7 @@ Board.GladSadMad = {
 		
 	initialize: function() {
 		this.resize();
+		this.refreshStickers();
 	},
 	
 	startRefreshingParticipants: function() {
@@ -54,7 +56,13 @@ Board.GladSadMad = {
 	
 	showStickers: function() {
 		
+		$('#stickerCount').html(this.stickers.length);
 		$('#boardContent').html('');
+		
+		if (!this.isRevealed) {
+			return;
+		}
+		
 		for (var i=0; i!=this.stickers.length; i++) {
 			var bottom = (this.getBoardHeight() * this.stickers[i].glad) + this.axisXBottom - (this.stickers[i].glad * this.stickerHeight);
 			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * this.stickerWidth);
@@ -79,16 +87,20 @@ Board.GladSadMad = {
 		}
 	},
 	
-	reveal: function(code) {
+	refreshStickers: function() {
+		
 		var self = this;
-		BoardService.getSessionDetails(code, function(stickers) {
-			//self.stickers = stickers;
+		
+		BoardService.getSessionDetails(Context.code, function(stickers) {
 			
-			self.stickers.push({ sentBy: '12', id: '1239821398123', message: 'Team showing commitment and delivers fast', glad: 1.0, noControl: 0.9 * 0.5 });
-			self.stickers.push({ sentBy: '12', id: '1239821398121', message: 'ASAP Driven Development', glad: 1.0, noControl: 0.9 * 0.5 });
-			
+			self.stickers = stickers;
 			self.showStickers();
 		});
+	},
+	
+	reveal: function(code) {
+		this.isRevealed = true;
+		this.refreshStickers();
 	},
 		
 	resize: function() {

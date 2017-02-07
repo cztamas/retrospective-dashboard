@@ -11,6 +11,11 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery/dist/jquery.min.js"></script>
 	<%@include file="dependencies.jsp" %>
 
+	<script>
+		Context.code = <c:out value="${code}"/>;
+		Context.token = '<c:out value="${token}"/>';
+	</script>
+
   </head>
   
   <body style="margin-left: 120px;" ng-app="retrospective" ng-controller="host">
@@ -31,7 +36,7 @@
           <ul class="nav navbar-nav">
             <li><a href="#" onClick="showQrCode();">code: <b><c:out value="${code}"/></b></a></li>
             <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
-            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-primary btn-xs" onClick="Board.Current.reveal(<c:out value="${code}"/>);">Reveal <span class="badge">+0</span></button></li>
+            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-primary btn-xs" onClick="Board.Current.reveal(<c:out value="${code}"/>);">Reveal <span id="stickerCount" class="badge">+0</span></button></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" onClick="showQrCode();" /></li>

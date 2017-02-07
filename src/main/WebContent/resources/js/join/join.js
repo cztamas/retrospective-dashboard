@@ -120,20 +120,25 @@ var JoinController = {
 	publishSticker: function(commentId) {
 		
 		var self = this;
-		
 		var sticker = this.getSticker(commentId);
-		var requestModel = {
-			comment: sticker.comment,
-			glad: sticker.glad,
-			noControl: sticker.noControl,
-			userId: null,
-			username: Utils.getCookie('username'),
-			sessionCode: Context.code,
-			sessionToken: Context.token
-		};
+		if (sticker == null) {
+			return;
+		}
 		
-		ParticipantService.publish(requestModel, function() {
-			self.deleteComment(commentId);
+		this.confirmDialog('Publish', 'Are you sure?', 'Publish', function() {
+			var requestModel = {
+				comment: sticker.comment,
+				glad: sticker.glad / 1000,
+				noControl: sticker.noControl / 1000,
+				userId: null,
+				username: Utils.getCookie('username'),
+				sessionCode: Context.code,
+				sessionToken: Context.token
+			};
+				
+			ParticipantService.publish(requestModel, function() {
+				self.deleteComment(commentId);
+			});
 		});
 	},
 	
