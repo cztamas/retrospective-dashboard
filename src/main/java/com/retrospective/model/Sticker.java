@@ -13,6 +13,10 @@ public class Sticker {
 	private Double glad;
 	
 	private Double noControl;
+	
+	private int sessionCode;
+	
+	private String sessionToken;
 
 	public int getId() {
 		return id;
@@ -60,6 +64,22 @@ public class Sticker {
 
 	public void setNoControl(Double noControl) {
 		this.noControl = noControl;
+	}
+
+	public int getSessionCode() {
+		return sessionCode;
+	}
+
+	public void setSessionCode(int sessionCode) {
+		this.sessionCode = sessionCode;
+	}
+
+	public String getSessionToken() {
+		return sessionToken;
+	}
+
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
 	}
 	
 	

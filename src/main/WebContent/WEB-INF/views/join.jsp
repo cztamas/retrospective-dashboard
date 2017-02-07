@@ -8,7 +8,7 @@
     <title>Retrospective Dashboard</title>
     
     <%@include file="dependencies.jsp" %>
-    <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/join.js"></script>
+    <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/join/join.js"></script>
     
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -19,62 +19,48 @@
   	    $(document).ready(function() {
   	    	ParticipantService.initialize(${code}, '${token}');
   	    	JoinController.initialize();
+  	    	
+  	    	$('#yourCommentsLabel').html('Your comments ('+ Utils.getCookie('username') +')');
+  	    	$('#feedbacksHeaderLabel').html('Collect your feedbacks, then publish them ('+Utils.getCookie('username')+')');
+  	    	
+  	    	Context.code = ${code};
+  	    	Context.token = '${token}';
   	    });
   	    
-  	    function setCookie(cname, cvalue, exdays) {
-    		var d = new Date();
-    		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    		var expires = "expires="+ d.toUTCString();
-    		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-		}
-		
-		function getCookie(cname) {
-    		var name = cname + "=";
-    		var decodedCookie = decodeURIComponent(document.cookie);
-    		var ca = decodedCookie.split(';');
-    		for(var i = 0; i <ca.length; i++) {
-        		var c = ca[i];
-        		while (c.charAt(0) == ' ') {
-            		c = c.substring(1);
-        		}
-        		if (c.indexOf(name) == 0) {
-            		return c.substring(name.length, c.length);
-        		}
-    		}
-    		return null;
-		}
-		
-		
+  	    
     </script>
 
   </head>
   
   <body id="existance">
   
+  <!-- LOGIN PAGE ===================================================  -->
   <div data-role="page" id="loginPage">
 
 	<div data-role="header">
-		<h1>Single page</h1>
-	</div><!-- /header -->
+		<h1>Enter your name</h1>
+	</div>
 
 	<div role="main" class="ui-content">
 		
 		<label for="username">Username</label>
 		<input type="text" name="text-basic" id="username" value="" />
- 		<a onClick="JoinController.enter();" class="ui-shadow ui-btn ui-corner-all">Enter</a>
+ 		<a onClick="JoinController.enterRoom();" class="ui-shadow ui-btn ui-corner-all">Enter</a>
 		
-	</div><!-- /content -->
-
-	<div data-role="footer">
-		<h4>Footer content</h4>
-	</div><!-- /footer -->
+	</div>
 
   </div>
   
   <!-- FEEDBACK PAGE ===================================================  -->
-  
   <div data-role="page" id="feedbackPage">
   
+    <div data-role="header">
+		<h1 id="feedbacksHeaderLabel"></h1>
+		<button onClick="$.mobile.changePage('#commentsPage');" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-bullets">Comments</button>
+	</div>
+	
+    <div role="main" class="ui-content">
+    	
   		<label for="slider-fill">Glad</label>
   		<input type="range" name="slider-fill-glad" id="slider-fill-glad" value="60" min="0" max="1000" step="50" data-highlight="true" />
   
@@ -84,9 +70,36 @@
   		<label for="comment">Your Comment</label>
   		<textarea cols="40" rows="8" name="comment" id="comment"></textarea>
   
-  		<button class="ui-btn">Add</button>
+  		<button 
+  			id="commentAddOrEdit"
+  			data-mode="add"
+  			data-commentid=""
+  			class="ui-btn" 
+  			onClick="JoinController.addSticker($('#slider-fill-glad').val(), $('#slider-fill-nocontrol').val(), $('#comment').val());">Add</button>
+  		
+  		<span id="errorLabel" class="error"></span>
+  	 </div>
   </div>
   
+  <!-- COMMENTS PAGE ===================================================  -->
+  <div data-role="page" id="commentsPage">
+  		<div data-role="header">
+  			<h1 id="yourCommentsLabel"></h1>
+			<button onClick="$.mobile.changePage('#feedbackPage'); $('#commentAddOrEdit').data('mode', 'add'); JoinController.clearForm();" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
+		</div>
+  		<ul id="stickersContainer" data-role="listview" data-inset="true"></ul>
+  		<button class="ui-btn ui-icon-action ui-btn-icon-left">Publish All</button>
+  </div>
+  
+  <!-- DIALOGS ===================================================  -->
+  <div data-role="dialog" id="sure" data-title="Are you sure?">
+  <div data-role="content">
+    <h3 class="sure-1">???</h3>
+    <p class="sure-2">???</p>
+    <a href="#" class="sure-do" data-role="button" data-theme="b" data-rel="back">Yes</a>
+    <a href="#" data-role="button" data-theme="c" data-rel="back">No</a>
+  </div>
+</div>
   
   
   </body>

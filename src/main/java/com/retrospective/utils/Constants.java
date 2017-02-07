@@ -8,7 +8,8 @@ public class Constants {
 	
 	public enum Cookies {
 		
-		Token ("token");
+		Token ("token"),
+		Username ("username");
 		
 		private String name;
 		
@@ -24,7 +25,8 @@ public class Constants {
 	public enum ErrorCodes {
 		
 		CreateSessionFailed (1),
-		GetSessionDetailsFailed (2);
+		GetSessionDetailsFailed (2),
+		UnableToStoreSticker (3);
 		
 		private int code;
 		

@@ -6,7 +6,6 @@ var ParticipantService = {
 	token: null,
 	username: null,
 	
-	// event to be fired when someone joined
 	onJoin: null,
 		
 	initialize: function(code, token) {
@@ -31,6 +30,35 @@ var ParticipantService = {
 	
 	},
 	
+	publish: function(sticker, onSuccess) {
+		var self = this;
+		$.ajax({
+		    method: 'POST',
+		    url: app.rootUrl + "/rest/participant/sticker/" + Context.code + '/' + Context.token,
+		    dataType: 'json',
+		    contentType: 'application/json',
+		    data: JSON.stringify(sticker),
+		    
+		    statusCode: {
+		    	200: function(data) {
+		    		debugger;
+		    		if (data.errorCode !== 0) {
+		    			console.log(data);
+		    			return;
+		    		}
+		    		
+		    		try {
+		    			self.stompClient.send("/app/board/sticker/" + self.code + '/' + self.token, {}, JSON.stringify(sticker));
+		    			onSuccess();
+		    		}
+		    		catch (error) {
+		    			console.log(error);
+		    		}
+	            },
+	        }
+		});	
+	},
+	
 	join: function(username) {
 		this.username = username;
 		
@@ -52,7 +80,13 @@ var ParticipantService = {
 		}
 		
 		setTimeout(function(){ 
-			self.stompClient.send("/app/board/join/" + self.code + '/' + self.token, {}, JSON.stringify({'username': self.username, 'id': 'afsdf'}));
+			try {
+				self.stompClient.send("/app/board/join/" + self.code + '/' + self.token, {}, JSON.stringify({'username': self.username, 'id': 'afsdf'}));	
+			}
+			catch (error) {
+				console.log(error);
+			}
+			
 			console.log('Keepalive message sent in the name of ' + self.username);
 			self.keepalive();
 		}, 3000);

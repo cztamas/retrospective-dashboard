@@ -1,5 +1,10 @@
 package com.retrospective.dao;
 
-public class ParticipantDao {
+import com.retrospective.exception.DaoException;
+import com.retrospective.model.Sticker;
 
+public interface ParticipantDao {
+
+	public void storeSticker(Sticker sticker) throws DaoException;
+	
 }

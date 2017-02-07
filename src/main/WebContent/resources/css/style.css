@@ -58,3 +58,7 @@
     margin-right: 5px;
     color: #ffffff;
 }
+
+.error {
+	color: #ff0000;
+}

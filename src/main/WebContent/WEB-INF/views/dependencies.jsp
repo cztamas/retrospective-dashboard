@@ -5,10 +5,12 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/stomp-websocket/lib/stomp.min.js"></script>
 	
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/app.js"></script>
-	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/host.js"></script>
-	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/service/board-service.js"></script>
-	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/service/participant-service.js"></script>
-	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/board/glad-sad-mad.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/context.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/utils.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/host/host.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/services/board-service.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/services/participant-service.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/board/glad-sad-mad.js"></script>
 	
 	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/style.css">
 	

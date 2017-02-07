@@ -14,7 +14,11 @@
    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
     <!-- Database -->
-	<bean id="hikingDao" class="com.retrospective.dao.HostDaoImpl">
+	<bean id="hostDao" class="com.retrospective.dao.HostDaoImpl">
+		<constructor-arg ref="jdbcTemplate" />
+	</bean>
+	
+	<bean id="participantDao" class="com.retrospective.dao.ParticipantDaoImpl">
 		<constructor-arg ref="jdbcTemplate" />
 	</bean>
 
