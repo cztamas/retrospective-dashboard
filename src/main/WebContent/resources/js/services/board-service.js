@@ -86,7 +86,8 @@ var BoardService = {
 				id: stickersFromServer[i].id, 
 				message: stickersFromServer[i].comment, 
 				glad: stickersFromServer[i].glad, 
-				noControl: stickersFromServer[i].noControl
+				noControl: stickersFromServer[i].noControl,
+				transform: stickersFromServer[i].transform
 			});
 			
 		}

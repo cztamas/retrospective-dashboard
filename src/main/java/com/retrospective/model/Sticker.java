@@ -17,6 +17,8 @@ public class Sticker {
 	private int sessionCode;
 	
 	private String sessionToken;
+	
+	private int transform;
 
 	public int getId() {
 		return id;
@@ -81,6 +83,15 @@ public class Sticker {
 	public void setSessionToken(String sessionToken) {
 		this.sessionToken = sessionToken;
 	}
+
+	public int getTransform() {
+		return transform;
+	}
+
+	public void setTransform(int transform) {
+		this.transform = transform;
+	}
+
 	
 	
 	

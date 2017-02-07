@@ -67,10 +67,6 @@ Board.GladSadMad = {
 			var bottom = (this.getBoardHeight() * this.stickers[i].glad) + this.axisXBottom - (this.stickers[i].glad * this.stickerHeight);
 			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * this.stickerWidth);
 			
-			if (this.stickers[i].transform == undefined) {
-				this.stickers[i].transform = Math.floor((Math.random() * 30) - 15 ); // -15 to 15 degrees	
-			}
-			
 			var controlId = 'sticker_' + Math.ceil(Math.random() * 999999);
 			
 			$("#boardContent").append('<div id='+controlId+' ' 

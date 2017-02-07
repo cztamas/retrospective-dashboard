@@ -1,7 +1,8 @@
 package com.retrospective.controller.rest;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,8 @@ public class ParticipantController {
 		ServerResponse response = new ServerResponse();
 		
 		try {
+			Random r = new Random();
+			sticker.setTransform(r.nextInt(30) - 15);
 			this.participantDao.storeSticker(sticker);
 		}
 		catch (Exception error) {

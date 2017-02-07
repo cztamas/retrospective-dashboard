@@ -50,7 +50,7 @@ public class HostDaoImpl implements HostDao {
 		}
 		
 		try {
-			return this.jdbcTemplate.query("SELECT id, username, user_id, comment, glad, no_control FROM note WHERE session_code = ? AND session_token = ?", 
+			return this.jdbcTemplate.query("SELECT id, username, user_id, comment, glad, no_control, transform FROM note WHERE session_code = ? AND session_token = ?", 
 					new Object[] { sessionCode, sessionToken },
 					new RowMapper<Sticker>() {
 
@@ -63,6 +63,7 @@ public class HostDaoImpl implements HostDao {
 						    sticker.setUserId(rs.getString("USER_ID"));
 						    sticker.setGlad(rs.getDouble("GLAD"));
 						    sticker.setNoControl(rs.getDouble("NO_CONTROL"));
+						    sticker.setTransform(rs.getInt("TRANSFORM"));
 						    return sticker;
 						}
 				

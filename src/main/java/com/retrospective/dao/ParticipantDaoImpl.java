@@ -17,7 +17,7 @@ private JdbcTemplate jdbcTemplate;
 	public void storeSticker(Sticker sticker) throws DaoException {
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO note (id, username, user_id, glad, no_control, comment, session_code, session_token) VALUES(default, ?, ?, ?, ?, ?, ?, ?)", 
+			this.jdbcTemplate.update("INSERT INTO note (id, username, user_id, glad, no_control, comment, session_code, session_token, transform) VALUES(default, ?, ?, ?, ?, ?, ?, ?, ?)", 
 					new Object[] { 
 							sticker.getUsername(), 
 							sticker.getUserId(), 
@@ -25,7 +25,8 @@ private JdbcTemplate jdbcTemplate;
 							sticker.getNoControl(), 
 							sticker.getComment(), 
 							sticker.getSessionCode(), 
-							sticker.getSessionToken() 
+							sticker.getSessionToken(),
+							sticker.getTransform()
 					});
 		}
 		catch (Exception error) {
