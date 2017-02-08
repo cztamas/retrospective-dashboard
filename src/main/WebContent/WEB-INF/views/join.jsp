@@ -8,7 +8,7 @@
     <title>Retrospective Dashboard</title>
     
     <%@include file="dependencies.jsp" %>
-    <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/join/join.js"></script>
+    <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/join/join.js?ts=<% out.print(Math.random()); %>"></script>
     
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -19,9 +19,6 @@
   	    $(document).ready(function() {
   	    	ParticipantService.initialize(${code}, '${token}');
   	    	JoinController.initialize();
-  	    	
-  	    	$('#yourCommentsLabel').html('Your comments ('+ Utils.getCookie('username') +')');
-  	    	$('#feedbacksHeaderLabel').html('Collect your feedbacks, then publish them ('+Utils.getCookie('username')+')');
   	    	
   	    	Context.code = ${code};
   	    	Context.token = '${token}';
@@ -47,6 +44,7 @@
 		<input type="text" name="text-basic" id="username" value="" />
  		<a onClick="JoinController.enterRoom();" class="ui-shadow ui-btn ui-corner-all">Enter</a>
 		
+		<span id="loginErrorLabel" class="error"></span>
 	</div>
 
   </div>
@@ -55,7 +53,7 @@
   <div data-role="page" id="feedbackPage">
   
     <div data-role="header">
-		<h1 id="feedbacksHeaderLabel"></h1>
+		<h1>&nbsp;</h1>
 		<button onClick="$.mobile.changePage('#commentsPage');" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-bullets">Comments</button>
 	</div>
 	
@@ -84,9 +82,10 @@
   <!-- COMMENTS PAGE ===================================================  -->
   <div data-role="page" id="commentsPage">
   		<div data-role="header">
-  			<h1 id="yourCommentsLabel"></h1>
+  			<h1>&nbsp;</h1>
 			<button onClick="$.mobile.changePage('#feedbackPage'); $('#commentAddOrEdit').data('mode', 'add'); JoinController.clearForm();" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
 		</div>
+		
   		<ul id="stickersContainer" data-role="listview" data-inset="true"></ul>
   		<!-- <button class="ui-btn ui-icon-action ui-btn-icon-left">Publish All</button> -->
   </div>

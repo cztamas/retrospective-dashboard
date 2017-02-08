@@ -3,8 +3,6 @@ Board.GladSadMad = {
 	
 	axisXBottom: 50,
 	axisYLeft: 150,
-	stickerWidth: 200,
-	stickerHeight: 200,
 	isRevealed: false,
 	
 	stickers: [],
@@ -32,7 +30,7 @@ Board.GladSadMad = {
 			return;
 		}
 		
-		$('#boardParticipants').html('Participants: ');
+		$('#boardParticipants').html('');
 		var activeParticipants = 0;
 		for (var i=0; i!=BoardService.participants.length; i++) {
 			
@@ -47,11 +45,6 @@ Board.GladSadMad = {
 			
 			activeParticipants += 1;
 		}
-		
-		if (activeParticipants == 0) {
-			$('#boardParticipants').html('');
-		}
-		
 	},
 	
 	showStickers: function() {
@@ -64,18 +57,19 @@ Board.GladSadMad = {
 		}
 		
 		for (var i=0; i!=this.stickers.length; i++) {
-			var bottom = (this.getBoardHeight() * this.stickers[i].glad) + this.axisXBottom - (this.stickers[i].glad * this.stickerHeight);
-			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * this.stickerWidth);
+			var bottom = (this.getBoardHeight() * this.stickers[i].glad) + this.axisXBottom - (this.stickers[i].glad * Configuration.stickerHeight);
+			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * Configuration.stickerWidth);
 			
 			var controlId = 'sticker_' + Math.ceil(Math.random() * 999999);
 			
 			$("#boardContent").append('<div id='+controlId+' ' 
-					+ 'onMouseOver="$(\'#'+controlId+'\').css(\'z-index\', \'10\')" class="sticker" '
+					+ 'onMouseOver="$(\'#'+controlId+'\').css(\'z-index\', \'10\')" '
 					+ 'onMouseOut="$(\'#'+controlId+'\').css(\'z-index\', \'\')" class="sticker" '
 					+ 'style="' 
+					+ 'font-size: ' + Configuration.stickerFontSize + '; '
 					+ 'background-color: #FFC300; ' 
-					+ 'height: '+this.stickerHeight+'px; ' 
-					+ 'width: '+this.stickerWidth+'px; ' 
+					+ 'height: '+Configuration.stickerHeight+'px; ' 
+					+ 'width: '+Configuration.stickerWidth+'px; ' 
 					+ 'position: absolute; '
 					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 

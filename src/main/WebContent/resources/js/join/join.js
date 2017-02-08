@@ -109,11 +109,15 @@ var JoinController = {
 			$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
 					+ (i == this.stickers.length-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
 					+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'"><p>Glad: '
-					+ this.stickers[i].glad+', No Control: '+this.stickers[i].noControl+'<br/><strong>'+this.stickers[i].comment+'</strong><br/>'
+					+ this.stickers[i].glad+', No Control: '+this.stickers[i].noControl+'<br/><strong style="font-size: 16pt;">'+this.stickers[i].comment+'</strong><br/>'
 					+ '<a href="#" onClick="JoinController.startDeleteComment(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
 					+ '<a href="#" onClick="JoinController.editSticker(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
 					+ '<a href="#" onClick="JoinController.publishSticker(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
 					+'</p></li>');	
+		}
+		
+		if (this.stickers.length == 0) {
+			$('#stickersContainer').html('<li><i>There is no comment in pending state.<br/>You can add a comment, then <b>Publish</b> to the board whenever you want.</i></li>');
 		}
 	},
 	
@@ -165,9 +169,11 @@ var JoinController = {
 	
 	enterRoom: function() {
 		if ($('#username').val().length == 0) {
+			$('#loginErrorLabel').html('Username is required');
 			return;
 		}
 		
+		$('#loginErrorLabel').html('');
 		ParticipantService.join($('#username').val()); 
 		Utils.setCookie("username", $('#username').val()); 
 		$.mobile.changePage('#feedbackPage');

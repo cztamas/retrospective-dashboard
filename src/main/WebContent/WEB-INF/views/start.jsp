@@ -37,6 +37,7 @@
             <li><a href="#" onClick="showQrCode();">code: <b><c:out value="${code}"/></b></a></li>
             <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
             <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-primary btn-xs" onClick="Board.Current.reveal(<c:out value="${code}"/>);">Reveal <span id="stickerCount" class="badge">+0</span></button></li>
+            <li><span id="boardParticipants" style="margin-left: 20px; top: 16px; position: relative;"></span></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" onClick="showQrCode();" /></li>

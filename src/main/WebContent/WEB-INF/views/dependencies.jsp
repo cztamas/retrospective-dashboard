@@ -5,6 +5,7 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/stomp-websocket/lib/stomp.min.js"></script>
 	
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/app.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/configuration.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/context.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/utils.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/host/host.js"></script>

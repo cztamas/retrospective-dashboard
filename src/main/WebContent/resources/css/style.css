@@ -37,14 +37,6 @@
 	border: solid 2px #ffffff;
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	font-weight: bold;
-	font-size: 18pt;
-}
-
-.board-participants {
-	position: absolute;
-	left: 200px;
-	top: 60px;
-	width: 800px;
 }
 
 .board-participant {

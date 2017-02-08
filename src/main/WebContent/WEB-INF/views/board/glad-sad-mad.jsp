@@ -13,8 +13,6 @@
 	
 </div>
 
-<div id="boardParticipants" class="board-participants"></div>
-
 <script>
 
 	function initializeBoard() {

@@ -18,6 +18,10 @@
 	<div ng-app="retrospective" ng-controller="host" class="centered">
    
     	<button class="btn btn-primary btn-lg" ng-click="createSession()">Create Session</button>
+    	<br/><br/>
+    	<p>
+    		<i>Inspired by <a href="http://scrumwith.me/" target="out">scrumwith.me</a></i>
+    	</p>
     
 	</div>
 	

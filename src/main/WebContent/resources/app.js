@@ -1,3 +1,9 @@
 var app = angular.module("retrospective", []);
 app.rootUrl = "/retrospective-dashboard";
-app.domain = "http://192.168.1.5:8080";
+
+if (window.location.port !== '') {
+	app.domain = 'http://' + window.location.hostname + ':' + window.location.port;
+}
+else {
+	app.domain = 'http://' + window.location.hostname;
+}
