@@ -80,15 +80,20 @@ Board.GladSadMad = {
 					+ 'class="sticker ui-widget-content" '
 					+ 'style="'
 					+ 'font-size: ' + Configuration.stickerFontSize + '; '
-					+ 'background-color: #FFC300; ' 
 					+ 'height: '+Configuration.stickerHeight+'px; ' 
 					+ 'width: '+Configuration.stickerWidth+'px; ' 
+					+ 'background-image: -ms-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
+					+ 'background-image: -moz-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
+					+ 'background-image: -o-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
+					+ 'background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0, #FCCD4D), color-stop(50, #FBDF93), color-stop(100, #FCCD4D));'
+					+ 'background-image: -webkit-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
+					+ 'background-image: linear-gradient(to top right, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'position: absolute; '
 					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
 					+ 'left: '+left+'px;" '
-					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide();" '
-					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show();" '
+					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+this.stickers[i].transform+'deg)\');" '
+					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
 					+'>'+this.stickers[i].message+'</div>');
 			
 			$('#' + controlId).draggable();
@@ -122,9 +127,11 @@ Board.GladSadMad = {
 	
 	adjustLabels: function() {
 		var gladBottom = this.getBoardHeight() - 20;
+		gladBottom -= 120;
 		$('#glad').css('bottom', gladBottom + 'px');
 		
 		var sadBottom = Math.ceil(this.getBoardHeight() / 2) + 30;
+		sadBottom -= 70;
 		$('#sad').css('bottom', sadBottom + 'px');
 		
 		var madBottom = 50 + 20;
