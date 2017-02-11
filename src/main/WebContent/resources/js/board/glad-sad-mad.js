@@ -4,6 +4,7 @@ Board.GladSadMad = {
 	axisXBottom: 50,
 	axisYLeft: 150,
 	isRevealed: false,
+	mode: null, // session | dashboard
 	
 	stickers: [],
 	
@@ -64,16 +65,18 @@ Board.GladSadMad = {
 			var controlOriginalPlaceholderId = controlId + '_orig';
 			
 			// sticker
-			$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
-					+ 'style="'
-					+ 'width: '+Configuration.stickerWidth+'px; '
-					+ 'height: '+Configuration.stickerHeight+'px; '
-					+ 'position: absolute; '
-					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
-					+ 'bottom: '+bottom+'px; '
-					+ 'left: '+left+'px; '
-					+ '" ' 
-					+ '></div>');
+			if (this.mode == 'session') { 
+				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
+						+ 'style="'
+						+ 'width: '+Configuration.stickerWidth+'px; '
+						+ 'height: '+Configuration.stickerHeight+'px; '
+						+ 'position: absolute; '
+						+ 'transform: rotate('+this.stickers[i].transform+'deg); '
+						+ 'bottom: '+bottom+'px; '
+						+ 'left: '+left+'px; '
+						+ '" ' 
+						+ '></div>');
+			}
 			
 			// sticker's original palce marker
 			$("#boardContent").append('<div id='+controlId+' ' 
@@ -96,7 +99,10 @@ Board.GladSadMad = {
 					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
 					+'>'+this.stickers[i].message+'</div>');
 			
-			$('#' + controlId).draggable();
+			if (this.mode == 'session') {
+				$('#' + controlId).draggable();	
+			}
+			
 			$('#' + controlOriginalPlaceholderId).hide();			
 		}
 	},

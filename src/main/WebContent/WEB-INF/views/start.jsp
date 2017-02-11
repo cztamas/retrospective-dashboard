@@ -36,11 +36,30 @@
           <ul class="nav navbar-nav">
             <li><a href="#" onClick="showQrCode();">code: <b><c:out value="${code}"/></b></a></li>
             <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
-            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-primary btn-xs" onClick="Board.Current.reveal(<c:out value="${code}"/>);">Reveal <span id="stickerCount" class="badge">+0</span></button></li>
+            <c:if test="${dashboard == null}">
+            <li>
+            	<button 
+            		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
+            		style="margin-top: 16px; margin-left: 20px;" 
+            		class="btn btn-primary btn-xs" 
+            		onClick="Board.Current.reveal(<c:out value="${code}"/>);">Reveal <span id="stickerCount" class="badge">+0</span>
+            	</button>
+            </li>
+            </c:if>
             <li><span id="boardParticipants" style="margin-left: 20px; top: 16px; position: relative;"></span></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" onClick="showQrCode();" /></li>
+            <li>
+            	<img 
+            		src="../resources/images/share.png" 
+            		height="32"
+            		onClick="$('#dialog').dialog({width: 600});" 
+            		style="padding-right: 30px; padding-top: 14px; cursor: pointer;" 
+            		title="Click here to save the URL of this board" onClick="shareUrl();" />
+            </li>
+            <c:if test="${dashboard == null}">
+            	<li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="showQrCode();" /></li>
+            </c:if>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -68,13 +87,14 @@
 	}
 	
 	$(document).ready(function() {
-	
-		showQrCode();
+		$(document).tooltip();
+		$('#dialog').hide();
+		$('#shareUrl').val(app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}');	
 	
    		new QRCode(document.getElementById("qrcode"), {
 		    text: app.domain + app.rootUrl + "/join/${code}/${token}",
-		    width: 640,
-		    height: 640,
+		    width: window.innerHeight * 0.70,
+		    height: window.innerHeight * 0.70,
 		    colorDark : "#000000",
 		    colorLight : "#ffffff",
 		    correctLevel : QRCode.CorrectLevel.H
@@ -89,7 +109,16 @@
 			Board.Current.refreshParticipants();
 		}
 		
-		Board.Current.startRefreshingParticipants();
+		<c:if test="${dashboard == null}">
+   			showQrCode();
+   			Board.Current.startRefreshingParticipants();
+   			Board.Current.mode = 'session';		
+		</c:if>
+		<c:if test="${dashboard == true}">
+			hideQrCode();
+			Board.Current.mode = 'dashboard';
+			Board.Current.reveal(<c:out value="${code}"/>);
+		</c:if>
 	});
 	
 	$(window).resize(function() {
@@ -98,6 +127,15 @@
 	
 	
 	</script>
+	
+	<div id="dialog" title="Basic dialog">
+  		<p>You can re-open this dashboard any time in the future with the following link:</p>
+  		<input id='shareUrl' type="text" style="width: 95%" disabled  />
+  		<!--<p>
+  			<br/>
+  			<button class="btn btn-primary btn-xs" onClick="window.prompt('Copy to clipboard: Ctrl+C, Enter', $('#shareUrl').val());">copy to clipboard</button>
+  		</p>-->
+	</div>
 
   </body>
 </html>
