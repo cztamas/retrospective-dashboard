@@ -63,8 +63,7 @@ Board.GladSadMad = {
 			var controlId = 'sticker_' + Math.ceil(Math.random() * 999999);
 			
 			$("#boardContent").append('<div id='+controlId+' ' 
-					+ 'onMouseOver="$(\'#'+controlId+'\').css(\'z-index\', \'10\')" '
-					+ 'onMouseOut="$(\'#'+controlId+'\').css(\'z-index\', \'\')" class="sticker" '
+					+ 'class="sticker ui-widget-content" '
 					+ 'style="' 
 					+ 'font-size: ' + Configuration.stickerFontSize + '; '
 					+ 'background-color: #FFC300; ' 
@@ -73,7 +72,9 @@ Board.GladSadMad = {
 					+ 'position: absolute; '
 					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+left+'px;">'+this.stickers[i].message+'</div>')
+					+ 'left: '+left+'px;">'+this.stickers[i].message+'</div>');
+			$('#' + controlId).draggable();
+					
 		}
 	},
 	

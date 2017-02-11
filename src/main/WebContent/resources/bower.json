@@ -18,6 +18,7 @@
     "bootstrap": "^3.3.7",
     "qrcodejs": "^0.1.0",
     "sockjs": "^0.3.4",
-    "stomp-client": "^0.0.2"
+    "stomp-client": "^0.0.2",
+    "jquery-ui": "^1.12.1"
   }
 }

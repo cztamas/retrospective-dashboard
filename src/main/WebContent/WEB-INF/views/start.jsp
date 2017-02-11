@@ -52,6 +52,7 @@
     	<div id="qrcode"></div>
     </div>
     
+    
     <%@include file="board/glad-sad-mad.jsp" %>
 
 	<script>
@@ -97,5 +98,6 @@
 	
 	
 	</script>
+
   </body>
 </html>
