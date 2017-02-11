@@ -54,3 +54,7 @@
 .error {
 	color: #ff0000;
 }
+
+.original-sticker-place {
+	border: dotted 1px #aaaaaa;
+}

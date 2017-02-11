@@ -61,10 +61,24 @@ Board.GladSadMad = {
 			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * Configuration.stickerWidth);
 			
 			var controlId = 'sticker_' + Math.ceil(Math.random() * 999999);
+			var controlOriginalPlaceholderId = controlId + '_orig';
 			
+			// sticker
+			$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
+					+ 'style="'
+					+ 'width: '+Configuration.stickerWidth+'px; '
+					+ 'height: '+Configuration.stickerHeight+'px; '
+					+ 'position: absolute; '
+					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
+					+ 'bottom: '+bottom+'px; '
+					+ 'left: '+left+'px; '
+					+ '" ' 
+					+ '></div>');
+			
+			// sticker's original palce marker
 			$("#boardContent").append('<div id='+controlId+' ' 
 					+ 'class="sticker ui-widget-content" '
-					+ 'style="' 
+					+ 'style="'
 					+ 'font-size: ' + Configuration.stickerFontSize + '; '
 					+ 'background-color: #FFC300; ' 
 					+ 'height: '+Configuration.stickerHeight+'px; ' 
@@ -72,9 +86,13 @@ Board.GladSadMad = {
 					+ 'position: absolute; '
 					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+left+'px;">'+this.stickers[i].message+'</div>');
+					+ 'left: '+left+'px;" '
+					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide();" '
+					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show();" '
+					+'>'+this.stickers[i].message+'</div>');
+			
 			$('#' + controlId).draggable();
-					
+			$('#' + controlOriginalPlaceholderId).hide();			
 		}
 	},
 	
