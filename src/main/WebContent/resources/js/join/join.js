@@ -89,8 +89,8 @@ var JoinController = {
 	
 	clearForm: function() {
 		$('#comment').val('');
-		$('#slider-fill-nocontrol').val('60');
-		$('#slider-fill-glad').val('60');
+		$('#slider-fill-nocontrol').val('0').slider("refresh");
+		$('#slider-fill-glad').val('0').slider("refresh");
 		
 		if ($('#commentAddOrEdit').data('mode') == 'add') {
 			$('#commentAddOrEdit').html('Add');
