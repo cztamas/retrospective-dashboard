@@ -49,7 +49,7 @@ Board.GladSadMad = {
 	},
 	
 	showStickers: function() {
-		
+		debugger;
 		$('#stickerCount').html(this.stickers.length);
 		$('#boardContent').html('');
 		
@@ -97,7 +97,7 @@ Board.GladSadMad = {
 					+ 'left: '+left+'px;" '
 					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+this.stickers[i].transform+'deg)\');" '
 					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
-					+'>'+this.stickers[i].message+'</div>');
+					+'>'+Utils.htmlEncode(this.stickers[i].message)+'</div>');
 			
 			if (this.mode == 'session') {
 				$('#' + controlId).draggable();	
