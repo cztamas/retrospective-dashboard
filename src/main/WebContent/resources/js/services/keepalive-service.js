@@ -12,8 +12,9 @@ var KeepaliveService = {
 			return;
 		}
 		
+		var self = this;
 		try {
-			ParticipantService.stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': username, 'id': 'afsdf'}));	
+			ParticipantService.stompClient.send("/app/board/join/" + this.code + '/' + this.token, {}, JSON.stringify({'username': self.username, 'id': 'afsdf'}));	
 		}
 		catch (error) {
 			console.log(error);

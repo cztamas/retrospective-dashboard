@@ -49,7 +49,6 @@ Board.GladSadMad = {
 	},
 	
 	showStickers: function() {
-		debugger;
 		$('#stickerCount').html(this.stickers.length);
 		$('#boardContent').html('');
 		
