@@ -1,16 +1,25 @@
 var Board = {};
 Board.GladSadMad = {
 	
+	constants: {
+		offsetLocalStorageKey: 'retrospective.offset',
+	},
 	axisXBottom: 50,
 	axisYLeft: 150,
 	isRevealed: false,
 	mode: null, // session | dashboard
+	offset: {},
 	
 	stickers: [],
 	
 	stickerThemes: [ '#ff9999', '#99ff99' ],
 		
 	initialize: function() {
+		
+		if (localStorage.getItem(this.constants.offsetLocalStorageKey)) {
+			this.offset = JSON.parse(localStorage.getItem(this.constants.offsetLocalStorageKey));
+		}
+		
 		this.resize();
 		this.refreshStickers();
 	},
@@ -60,10 +69,10 @@ Board.GladSadMad = {
 			var bottom = (this.getBoardHeight() * this.stickers[i].glad) + this.axisXBottom - (this.stickers[i].glad * Configuration.stickerHeight);
 			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * Configuration.stickerWidth);
 			
-			var controlId = 'sticker_' + Math.ceil(Math.random() * 999999);
+			var controlId = 'sticker_' + this.stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
 			
-			// sticker
+			// sticker's original palce marker
 			if (this.mode == 'session') { 
 				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
 						+ 'style="'
@@ -77,8 +86,19 @@ Board.GladSadMad = {
 						+ '></div>');
 			}
 			
-			// sticker's original palce marker
-			$("#boardContent").append('<div id='+controlId+' ' 
+			// sticker
+			var bottomWithOffset = bottom;
+			var leftWithOffset = left;
+			if (this.offset[this.stickers[i].id]) {
+				bottomWithOffset += Utils.isInt(this.offset[this.stickers[i].id].bottomOffset) ? this.offset[this.stickers[i].id].bottomOffset : 0;
+				leftWithOffset += Utils.isInt(this.offset[this.stickers[i].id].leftOffset) ? this.offset[this.stickers[i].id].leftOffset : 0;
+			}
+			
+			$("#boardContent").append('<div '
+					+ 'data-sticker-id="'+this.stickers[i].id+'" '
+					+ 'data-original-bottom="'+bottom+'" '
+					+ 'data-original-left="'+left+'" '
+					+ 'id='+controlId+' ' 
 					+ 'class="sticker ui-widget-content" '
 					+ 'style="'
 					+ 'font-size: ' + Configuration.stickerFontSize + '; '
@@ -93,10 +113,15 @@ Board.GladSadMad = {
 					+ 'position: absolute; '
 					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+left+'px;" '
-					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+this.stickers[i].transform+'deg)\');" '
+					+ 'left: '+leftWithOffset+'px;" '
+					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+this.stickers[i].transform+'deg)\'); Board.Current.registerOffset(\''+controlId+'\', \''+this.stickers[i].id+'\'); " '
 					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
 					+'>'+Utils.htmlEncode(this.stickers[i].message)+'</div>');
+			
+			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
+			// value before setting the offset-adjusted position
+			$('#' + controlId).data('originalTop', $('#' + controlId).css('top').replace('px', ''));
+			$('#' + controlId).css('bottom', bottomWithOffset);
 			
 			if (this.mode == 'session') {
 				$('#' + controlId).draggable();	
@@ -104,6 +129,21 @@ Board.GladSadMad = {
 			
 			$('#' + controlOriginalPlaceholderId).hide();			
 		}
+	},
+	
+	registerOffset: function(controlId, stickerId) {
+		
+		var originalLeft = $('#' + controlId).data('originalLeft');
+		var originalTop = $('#' + controlId).data('originalTop');
+		var currentLeft = parseInt($('#' + controlId).css('left').replace('px', ''));
+		var currentTop = parseInt($('#' + controlId).css('top').replace('px', ''));
+		
+		this.offset[stickerId] = {
+			leftOffset: currentLeft - originalLeft,
+			bottomOffset: -1 * (currentTop - originalTop)
+		};
+		
+		localStorage.setItem(this.constants.offsetLocalStorageKey, JSON.stringify(this.offset));	
 	},
 	
 	refreshStickers: function() {

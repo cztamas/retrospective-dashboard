@@ -29,5 +29,11 @@ var Utils = {
 	
 	htmlDecode: function(value) {
 		return $('<div/>').html(value).text();
+	},
+	
+	isInt: function(value) {
+		return !isNaN(value) && 
+	         parseInt(Number(value)) == value && 
+	         !isNaN(parseInt(value, 10));
 	}
 };
