@@ -7,6 +7,8 @@ import com.retrospective.utils.Constants;
 public class GetSessionDetailsResponse extends ServerResponse {
 
 	private List<Sticker> stickers;
+	
+	private String offsetSettings;
 
 	public List<Sticker> getStickers() {
 		return stickers;
@@ -16,6 +18,14 @@ public class GetSessionDetailsResponse extends ServerResponse {
 		this.stickers = stickers;
 	}
 	
+	public String getOffsetSettings() {
+		return offsetSettings;
+	}
+
+	public void setOffsetSettings(String offsetSettings) {
+		this.offsetSettings = offsetSettings;
+	}
+
 	public static GetSessionDetailsResponse error() {
 		
 		GetSessionDetailsResponse response = new GetSessionDetailsResponse();

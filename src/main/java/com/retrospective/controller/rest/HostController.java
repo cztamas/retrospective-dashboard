@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,7 @@ import com.retrospective.dao.HostDao;
 import com.retrospective.exception.AuthorizationException;
 import com.retrospective.exception.CreateSessionException;
 import com.retrospective.exception.DaoException;
+import com.retrospective.exception.SetOffsetException;
 import com.retrospective.model.CreateSessionResponse;
 import com.retrospective.model.GetSessionDetailsResponse;
 import com.retrospective.model.SessionDetails;
@@ -32,6 +34,20 @@ public class HostController {
 	@Autowired
 	public void setHostDao(HostDao hostDao) {
 		this.hostDao = hostDao;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/session/{code}/offset", consumes = "application/json", method = RequestMethod.POST)
+	public String setOffsets(@RequestBody String offsets, @PathVariable(value="code") int code, HttpServletRequest request) {
+		
+		try {
+			this.hostDao.setOffsets(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName()), offsets);
+		}
+		catch (DaoException error) {
+			
+			ErrorLogger.LogError(new SetOffsetException("Unable to store offsets", error));
+		}
+		return "";
 	}
 
 	@ResponseBody
@@ -63,6 +79,8 @@ public class HostController {
 					code, 
 					CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
 			
+			result.setOffsetSettings(this.hostDao.getOffsetSettings(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
+			
 			return result;
 		}
 		catch (AuthorizationException error) {
@@ -71,7 +89,7 @@ public class HostController {
 		}
 		catch (DaoException error) {
 			
-			ErrorLogger.LogError(new CreateSessionException("Unable to create session", error));
+			ErrorLogger.LogError(new CreateSessionException("Unable to fetch session details (notes and offsets)", error));
 			return GetSessionDetailsResponse.error();	
 		}
 	}

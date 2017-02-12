@@ -16,7 +16,8 @@ Board.GladSadMad = {
 		
 	initialize: function() {
 		
-		if (localStorage.getItem(this.constants.offsetLocalStorageKey)) {
+		// Load offsets from Local Storage in session mode
+		if (this.mode == 'session' && localStorage.getItem(this.constants.offsetLocalStorageKey)) {
 			this.offset = JSON.parse(localStorage.getItem(this.constants.offsetLocalStorageKey));
 		}
 		
@@ -133,6 +134,10 @@ Board.GladSadMad = {
 	
 	registerOffset: function(controlId, stickerId) {
 		
+		if (this.mode !== 'session') {
+			return;
+		}
+		
 		var originalLeft = $('#' + controlId).data('originalLeft');
 		var originalTop = $('#' + controlId).data('originalTop');
 		var currentLeft = parseInt($('#' + controlId).css('left').replace('px', ''));
@@ -144,13 +149,23 @@ Board.GladSadMad = {
 		};
 		
 		localStorage.setItem(this.constants.offsetLocalStorageKey, JSON.stringify(this.offset));	
+		BoardService.persistOffsets(Context.code, this.offset);
 	},
 	
 	refreshStickers: function() {
 		
 		var self = this;
 		
-		BoardService.getSessionDetails(Context.code, function(stickers) {
+		BoardService.getSessionDetails(Context.code, function(stickers, offsetSettings) {
+			
+			try {
+				if (offsetSettings != null) {
+					self.offset = JSON.parse(offsetSettings);
+				}	
+			}
+			catch (error) {
+				Utils.handleError('Dashboard: unable to apply offsets', error);
+			}
 			
 			self.stickers = stickers;
 			self.showStickers();

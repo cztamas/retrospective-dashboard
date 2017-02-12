@@ -12,4 +12,8 @@ public interface HostDao {
 	public SessionDetails createSession() throws DaoException;
 	
 	public List<Sticker> getSessionStickers(int sessionCode, String sessionToken) throws DaoException, AuthorizationException;
+	
+	public void setOffsets(int sessionCode, String sessionToken, String offsets) throws DaoException;
+	
+	public String getOffsetSettings(int sessionCode, String sessionToken) throws DaoException;
 }

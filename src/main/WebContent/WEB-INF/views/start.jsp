@@ -100,6 +100,13 @@
 		    correctLevel : QRCode.CorrectLevel.H
 		});
 		
+		<c:if test="${dashboard == null}">
+   			Board.Current.mode = 'session';		
+		</c:if>
+		<c:if test="${dashboard == true}">
+			Board.Current.mode = 'dashboard';
+		</c:if>
+		
 		BoardService.initialize();
 		Board.Current.initialize();
 		
@@ -112,11 +119,9 @@
 		<c:if test="${dashboard == null}">
    			showQrCode();
    			Board.Current.startRefreshingParticipants();
-   			Board.Current.mode = 'session';		
 		</c:if>
 		<c:if test="${dashboard == true}">
 			hideQrCode();
-			Board.Current.mode = 'dashboard';
 			Board.Current.reveal(<c:out value="${code}"/>);
 		</c:if>
 	});

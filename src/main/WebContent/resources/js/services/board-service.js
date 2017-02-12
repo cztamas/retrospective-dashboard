@@ -50,6 +50,27 @@ var BoardService = {
 		
 		this.participants.push(participantDetails);
 	},
+	
+	persistOffsets: function(sessionCode, offsets) {
+		$.ajax({
+		    method: 'POST',
+		    url: app.rootUrl + "/rest/host/session/" + sessionCode + '/offset',
+		    dataType: 'json',
+		    contentType: 'application/json',
+		    data: JSON.stringify(offsets),
+		    
+		    statusCode: {
+		    	200: function(data) {
+		    		
+		    		if (data.errorCode !== 0) {
+		    			console.log(data);
+		    			return;
+		    		}   
+	            },
+	        }
+		});	
+		
+	},
 
 	getSessionDetails: function(sessionCode, onSuccess) {
 		
@@ -69,7 +90,7 @@ var BoardService = {
 		    			return;
 		    		}
 		    		
-		    		onSuccess(self.transform(data.stickers));   
+		    		onSuccess(self.transform(data.stickers), data.offsetSettings);   
 	            },
 	        }
 		});	

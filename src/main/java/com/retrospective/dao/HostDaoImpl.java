@@ -84,6 +84,36 @@ public class HostDaoImpl implements HostDao {
 		}
 	}
 	
+	@Override
+	public void setOffsets(int sessionCode, String sessionToken, String offsets) throws DaoException {
+		
+		try {
+			this.jdbcTemplate.update("UPDATE session SET offset_settings = ? WHERE code = ? AND token = ?", 
+					new Object [] {
+						offsets, 
+						sessionCode,
+						sessionToken
+					});
+		}
+		catch (Exception error) {
+			throw new DaoException("Database error occurred while fetching stickers", error);
+		}
+	}
+	
+	@Override
+	public String getOffsetSettings(int sessionCode, String sessionToken) throws DaoException {
+		try {
+			return this.jdbcTemplate.queryForObject(
+					"SELECT offset_settings FROM session WHERE code = ? AND token = ?", 
+					new Object [] { sessionCode, sessionToken }, 
+					String.class);
+		}
+		catch (Exception error) {
+			error.printStackTrace();
+			throw new DaoException("Database error occurred while fetching stickers", error);
+		}
+	}
+	
 	private int generate6digitCode() {
 		Random r = new Random();
 		int code = (100000 + r.nextInt(900000));
