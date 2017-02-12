@@ -62,8 +62,8 @@
   		<label for="slider-fill">Glad</label>
   		<input type="range" name="slider-fill-glad" id="slider-fill-glad" value="60" min="0" max="1000" step="50" data-highlight="true" />
   
-  		<label for="slider-fill">No Control</label>
-  		<input type="range" name="slider-fill-nocontrol" id="slider-fill-nocontrol" value="60" min="0" max="1000" step="50" data-highlight="true" />
+  		<label for="slider-fill">Control</label>
+  		<input type="range" name="slider-fill-control" id="slider-fill-control" value="60" min="0" max="1000" step="50" data-highlight="true" />
   
   		<label for="comment">Your Comment</label>
   		<textarea cols="40" rows="8" name="comment" id="comment"></textarea>
@@ -73,7 +73,7 @@
   			data-mode="add"
   			data-commentid=""
   			class="ui-btn" 
-  			onClick="JoinController.addSticker($('#slider-fill-glad').val(), $('#slider-fill-nocontrol').val(), $('#comment').val());">Add</button>
+  			onClick="JoinController.addSticker($('#slider-fill-glad').val(), $('#slider-fill-control').val(), $('#comment').val());">Add</button>
   		
   		<span id="errorLabel" class="error"></span>
   	 </div>

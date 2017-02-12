@@ -23,7 +23,9 @@ var JoinController = {
 		}
 	},
 	
-	addSticker: function(glad, noControl, comment) {
+	addSticker: function(glad, control, comment) {
+		
+		var noControl = 1000 - control;
 		
 		var isAdding = $('#commentAddOrEdit').data('mode') == 'add';
 		if (comment == '') {
@@ -71,8 +73,10 @@ var JoinController = {
 		}
 		
 		$('#comment').val(sticker.comment);
-		$('#slider-fill-nocontrol').val(sticker.noControl);
+		$('#slider-fill-control').val(1000 - sticker.noControl);
 		$('#slider-fill-glad').val(sticker.glad);
+		$('#slider-fill-control').slider("refresh");
+		$('#slider-fill-glad').slider("refresh");
 		$('#commentAddOrEdit').data('commentid', commentId);
 		$.mobile.changePage('#feedbackPage');
 	},
@@ -88,8 +92,9 @@ var JoinController = {
 	},
 	
 	clearForm: function() {
+		
 		$('#comment').val('');
-		$('#slider-fill-nocontrol').val('0').slider("refresh");
+		$('#slider-fill-control').val('0').slider("refresh");
 		$('#slider-fill-glad').val('0').slider("refresh");
 		
 		if ($('#commentAddOrEdit').data('mode') == 'add') {
