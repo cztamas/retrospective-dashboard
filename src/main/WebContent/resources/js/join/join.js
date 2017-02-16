@@ -111,10 +111,27 @@ var JoinController = {
 		
 		for (var i=0; i!=this.stickers.length; i++) {
 			
+			var gladPercentage = parseInt(this.stickers[i].glad / 10);
+			var gladHtml = '<div class="progress">'
+				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+gladPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+gladPercentage+'%;"> ' 
+				    + gladPercentage 
+				    + '% glad</div>'
+				    +'</div>';
+			
+			var controlPercentage = parseInt((1000-this.stickers[i].noControl) / 10);
+			var controlHtml = '<div class="progress">'
+				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+controlPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+controlPercentage+'%;"> ' 
+				    + controlPercentage
+				    + '% control</div>'
+				    +'</div>';
+			
 			$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
 					+ (i == this.stickers.length-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
-					+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'"><p>Glad: '
-					+ this.stickers[i].glad+', No Control: '+this.stickers[i].noControl+'<br/><strong style="font-size: 16pt;">'+this.stickers[i].comment+'</strong><br/>'
+					+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
+					+ '<strong style="font-size: 16pt;">'+this.stickers[i].comment+'</strong>'
+					+ '<p>'
+					+gladHtml + controlHtml
+					+ '</p><p>'
 					+ '<a href="#" onClick="JoinController.startDeleteComment(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
 					+ '<a href="#" onClick="JoinController.editSticker(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
 					+ '<a href="#" onClick="JoinController.publishSticker(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
