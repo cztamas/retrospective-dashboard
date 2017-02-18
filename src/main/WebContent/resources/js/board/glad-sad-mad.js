@@ -129,12 +129,6 @@ Board.GladSadMad = {
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();
-			
-			/*
-			$('#' + controlId).hide();
-			(function(id) {
-				setTimeout(function() {$('#' + id).fadeIn(); },  parseInt(Math.random() * 1000));
-			})(controlId);*/
 		}
 	},
 	

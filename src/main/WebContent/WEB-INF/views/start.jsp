@@ -133,13 +133,13 @@
 	
 	</script>
 	
-	<div id="dialog" title="Basic dialog">
+	<div id="dialog" title="Dashboard">
   		<p>You can re-open this dashboard any time in the future with the following link:</p>
   		<input id='shareUrl' type="text" style="width: 95%" disabled  />
-  		<!--<p>
-  			<br/>
-  			<button class="btn btn-primary btn-xs" onClick="window.prompt('Copy to clipboard: Ctrl+C, Enter', $('#shareUrl').val());">copy to clipboard</button>
-  		</p>-->
+	</div>
+	
+	<div id="errorDialog" title="Error">
+  		<p style="color: #ff0000;" id="errorMessage"></p>
 	</div>
 
   </body>

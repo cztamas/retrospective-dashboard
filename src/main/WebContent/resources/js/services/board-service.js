@@ -13,7 +13,6 @@ var BoardService = {
 	    this.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/sticker/' + Context.code + '/' + Context.token, function (sticker) {
-	        	debugger;
 	        	Board.Current.refreshStickers();
 	        });
 	    });
@@ -86,7 +85,12 @@ var BoardService = {
 		    	200: function(data) {
 		    		
 		    		if (data.errorCode !== 0) {
-		    			console.log(data);
+		    			
+		    			if (data.errorCode == 2) {
+		    				$('#errorMessage').html('Invalid security token.');
+		    				$('#errorDialog').dialog({width: 450});
+		    			}
+		    			
 		    			return;
 		    		}
 		    		
