@@ -8,7 +8,6 @@
    
     <title>Retrospective Dashboard</title>
 
-	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery/dist/jquery.min.js"></script>
 	<%@include file="dependencies.jsp" %>
 
 	<script>
@@ -18,7 +17,7 @@
 
   </head>
   
-  <body style="margin-left: 120px;" ng-app="retrospective" ng-controller="host">
+  <body style="margin-left: 120px;" ng-app="retrospective" ng-controller="board-page as boardPage">
 
 	<!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -41,8 +40,8 @@
             	<button 
             		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
             		style="margin-top: 16px; margin-left: 20px;" 
-            		class="btn btn-primary btn-xs" 
-            		onClick="Board.Current.reveal(<c:out value="${code}"/>);">Reveal <span id="stickerCount" class="badge">+0</span>
+            		class="btn btn-primary btn-xs"
+            		ng-click="reveal(<c:out value="${code}"/>)">Reveal <span id="stickerCount" class="badge">+0</span>
             	</button>
             </li>
             </c:if>
@@ -86,8 +85,12 @@
 		$('#board').show();
 	}
 	
-	$(document).ready(function() {
-		$(document).tooltip();
+	angular.element(document).ready(function() {
+
+	    var appElement = document.querySelector('[ng-app=retrospective]');
+	    var boardPageScope = angular.element(appElement).scope();
+	    
+	    $(document).tooltip();
 		$('#dialog').hide();
 		$('#shareUrl').val(app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}');	
 	
@@ -101,33 +104,34 @@
 		});
 		
 		<c:if test="${dashboard == null}">
-   			Board.Current.mode = 'session';		
+   			boardPageScope.state.mode = boardPageScope.enum.mode.session;		
 		</c:if>
 		<c:if test="${dashboard == true}">
-			Board.Current.mode = 'dashboard';
+			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
 		</c:if>
 		
 		BoardService.initialize();
-		Board.Current.initialize();
+		boardPageScope.initialize();
 		
 		ParticipantService.initialize(${code}, '${token}');
 		ParticipantService.onJoin = function(participantDetails) {
 			BoardService.addParticipant(participantDetails);
-			Board.Current.refreshParticipants();
+			boardPageScope.refreshParticipants();
 		}
 		
 		<c:if test="${dashboard == null}">
    			showQrCode();
-   			Board.Current.startRefreshingParticipants();
+   			boardPageScope.startRefreshingParticipants();
 		</c:if>
 		<c:if test="${dashboard == true}">
 			hideQrCode();
-			Board.Current.reveal(<c:out value="${code}"/>);
+			boardPageScope.reveal(<c:out value="${code}"/>);
 		</c:if>
-	});
 	
+	});
+
 	$(window).resize(function() {
-  		Board.Current.resize();
+  		boardPage.resize();
 	});
 	
 	

@@ -1,40 +1,47 @@
-var Board = {};
-Board.GladSadMad = {
+app.controller("board-page", function($scope) {
 	
-	constants: {
+	$scope.enum = { 
+		mode: { 
+			session: 'session', 
+			dashboard: 'dashboard' 
+		} 
+	};
+	
+	$scope.configuration = {
 		offsetLocalStorageKey: 'retrospective.offset',
-	},
-	axisXBottom: 50,
-	axisYLeft: 150,
-	isRevealed: false,
-	mode: null, // session | dashboard
-	offset: {},
+		axisXBottom: 50,
+		axisYLeft: 150,
+		stickerThemes: [ '#ff9999', '#99ff99' ],
+	};
 	
-	stickers: [],
+	$scope.state = {
+		mode: null, // session | dashboard
+		isRevealed: false,
+		offset: {},
+		stickers: [],
+	};
 	
-	stickerThemes: [ '#ff9999', '#99ff99' ],
-		
-	initialize: function() {
+	$scope.initialize = function () {
 		
 		// Load offsets from Local Storage in session mode
-		if (this.mode == 'session' && localStorage.getItem(this.constants.offsetLocalStorageKey)) {
-			this.offset = JSON.parse(localStorage.getItem(this.constants.offsetLocalStorageKey));
+		if ($scope.state.mode == $scope.enum.mode.session && localStorage.getItem($scope.configuration.offsetLocalStorageKey)) {
+			$scope.state.offset = JSON.parse(localStorage.getItem($scope.configuration.offsetLocalStorageKey));
 		}
 		
-		this.resize();
-		this.refreshStickers();
-	},
-	
-	startRefreshingParticipants: function() {
-		var self = this;
+		$scope.resize();
+		$scope.refreshStickers();
+    };
+    
+    $scope.startRefreshingParticipants = function() {
+		
 		setTimeout(function(){ 
-			self.refreshParticipants();
+			$scope.refreshParticipants();
 			console.log('Refresh participants loop');
-			self.startRefreshingParticipants();
+			$scope.startRefreshingParticipants();
 		}, 3000);
-	},
+	};
 	
-	refreshParticipants: function() {
+	$scope.refreshParticipants = function() {
 		
 		$('#boardParticipants').html('');
 		if (BoardService.participants.length == 0) {
@@ -56,31 +63,31 @@ Board.GladSadMad = {
 			
 			activeParticipants += 1;
 		}
-	},
+	};
 	
-	showStickers: function() {
-		$('#stickerCount').html(this.stickers.length);
+	$scope.showStickers = function() {
+		$('#stickerCount').html($scope.state.stickers.length);
 		$('#boardContent').html('');
 		
-		if (!this.isRevealed) {
+		if (!$scope.state.isRevealed) {
 			return;
 		}
 		
-		for (var i=0; i!=this.stickers.length; i++) {
-			var bottom = (this.getBoardHeight() * this.stickers[i].glad) + this.axisXBottom - (this.stickers[i].glad * Configuration.stickerHeight);
-			var left = this.axisYLeft + (this.getBoardWidth() * this.stickers[i].noControl) - (this.stickers[i].noControl * Configuration.stickerWidth);
+		for (var i=0; i!=$scope.state.stickers.length; i++) {
+			var bottom = ($scope.getBoardHeight() * $scope.state.stickers[i].glad) + $scope.configuration.axisXBottom - ($scope.state.stickers[i].glad * Configuration.stickerHeight);
+			var left = $scope.configuration.axisYLeft + ($scope.getBoardWidth() * $scope.state.stickers[i].noControl) - ($scope.state.stickers[i].noControl * Configuration.stickerWidth);
 			
-			var controlId = 'sticker_' + this.stickers[i].id;
+			var controlId = 'sticker_' + $scope.state.stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
 			
 			// sticker's original palce marker
-			if (this.mode == 'session') { 
+			if ($scope.state.mode == $scope.enum.mode.session) { 
 				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
 						+ 'style="'
 						+ 'width: '+Configuration.stickerWidth+'px; '
 						+ 'height: '+Configuration.stickerHeight+'px; '
 						+ 'position: absolute; '
-						+ 'transform: rotate('+this.stickers[i].transform+'deg); '
+						+ 'transform: rotate('+$scope.state.stickers[i].transform+'deg); '
 						+ 'bottom: '+bottom+'px; '
 						+ 'left: '+left+'px; '
 						+ '" ' 
@@ -90,13 +97,13 @@ Board.GladSadMad = {
 			// sticker
 			var bottomWithOffset = bottom;
 			var leftWithOffset = left;
-			if (this.offset[this.stickers[i].id]) {
-				bottomWithOffset += Utils.isInt(this.offset[this.stickers[i].id].bottomOffset) ? this.offset[this.stickers[i].id].bottomOffset : 0;
-				leftWithOffset += Utils.isInt(this.offset[this.stickers[i].id].leftOffset) ? this.offset[this.stickers[i].id].leftOffset : 0;
+			if ($scope.state.offset[$scope.state.stickers[i].id]) {
+				bottomWithOffset += Utils.isInt($scope.state.offset[$scope.state.stickers[i].id].bottomOffset) ? $scope.state.offset[$scope.state.stickers[i].id].bottomOffset : 0;
+				leftWithOffset += Utils.isInt($scope.state.offset[$scope.state.stickers[i].id].leftOffset) ? $scope.state.offset[$scope.state.stickers[i].id].leftOffset : 0;
 			}
 			
 			$("#boardContent").append('<div '
-					+ 'data-sticker-id="'+this.stickers[i].id+'" '
+					+ 'data-sticker-id="'+$scope.state.stickers[i].id+'" '
 					+ 'data-original-bottom="'+bottom+'" '
 					+ 'data-original-left="'+left+'" '
 					+ 'id='+controlId+' ' 
@@ -112,29 +119,29 @@ Board.GladSadMad = {
 					+ 'background-image: -webkit-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: linear-gradient(to top right, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'position: absolute; '
-					+ 'transform: rotate('+this.stickers[i].transform+'deg); '
+					+ 'transform: rotate('+$scope.state.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
 					+ 'left: '+leftWithOffset+'px;" '
-					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+this.stickers[i].transform+'deg)\'); Board.Current.registerOffset(\''+controlId+'\', \''+this.stickers[i].id+'\'); " '
+					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+$scope.state.stickers[i].transform+'deg)\'); Board.Current.registerOffset(\''+controlId+'\', \''+$scope.state.stickers[i].id+'\'); " '
 					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
-					+'>'+Utils.htmlEncode(this.stickers[i].message)+'</div>');
+					+'>'+Utils.htmlEncode($scope.state.stickers[i].message)+'</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
 			// value before setting the offset-adjusted position
 			$('#' + controlId).data('originalTop', $('#' + controlId).css('top').replace('px', ''));
 			$('#' + controlId).css('bottom', bottomWithOffset);
 			
-			if (this.mode == 'session') {
+			if ($scope.state.mode == $scope.enum.mode.session) {
 				$('#' + controlId).draggable();	
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();
 		}
-	},
+	};
 	
-	registerOffset: function(controlId, stickerId) {
+	$scope.registerOffset = function(controlId, stickerId) {
 		
-		if (this.mode !== 'session') {
+		if ($scope.state.mode !== $scope.enum.mode.session) {
 			return;
 		}
 		
@@ -143,54 +150,52 @@ Board.GladSadMad = {
 		var currentLeft = parseInt($('#' + controlId).css('left').replace('px', ''));
 		var currentTop = parseInt($('#' + controlId).css('top').replace('px', ''));
 		
-		this.offset[stickerId] = {
+		$scope.state.offset[stickerId] = {
 			leftOffset: currentLeft - originalLeft,
 			bottomOffset: -1 * (currentTop - originalTop)
 		};
 		
-		localStorage.setItem(this.constants.offsetLocalStorageKey, JSON.stringify(this.offset));	
-		BoardService.persistOffsets(Context.code, this.offset);
-	},
+		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
+		BoardService.persistOffsets(Context.code, $scope.state.offset);
+	};
 	
-	refreshStickers: function() {
-		
-		var self = this;
+	$scope.refreshStickers = function() {
 		
 		BoardService.getSessionDetails(Context.code, function(stickers, offsetSettings) {
 			
 			try {
 				if (offsetSettings != null) {
-					self.offset = JSON.parse(offsetSettings);
+					$scope.state.offset = JSON.parse(offsetSettings);
 				}	
 			}
 			catch (error) {
 				Utils.handleError('Dashboard: unable to apply offsets', error);
 			}
 			
-			self.stickers = stickers;
-			self.showStickers();
+			$scope.state.stickers = stickers;
+			$scope.showStickers();
 		});
-	},
+	};
 	
-	reveal: function(code) {
-		this.isRevealed = true;
-		this.refreshStickers();
-	},
+	$scope.reveal = function(code) {
+		$scope.state.isRevealed = true;
+		$scope.refreshStickers();
+	};
 		
-	resize: function() {
-		$('#axisX').css('width', this.getBoardWidth() + 'px');
-		$('#axisY').css('height', this.getBoardHeight() + 'px');
+	$scope.resize = function() {
+		$('#axisX').css('width', $scope.getBoardWidth() + 'px');
+		$('#axisY').css('height', $scope.getBoardHeight() + 'px');
 		
-		this.adjustLabels();
-		this.showStickers();
-	},
+		$scope.adjustLabels();
+		$scope.showStickers();
+	};
 	
-	adjustLabels: function() {
-		var gladBottom = this.getBoardHeight() - 20;
+	$scope.adjustLabels = function() {
+		var gladBottom = $scope.getBoardHeight() - 20;
 		gladBottom -= 120;
 		$('#glad').css('bottom', gladBottom + 'px');
 		
-		var sadBottom = Math.ceil(this.getBoardHeight() / 2) + 30;
+		var sadBottom = Math.ceil($scope.getBoardHeight() / 2) + 30;
 		sadBottom -= 70;
 		$('#sad').css('bottom', sadBottom + 'px');
 		
@@ -206,16 +211,15 @@ Board.GladSadMad = {
 		$('#no-control').css('left', noControlLeft + 'px');
 		
 		console.log(gladBottom);
-	},
+	};
 	
-	getBoardWidth: function() {
+	$scope.getBoardWidth = function() {
 		return window.innerWidth - 120 - 50;
-	},
+	};
 	
-	getBoardHeight: function() {
+	$scope.getBoardHeight = function() {
 		return window.innerHeight - 50 - 70;
-	}
+	};
 		
-};
-
-Board.Current = Board.GladSadMad;
+	
+});
