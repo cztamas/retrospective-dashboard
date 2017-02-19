@@ -1,4 +1,4 @@
-app.controller("board-page", function($scope) {
+app.controller("board-page", function($scope, boardService) {
 	
 	$scope.enum = { 
 		mode: { 
@@ -23,6 +23,8 @@ app.controller("board-page", function($scope) {
 	
 	$scope.initialize = function(shareUrl) {
 		
+		boardService.initialize();
+		
 		$(document).tooltip();
 		$('#dialog').hide();
 		$('#shareUrl').val(shareUrl);
@@ -34,6 +36,11 @@ app.controller("board-page", function($scope) {
 		
 		$scope.resize();
 		$scope.refreshStickers();
+    };
+    
+    $scope.addParticipant = function(participantDetails) {
+    	boardService.addParticipant(participantDetails);
+    	$scope.refreshParticipants();
     };
     
     $scope.startRefreshingParticipants = function() {
@@ -48,21 +55,21 @@ app.controller("board-page", function($scope) {
 	$scope.refreshParticipants = function() {
 		
 		$('#boardParticipants').html('');
-		if (BoardService.participants.length == 0) {
+		if (boardService.participants.length == 0) {
 			return;
 		}
 		
 		$('#boardParticipants').html('');
 		var activeParticipants = 0;
-		for (var i=0; i!=BoardService.participants.length; i++) {
+		for (var i=0; i!=boardService.participants.length; i++) {
 			
-			if (BoardService.participants[i].age == -1) {
+			if (boardService.participants[i].age == -1) {
 				// timed out
 				continue;
 			}
 			
 			$('#boardParticipants').append('<span class="board-participant">'
-					+ BoardService.participants[i].username
+					+ boardService.participants[i].username
 					+'</span>');	
 			
 			activeParticipants += 1;
@@ -160,12 +167,12 @@ app.controller("board-page", function($scope) {
 		};
 		
 		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
-		BoardService.persistOffsets(Context.code, $scope.state.offset);
+		boardService.persistOffsets(Context.code, $scope.state.offset);
 	};
 	
 	$scope.refreshStickers = function() {
 		
-		BoardService.getSessionDetails(Context.code, function(stickers, offsetSettings) {
+		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings) {
 			
 			try {
 				if (offsetSettings != null) {

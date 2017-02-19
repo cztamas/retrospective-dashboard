@@ -91,13 +91,11 @@
    		
    		qrCodeWidget.show();
    		
-		BoardService.initialize();
 		boardPageScope.initialize(app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}');
 		
 		ParticipantService.initialize(${code}, '${token}');
 		ParticipantService.onJoin = function(participantDetails) {
-			BoardService.addParticipant(participantDetails);
-			boardPageScope.refreshParticipants();
+			boardPageScope.addParticipant(participantDetails);
 		}
 		
 		<c:if test="${dashboard == null}">
