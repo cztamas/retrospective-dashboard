@@ -6,7 +6,7 @@ app.service('boardService', function() {
 	self.participantMaxAge = 10; // after this many seconds, participant is considered to be timed out
 	self.stompClient = null;
 	
-    self.initialize = function () {
+    self.initialize = function(onStickerReceived) {
 		self.aging();
 		
 		var socket = new SockJS(app.rootUrl + '/ws');
@@ -14,7 +14,7 @@ app.service('boardService', function() {
 	    self.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/sticker/' + Context.code + '/' + Context.token, function (sticker) {
-	        	app.getController('board-page').refreshStickers();
+	        	onStickerReceived();
 	        });
 	    });
     };

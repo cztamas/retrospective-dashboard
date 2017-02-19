@@ -23,7 +23,7 @@ app.controller("board-page", function($scope, boardService) {
 	
 	$scope.initialize = function(shareUrl) {
 		
-		boardService.initialize();
+		boardService.initialize($scope.refreshStickers);
 		
 		$(document).tooltip();
 		$('#dialog').hide();
