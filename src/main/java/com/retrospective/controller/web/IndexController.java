@@ -20,7 +20,7 @@ public class IndexController {
 	@RequestMapping(value = "/")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		ModelAndView modelView = new ModelAndView("index");
+		ModelAndView modelView = new ModelAndView("init-page");
 		
 		return modelView;
 	}
@@ -45,7 +45,7 @@ public class IndexController {
 			return new ModelAndView("session-timeout");
 		}
 		
-		ModelAndView page = new ModelAndView("start");
+		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		page.addObject("dashboard", true);
@@ -74,7 +74,7 @@ public class IndexController {
 			return new ModelAndView("session-timeout");
 		}
 		
-		ModelAndView page = new ModelAndView("start");
+		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		
@@ -101,7 +101,7 @@ public class IndexController {
 			return new ModelAndView("session-timeout");
 		}
 		
-		ModelAndView page = new ModelAndView("join");
+		ModelAndView page = new ModelAndView("participant-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		
