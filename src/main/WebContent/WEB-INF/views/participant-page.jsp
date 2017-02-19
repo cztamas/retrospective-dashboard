@@ -14,13 +14,13 @@
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   </head>
   
-  <body id="existance" ng-app="retrospective" ng-controller="participant-page">
+  <body id="existance" ng-app="retrospective" ng-controller="participant-page as participantPage">
   
   <script>
   
   	    angular.element(document).ready(function() {
   	    	
- 	    	app.getController('participant-page').initialize(${code}, '${token}');
+ 	    	app.getController('participant-page as participantPage').initialize(${code}, '${token}');
  	    	
  	    	Context.code = ${code};
  	    	Context.token = '${token}';
@@ -39,7 +39,7 @@
 		
 		<label for="username">Username</label>
 		<input type="text" name="text-basic" id="username" value="" />
- 		<a onClick="JoinController.enterRoom();" class="ui-shadow ui-btn ui-corner-all">Enter</a>
+ 		<a ng-click="enterRoom()" class="ui-shadow ui-btn ui-corner-all">Enter</a>
 		
 		<span id="loginErrorLabel" class="error"></span>
 	</div>
@@ -70,7 +70,7 @@
   			data-mode="add"
   			data-commentid=""
   			class="ui-btn" 
-  			onClick="JoinController.addSticker($('#slider-fill-glad').val(), $('#slider-fill-control').val(), $('#comment').val());">Add</button>
+  			ng-click="addSticker()">Add</button>
   		
   		<span id="errorLabel" class="error"></span>
   	 </div>
@@ -80,11 +80,10 @@
   <div data-role="page" id="commentsPage">
   		<div data-role="header">
   			<h1>&nbsp;</h1>
-			<button onClick="$.mobile.changePage('#feedbackPage'); $('#commentAddOrEdit').data('mode', 'add'); JoinController.clearForm();" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
+			<button ng-click="navigateToCreateComment()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
 		</div>
 		
   		<ul id="stickersContainer" data-role="listview" data-inset="true"></ul>
-  		<!-- <button class="ui-btn ui-icon-action ui-btn-icon-left">Publish All</button> -->
   </div>
   
   <!-- DIALOGS ===================================================  -->

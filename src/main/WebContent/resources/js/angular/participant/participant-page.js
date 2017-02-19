@@ -28,7 +28,18 @@ app.controller("participant-page", function(
 		}
 	};
 	
-	$scope.addSticker = function(glad, control, comment) {
+	$scope.navigateToCreateComment = function() {
+		$.mobile.changePage('#feedbackPage'); 
+		$('#commentAddOrEdit').data('mode', 'add');
+		
+		$scope.clearForm();
+	};
+	
+	$scope.addSticker = function() {
+		
+		var glad = $('#slider-fill-glad').val();
+		var control = $('#slider-fill-control').val();
+		var comment = $('#comment').val();
 		
 		var noControl = 1000 - control;
 		
@@ -137,9 +148,9 @@ app.controller("participant-page", function(
 					+ '<p>'
 					+gladHtml + controlHtml
 					+ '</p><p>'
-					+ '<a href="#" onClick="JoinController.startDeleteComment(\''+$scope.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
-					+ '<a href="#" onClick="JoinController.editSticker(\''+$scope.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
-					+ '<a href="#" onClick="JoinController.publishSticker(\''+$scope.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
+					+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').startDeleteComment(\''+$scope.stickers[i].id+'\')" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
+					+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').editSticker(\''+$scope.stickers[i].id+'\')" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
+					+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').publishSticker(\''+$scope.stickers[i].id+'\')" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
 					+'</p></li>');	
 		}
 		
