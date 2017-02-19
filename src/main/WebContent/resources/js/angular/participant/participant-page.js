@@ -211,7 +211,7 @@ app.controller("participant-page", function(
 		}
 		
 		$('#loginErrorLabel').html('');
-		keepaliveService.join($('#username').val()); 
+		keepaliveService.join($('#username').val(), Context.code, Context.token); 
 		Utils.setCookie("username", $('#username').val()); 
 		$.mobile.changePage('#feedbackPage');
 	};

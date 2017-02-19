@@ -141,7 +141,7 @@ app.controller("board-page", function(
 					+ 'transform: rotate('+$scope.state.stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
 					+ 'left: '+leftWithOffset+'px;" '
-					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+$scope.state.stickers[i].transform+'deg)\'); Board.Current.registerOffset(\''+controlId+'\', \''+$scope.state.stickers[i].id+'\'); " '
+					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+$scope.state.stickers[i].transform+'deg)\'); app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+$scope.state.stickers[i].id+'\'); " '
 					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
 					+'>'+Utils.htmlEncode($scope.state.stickers[i].message)+'</div>');
 			
