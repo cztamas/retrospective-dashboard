@@ -17,7 +17,7 @@
 
   </head>
   
-  <body style="margin-left: 120px;" ng-app="retrospective" ng-controller="board-page as boardPage">
+  <body ng-app="retrospective" style="margin-left: 120px;">
 
 	<!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -57,61 +57,42 @@
             		title="Click here to save the URL of this board" onClick="shareUrl();" />
             </li>
             <c:if test="${dashboard == null}">
-            	<li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="showQrCode();" /></li>
+            	<li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="app.getController('qr-code-widget').show();" /></li>
             </c:if>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 	
-	<div id="qrCodeContainer" class="centered">
-		<img style="float: right; margin-bottom: 8px; cursor: pointer;" onClick="hideQrCode();" src="../resources/images/close.png" />
+	<div id="qrCodeContainer" ng-controller="qr-code-widget" class="centered">
+		<img style="float: right; margin-bottom: 8px; cursor: pointer;" ng-click="hide()" src="../resources/images/close.png" />
 		<a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/join/<c:out value="${code}"/>/<c:out value="${token}"/>" target="enter_room">enter room</a> by reading QR code on phone<br/>
     	<div id="qrcode"></div>
     </div>
     
-    
+    <div id="mainBoard" ng-controller="board-page">
     <%@include file="board/glad-sad-mad.jsp" %>
-
+	</div>
+	
 	<script>
-	
-	function showQrCode() {
-		$('#qrCodeContainer').show();
-		$('#board').hide();
-	}
-	
-	function hideQrCode() {
-		$('#qrCodeContainer').hide();
-		$('#board').show();
-	}
 	
 	angular.element(document).ready(function() {
 
-	    var appElement = document.querySelector('[ng-app=retrospective]');
-	    var boardPageScope = angular.element(appElement).scope();
-	    
-	    $(document).tooltip();
-		$('#dialog').hide();
-		$('#shareUrl').val(app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}');	
+		var boardPageScope = app.getController('board-page');
+	    var qrCodeWidget = app.getController('qr-code-widget');
 	
-   		new QRCode(document.getElementById("qrcode"), {
-		    text: app.domain + app.rootUrl + "/join/${code}/${token}",
-		    width: window.innerHeight * 0.70,
-		    height: window.innerHeight * 0.70,
-		    colorDark : "#000000",
-		    colorLight : "#ffffff",
-		    correctLevel : QRCode.CorrectLevel.H
-		});
-		
-		<c:if test="${dashboard == null}">
-   			boardPageScope.state.mode = boardPageScope.enum.mode.session;		
-		</c:if>
-		<c:if test="${dashboard == true}">
-			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
-		</c:if>
-		
+		qrCodeWidget.initialize(
+			app.domain + app.rootUrl + "/join/${code}/${token}", 
+			{ 
+				qrCodeContainer: 'qrCodeContainer',
+				qrCodeImageContainer: 'qrcode',
+				boardContainer: 'board',	 
+			});
+   		
+   		qrCodeWidget.show();
+   		
 		BoardService.initialize();
-		boardPageScope.initialize();
+		boardPageScope.initialize(app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}');
 		
 		ParticipantService.initialize(${code}, '${token}');
 		ParticipantService.onJoin = function(participantDetails) {
@@ -120,18 +101,20 @@
 		}
 		
 		<c:if test="${dashboard == null}">
-   			showQrCode();
+   			qrCodeWidget.show();
+   			boardPageScope.state.mode = boardPageScope.enum.mode.session;
    			boardPageScope.startRefreshingParticipants();
 		</c:if>
 		<c:if test="${dashboard == true}">
-			hideQrCode();
+			qrCodeWidget.hide();
+			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
 			boardPageScope.reveal(<c:out value="${code}"/>);
 		</c:if>
 	
 	});
 
 	$(window).resize(function() {
-  		boardPage.resize();
+  		app.getController('board-page').resize();
 	});
 	
 	

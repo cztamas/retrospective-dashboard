@@ -12,11 +12,3 @@
 	<div id="boardContent" class="board"></div>
 	
 </div>
-
-<script>
-
-	function initializeBoard() {
-	
-	}
-
-</script>

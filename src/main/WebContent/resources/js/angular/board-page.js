@@ -21,7 +21,11 @@ app.controller("board-page", function($scope) {
 		stickers: [],
 	};
 	
-	$scope.initialize = function () {
+	$scope.initialize = function(shareUrl) {
+		
+		$(document).tooltip();
+		$('#dialog').hide();
+		$('#shareUrl').val(shareUrl);
 		
 		// Load offsets from Local Storage in session mode
 		if ($scope.state.mode == $scope.enum.mode.session && localStorage.getItem($scope.configuration.offsetLocalStorageKey)) {
