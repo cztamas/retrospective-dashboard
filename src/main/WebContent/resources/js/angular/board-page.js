@@ -1,4 +1,7 @@
-app.controller("board-page", function($scope, boardService) {
+app.controller("board-page", function(
+		$scope, 
+		boardService,
+		participantService) {
 	
 	$scope.enum = { 
 		mode: { 
@@ -21,9 +24,14 @@ app.controller("board-page", function($scope, boardService) {
 		stickers: [],
 	};
 	
-	$scope.initialize = function(shareUrl) {
+	$scope.initialize = function(shareUrl, code, token) {
 		
 		boardService.initialize($scope.refreshStickers);
+		
+		participantService.initialize(code, token);
+		participantService.onJoin = function(participantDetails) {
+			$scope.addParticipant(participantDetails);
+		}
 		
 		$(document).tooltip();
 		$('#dialog').hide();

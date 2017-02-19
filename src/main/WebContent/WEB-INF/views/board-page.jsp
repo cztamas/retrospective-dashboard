@@ -41,7 +41,7 @@
             		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
             		style="margin-top: 16px; margin-left: 20px;" 
             		class="btn btn-primary btn-xs"
-            		ng-click="reveal(<c:out value="${code}"/>)">Reveal <span id="stickerCount" class="badge">+0</span>
+            		onClick="app.getController('board-page').reveal(<c:out value="${code}"/>)">Reveal <span id="stickerCount" class="badge">+0</span>
             	</button>
             </li>
             </c:if>
@@ -91,12 +91,8 @@
    		
    		qrCodeWidget.show();
    		
-		boardPageScope.initialize(app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}');
-		
-		ParticipantService.initialize(${code}, '${token}');
-		ParticipantService.onJoin = function(participantDetails) {
-			boardPageScope.addParticipant(participantDetails);
-		}
+   		var dashboardUrl = app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}';
+		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
 		
 		<c:if test="${dashboard == null}">
    			qrCodeWidget.show();
@@ -114,7 +110,6 @@
 	$(window).resize(function() {
   		app.getController('board-page').resize();
 	});
-	
 	
 	</script>
 	
