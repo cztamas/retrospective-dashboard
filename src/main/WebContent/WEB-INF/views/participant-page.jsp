@@ -8,28 +8,25 @@
     <title>Retrospective Dashboard</title>
     
     <%@include file="dependencies.jsp" %>
-    <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/join/join.js?ts=<% out.print(Math.random()); %>"></script>
     
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
-    <script>
-  	    
-  	    $(document).ready(function() {
-  	    	ParticipantService.initialize(${code}, '${token}');
-  	    	JoinController.initialize();
-  	    	
-  	    	Context.code = ${code};
-  	    	Context.token = '${token}';
-  	    });
-  	    
-  	    
-    </script>
-
   </head>
   
-  <body id="existance">
+  <body id="existance" ng-app="retrospective" ng-controller="participant-page">
+  
+  <script>
+  
+  	    angular.element(document).ready(function() {
+  	    	
+ 	    	app.getController('participant-page').initialize(${code}, '${token}');
+ 	    	
+ 	    	Context.code = ${code};
+ 	    	Context.token = '${token}';
+  	    });
+ 	    
+   </script>
   
   <!-- LOGIN PAGE ===================================================  -->
   <div data-role="page" id="loginPage">

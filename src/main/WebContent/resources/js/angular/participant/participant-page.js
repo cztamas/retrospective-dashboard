@@ -1,29 +1,34 @@
-var JoinController = {
-		
-	stickers: [],
+app.controller("participant-page", function(
+		$scope, 
+		keepaliveService,
+		participantService) {
 	
-	constants: {
+	$scope.stickers = [];
+	
+	$scope.constants = {
 		stickersLocalStorageKey: 'retrospective.stickers',
-	},
+	};
 		
-	initialize: function() {
+	$scope.initialize = function(code, token) {
+		
+		participantService.initialize(code, token);
 		
 		var isLoginPage = window.location.href.indexOf('#feedbackPage') == -1 && window.location.href.indexOf('#commentsPage') == -1;
 		var username = Utils.getCookie('username');
 		
 		// on page refresh, we can join and keepalive, if username exists in session
 		if (!isLoginPage && username != null) {
-			setTimeout(function(){ ParticipantService.join(username); }, 3000);
+			setTimeout(function(){ keepaliveService.join(username, Context.code, Context.token); }, 3000);
 		}
 		
 		// reload stickers from local storage, if there is any
-		if (localStorage.getItem(this.constants.stickersLocalStorageKey)) {
-			this.stickers =	JSON.parse(localStorage.getItem(this.constants.stickersLocalStorageKey));
-			this.refreshStickers();
+		if (localStorage.getItem($scope.constants.stickersLocalStorageKey)) {
+			$scope.stickers = JSON.parse(localStorage.getItem($scope.constants.stickersLocalStorageKey));
+			$scope.refreshStickers();
 		}
-	},
+	};
 	
-	addSticker: function(glad, control, comment) {
+	$scope.addSticker = function(glad, control, comment) {
 		
 		var noControl = 1000 - control;
 		
@@ -36,7 +41,7 @@ var JoinController = {
 		$('#errorLabel').html('');
 		
 		if (isAdding) {
-			this.stickers.push({ 
+			$scope.stickers.push({ 
 				glad: glad, 
 				noControl: noControl, 
 				comment: comment,
@@ -45,28 +50,28 @@ var JoinController = {
 			
 		}
 		else {
-			for (var i=0; i!=this.stickers.length; i++) {
-				if (this.stickers[i].id == $('#commentAddOrEdit').data('commentid')) {
-					this.stickers[i].glad = glad;
-					this.stickers[i].noControl = noControl;
-					this.stickers[i].comment = comment;	
+			for (var i=0; i!=$scope.stickers.length; i++) {
+				if ($scope.stickers[i].id == $('#commentAddOrEdit').data('commentid')) {
+					$scope.stickers[i].glad = glad;
+					$scope.stickers[i].noControl = noControl;
+					$scope.stickers[i].comment = comment;	
 				}
 			}
 		}
 		
-		localStorage.setItem(this.constants.stickersLocalStorageKey, JSON.stringify(this.stickers));	
+		localStorage.setItem($scope.constants.stickersLocalStorageKey, JSON.stringify($scope.stickers));	
 		
-		this.clearForm();
-		this.refreshStickers();
+		$scope.clearForm();
+		$scope.refreshStickers();
 		$.mobile.changePage('#commentsPage');
-	},
+	};
 	
-	editSticker: function(commentId) {
+	$scope.editSticker = function(commentId) {
 		
 		$('#commentAddOrEdit').data('mode', 'edit');
-		this.clearForm();
+		$scope.clearForm();
 		
-		var sticker = this.getSticker(commentId);
+		var sticker = $scope.getSticker(commentId);
 		if (sticker == null) {
 			$.mobile.changePage('#commentsPage');	
 			return;
@@ -79,19 +84,19 @@ var JoinController = {
 		$('#slider-fill-glad').slider("refresh");
 		$('#commentAddOrEdit').data('commentid', commentId);
 		$.mobile.changePage('#feedbackPage');
-	},
+	};
 	
-	getSticker: function(commentId) {
-		for (var i=0; i!=this.stickers.length; i++) {
-			if (this.stickers[i].id == commentId) {
-				return this.stickers[i];
+	$scope.getSticker = function(commentId) {
+		for (var i=0; i!=$scope.stickers.length; i++) {
+			if ($scope.stickers[i].id == commentId) {
+				return $scope.stickers[i];
 			}
 		}
 		
 		return null;
-	},
+	};
 	
-	clearForm: function() {
+	$scope.clearForm = function() {
 		
 		$('#comment').val('');
 		$('#slider-fill-control').val('0').slider("refresh");
@@ -103,22 +108,22 @@ var JoinController = {
 		else {
 			$('#commentAddOrEdit').html('Edit');
 		}
-	},
+	};
 	
-	refreshStickers: function() {
+	$scope.refreshStickers = function() {
 		
 		$('#stickersContainer').html('');
 		
-		for (var i=0; i!=this.stickers.length; i++) {
+		for (var i=0; i!=$scope.stickers.length; i++) {
 			
-			var gladPercentage = parseInt(this.stickers[i].glad / 10);
+			var gladPercentage = parseInt($scope.stickers[i].glad / 10);
 			var gladHtml = '<div class="progress">'
 				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+gladPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+gladPercentage+'%;"> ' 
 				    + gladPercentage 
 				    + '% glad</div>'
 				    +'</div>';
 			
-			var controlPercentage = parseInt((1000-this.stickers[i].noControl) / 10);
+			var controlPercentage = parseInt((1000-$scope.stickers[i].noControl) / 10);
 			var controlHtml = '<div class="progress">'
 				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+controlPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+controlPercentage+'%;"> ' 
 				    + controlPercentage
@@ -126,32 +131,31 @@ var JoinController = {
 				    +'</div>';
 			
 			$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
-					+ (i == this.stickers.length-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
+					+ (i == $scope.stickers.length-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
 					+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
-					+ '<strong style="font-size: 16pt;">'+this.stickers[i].comment+'</strong>'
+					+ '<strong style="font-size: 16pt;">'+$scope.stickers[i].comment+'</strong>'
 					+ '<p>'
 					+gladHtml + controlHtml
 					+ '</p><p>'
-					+ '<a href="#" onClick="JoinController.startDeleteComment(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
-					+ '<a href="#" onClick="JoinController.editSticker(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
-					+ '<a href="#" onClick="JoinController.publishSticker(\''+this.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
+					+ '<a href="#" onClick="JoinController.startDeleteComment(\''+$scope.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
+					+ '<a href="#" onClick="JoinController.editSticker(\''+$scope.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
+					+ '<a href="#" onClick="JoinController.publishSticker(\''+$scope.stickers[i].id+'\');" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
 					+'</p></li>');	
 		}
 		
-		if (this.stickers.length == 0) {
+		if ($scope.stickers.length == 0) {
 			$('#stickersContainer').html('<li><i>There is no comment in pending state.<br/>You can add a comment, then <b>Publish</b> to the board whenever you want.</i></li>');
 		}
-	},
+	};
 	
-	publishSticker: function(commentId) {
+	$scope.publishSticker = function(commentId) {
 		
-		var self = this;
-		var sticker = this.getSticker(commentId);
+		var sticker = $scope.getSticker(commentId);
 		if (sticker == null) {
 			return;
 		}
 		
-		this.confirmDialog('Publish', 'Are you sure?', 'Publish', function() {
+		$scope.confirmDialog('Publish', 'Are you sure?', 'Publish', function() {
 			var requestModel = {
 				comment: sticker.comment,
 				glad: sticker.glad / 1000,
@@ -162,46 +166,46 @@ var JoinController = {
 				sessionToken: Context.token
 			};
 				
-			ParticipantService.publish(requestModel, function() {
-				self.deleteComment(commentId);
+			participantService.publish(requestModel, function() {
+				$scope.deleteComment(commentId);
 			});
 		});
-	},
+	};
 	
-	startDeleteComment: function(commentId) {
-		var self = this;
-		this.confirmDialog('Delete', 'Are you sure?', 'Delete', function() {
-			self.deleteComment(commentId);
+	$scope.startDeleteComment = function(commentId) {
+		
+		$scope.confirmDialog('Delete', 'Are you sure?', 'Delete', function() {
+			$scope.deleteComment(commentId);
 		});
-	},
+	};
 	
-	deleteComment: function(commentId) {
+	$scope.deleteComment = function(commentId) {
 		
 		var stickers = [];
-		for (var i=0; i!=this.stickers.length; i++) {
-			if (this.stickers[i].id != commentId) {
-				stickers.push(this.stickers[i]);
+		for (var i=0; i!=$scope.stickers.length; i++) {
+			if ($scope.stickers[i].id != commentId) {
+				stickers.push($scope.stickers[i]);
 			}
 		}
 		
-		this.stickers = stickers;
-		localStorage.setItem(this.constants.stickersLocalStorageKey, JSON.stringify(this.stickers));
-		this.refreshStickers();
-	},
+		$scope.stickers = stickers;
+		localStorage.setItem($scope.constants.stickersLocalStorageKey, JSON.stringify($scope.stickers));
+		$scope.refreshStickers();
+	};
 	
-	enterRoom: function() {
+	$scope.enterRoom = function() {
 		if ($('#username').val().length == 0) {
 			$('#loginErrorLabel').html('Username is required');
 			return;
 		}
 		
 		$('#loginErrorLabel').html('');
-		ParticipantService.join($('#username').val()); 
+		keepaliveService.join($('#username').val()); 
 		Utils.setCookie("username", $('#username').val()); 
 		$.mobile.changePage('#feedbackPage');
-	},
+	};
 	
-	confirmDialog: function(title, description, exitButton, callback) {
+	$scope.confirmDialog = function(title, description, exitButton, callback) {
 		
 		$("#sure .sure-1").text(title);
 		$("#sure .sure-2").text(description);
@@ -211,6 +215,6 @@ var JoinController = {
 		});
 		
 		$.mobile.changePage("#sure");
-	}
+	};
 		
-};
+});

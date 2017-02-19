@@ -56,10 +56,4 @@ app.service('participantService', function() {
 		});	
 	};
 	
-	self.join = function(username) {
-		KeepaliveService.code = this.code;
-		KeepaliveService.token = this.token;
-		KeepaliveService.username = username;
-		KeepaliveService.start();
-	};
 });
