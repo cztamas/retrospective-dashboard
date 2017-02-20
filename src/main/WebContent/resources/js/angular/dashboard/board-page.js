@@ -1,5 +1,6 @@
 app.controller("board-page", function(
 		$scope, 
+		configuration,
 		boardService,
 		participantService) {
 	
@@ -93,8 +94,8 @@ app.controller("board-page", function(
 		}
 		
 		for (var i=0; i!=$scope.state.stickers.length; i++) {
-			var bottom = ($scope.getBoardHeight() * $scope.state.stickers[i].glad) + $scope.configuration.axisXBottom - ($scope.state.stickers[i].glad * Configuration.stickerHeight);
-			var left = $scope.configuration.axisYLeft + ($scope.getBoardWidth() * $scope.state.stickers[i].noControl) - ($scope.state.stickers[i].noControl * Configuration.stickerWidth);
+			var bottom = ($scope.getBoardHeight() * $scope.state.stickers[i].glad) + $scope.configuration.axisXBottom - ($scope.state.stickers[i].glad * configuration.stickerHeight);
+			var left = $scope.configuration.axisYLeft + ($scope.getBoardWidth() * $scope.state.stickers[i].noControl) - ($scope.state.stickers[i].noControl * configuration.stickerWidth);
 			
 			var controlId = 'sticker_' + $scope.state.stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
@@ -103,8 +104,8 @@ app.controller("board-page", function(
 			if ($scope.state.mode == $scope.enum.mode.session) { 
 				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
 						+ 'style="'
-						+ 'width: '+Configuration.stickerWidth+'px; '
-						+ 'height: '+Configuration.stickerHeight+'px; '
+						+ 'width: '+configuration.stickerWidth+'px; '
+						+ 'height: '+configuration.stickerHeight+'px; '
 						+ 'position: absolute; '
 						+ 'transform: rotate('+$scope.state.stickers[i].transform+'deg); '
 						+ 'bottom: '+bottom+'px; '
@@ -128,9 +129,9 @@ app.controller("board-page", function(
 					+ 'id='+controlId+' ' 
 					+ 'class="sticker ui-widget-content" '
 					+ 'style="'
-					+ 'font-size: ' + Configuration.stickerFontSize + '; '
-					+ 'height: '+Configuration.stickerHeight+'px; ' 
-					+ 'width: '+Configuration.stickerWidth+'px; ' 
+					+ 'font-size: ' + configuration.stickerFontSize + '; '
+					+ 'height: '+configuration.stickerHeight+'px; ' 
+					+ 'width: '+configuration.stickerWidth+'px; ' 
 					+ 'background-image: -ms-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: -moz-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: -o-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
