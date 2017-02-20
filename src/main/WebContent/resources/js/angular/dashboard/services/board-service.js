@@ -1,4 +1,4 @@
-app.service('boardService', function() {
+app.service('boardService', function BoardService() {
 	
 	var self = this;
 	

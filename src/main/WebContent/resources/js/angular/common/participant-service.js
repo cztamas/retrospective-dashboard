@@ -1,4 +1,4 @@
-app.service('participantService', function() {
+app.service('participantService', function ParticipantService() {
 	var self = this;
 	
 	self.stompClient = null;

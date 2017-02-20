@@ -33,7 +33,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#" onClick="showQrCode();">code: <b><c:out value="${code}"/></b></a></li>
+            <li><a href="#" onClick="app.getController('qr-code-widget').show();">code: <b><c:out value="${code}"/></b></a></li>
             <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
             <c:if test="${dashboard == null}">
             <li>

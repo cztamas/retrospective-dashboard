@@ -1,4 +1,4 @@
-app.controller("board-page", function(
+app.controller("board-page", function BoardPageController(
 		$scope, 
 		configuration,
 		boardService,

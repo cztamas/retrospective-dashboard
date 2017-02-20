@@ -1,4 +1,4 @@
-app.service('configuration', function() {
+app.service('configuration', function ConfigurationService() {
 	
 	this.stickerWidth = 150;
 	this.stickerHeight = 150;

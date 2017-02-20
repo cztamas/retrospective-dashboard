@@ -1,4 +1,4 @@
-app.controller("participant-page", function(
+app.controller("participant-page", function ParticipantPageController(
 		$scope, 
 		keepaliveService,
 		participantService) {

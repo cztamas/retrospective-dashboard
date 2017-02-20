@@ -1,4 +1,4 @@
-app.controller("init-page", function($scope) {
+app.controller("init-page", function InitPageController($scope) {
 	
 	$scope.createSession = function () {
 		

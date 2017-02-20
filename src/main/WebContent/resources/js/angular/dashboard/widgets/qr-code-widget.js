@@ -1,4 +1,4 @@
-app.controller("qr-code-widget", function($scope) {
+app.controller("qr-code-widget", function QrCodeWidgetController($scope) {
 	
 	$scope.configuration = {
 		placeholders: {
