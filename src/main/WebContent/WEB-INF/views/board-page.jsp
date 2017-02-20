@@ -45,7 +45,11 @@
 	            	</button>
 	            </li>
 	            </c:if>
-	            <li><span id="boardParticipants" style="margin-left: 20px; top: 16px; position: relative;"></span></li>
+	            <li>
+	            	<div ng-controller="user-list-widget" style="margin-left: 20px; top: 16px; position: relative;">
+	            		<span ng-repeat="user in state.users" class="board-participant">{{user.username}}</span>
+	            	</div>
+	            </li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            <li>
@@ -94,6 +98,7 @@
 
 		var boardPageScope = app.getController('board-page');
 	    var qrCodeWidget = app.getController('qr-code-widget');
+	    var userListWidget = app.getController('user-list-widget');
 	
 		qrCodeWidget.initialize(
 			app.domain + app.rootUrl + "/join/${code}/${token}", 
@@ -102,6 +107,8 @@
 				qrCodeImageContainer: 'qrcode',
 				boardContainer: 'board',	 
 			});
+			
+		userListWidget.initialize(${code}, '${token}');
    		
    		qrCodeWidget.show();
    		
@@ -111,7 +118,7 @@
 		<c:if test="${dashboard == null}">
    			qrCodeWidget.show();
    			boardPageScope.state.mode = boardPageScope.enum.mode.session;
-   			boardPageScope.startRefreshingParticipants();
+   			userListWidget.startRefreshingParticipants();
 		</c:if>
 		<c:if test="${dashboard == true}">
 			qrCodeWidget.hide();

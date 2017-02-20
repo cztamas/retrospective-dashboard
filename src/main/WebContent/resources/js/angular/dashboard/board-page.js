@@ -1,8 +1,7 @@
 app.controller("board-page", function BoardPageController(
 		$scope, 
 		configuration,
-		boardService,
-		participantService) {
+		boardService) {
 	
 	$scope.enum = { 
 		mode: { 
@@ -31,11 +30,6 @@ app.controller("board-page", function BoardPageController(
 		
 		boardService.initialize($scope.refreshStickers);
 		
-		participantService.initialize(code, token);
-		participantService.onJoin = function(participantDetails) {
-			$scope.addParticipant(participantDetails);
-		}
-		
 		$(document).tooltip();
 		$('#dialog').hide();
 		$('#shareUrl').val(shareUrl);
@@ -49,43 +43,6 @@ app.controller("board-page", function BoardPageController(
 		$scope.refreshStickers();
     };
     
-    $scope.addParticipant = function(participantDetails) {
-    	boardService.addParticipant(participantDetails);
-    	$scope.refreshParticipants();
-    };
-    
-    $scope.startRefreshingParticipants = function() {
-		
-		setTimeout(function(){ 
-			$scope.refreshParticipants();
-			$scope.startRefreshingParticipants();
-		}, 3000);
-	};
-	
-	$scope.refreshParticipants = function() {
-		
-		$('#boardParticipants').html('');
-		if (boardService.participants.length == 0) {
-			return;
-		}
-		
-		$('#boardParticipants').html('');
-		var activeParticipants = 0;
-		for (var i=0; i!=boardService.participants.length; i++) {
-			
-			if (boardService.participants[i].age == -1) {
-				// timed out
-				continue;
-			}
-			
-			$('#boardParticipants').append('<span class="board-participant">'
-					+ boardService.participants[i].username
-					+'</span>');	
-			
-			activeParticipants += 1;
-		}
-	};
-	
 	$scope.showStickers = function() {
 		
 		// sticker count has been changed, we have to start a digest cycle

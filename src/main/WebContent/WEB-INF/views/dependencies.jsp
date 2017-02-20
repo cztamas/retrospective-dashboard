@@ -11,6 +11,7 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/common/participant-service.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/board-service.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/qr-code-widget.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/user-list-widget.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/init-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/board-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/participant-page.js?ts=<% out.print(Math.random()); %>"></script>
