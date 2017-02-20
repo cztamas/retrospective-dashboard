@@ -18,51 +18,69 @@
   </head>
   
   <body ng-app="retrospective" style="margin-left: 120px;">
-
-	<!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Retrospective</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#" onClick="app.getController('qr-code-widget').show();">code: <b><c:out value="${code}"/></b></a></li>
-            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
-            <c:if test="${dashboard == null}">
-            <li>
-            	<button 
-            		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
-            		style="margin-top: 16px; margin-left: 20px;" 
-            		class="btn btn-primary btn-xs"
-            		onClick="app.getController('board-page').reveal(<c:out value="${code}"/>)">Reveal <span id="stickerCount" class="badge">+0</span>
-            	</button>
-            </li>
-            </c:if>
-            <li><span id="boardParticipants" style="margin-left: 20px; top: 16px; position: relative;"></span></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-            	<img 
-            		src="../resources/images/share.png" 
-            		height="32"
-            		onClick="$('#dialog').dialog({width: 600});" 
-            		style="padding-right: 30px; padding-top: 14px; cursor: pointer;" 
-            		title="Click here to save the URL of this board" onClick="shareUrl();" />
-            </li>
-            <c:if test="${dashboard == null}">
-            	<li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="app.getController('qr-code-widget').show();" /></li>
-            </c:if>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+	<div ng-controller="board-page">
+		<!-- Fixed navbar -->
+	    <nav class="navbar navbar-default navbar-fixed-top">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="navbar-brand" href="#">Retrospective</a>
+	        </div>
+	        <div id="navbar" class="navbar-collapse collapse">
+	          <ul class="nav navbar-nav">
+	            <li><a href="#" onClick="app.getController('qr-code-widget').show();">code: <b><c:out value="${code}"/></b></a></li>
+	            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
+	            <c:if test="${dashboard == null}">
+	            <li>
+	            	<button 
+	            		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
+	            		style="margin-top: 16px; margin-left: 20px;" 
+	            		class="btn btn-primary btn-xs"
+	            		ng-click="reveal(<c:out value="${code}"/>)">Reveal <span class="badge">{{state.stickers.length}}</span>
+	            	</button>
+	            </li>
+	            </c:if>
+	            <li><span id="boardParticipants" style="margin-left: 20px; top: 16px; position: relative;"></span></li>
+	          </ul>
+	          <ul class="nav navbar-nav navbar-right">
+	            <li>
+	            	<img 
+	            		src="../resources/images/share.png" 
+	            		height="32"
+	            		onClick="$('#dialog').dialog({width: 600});" 
+	            		style="padding-right: 30px; padding-top: 14px; cursor: pointer;" 
+	            		title="Click here to save the URL of this board" onClick="shareUrl();" />
+	            </li>
+	            <c:if test="${dashboard == null}">
+	            	<li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="app.getController('qr-code-widget').show();" /></li>
+	            </c:if>
+	          </ul>
+	        </div><!--/.nav-collapse -->
+	      </div>
+	    </nav>
+	    
+	    <div id="mainBoard">
+		    <div id="board">
+				<div id="axisX" class="axisX"></div>
+				<div id="axisY" class="axisY"></div>
+				
+				<span id="glad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/glad.png" /></span>
+				<span id="sad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/sad.png" /></span>
+				<span id="mad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/mad.png" /></span>
+				
+				<span id="in-control" class="floating-label">CONTROL</span>
+				<span id="no-control" class="floating-label">NO CONTROL</span>
+			
+				<div id="boardContent" class="board"></div>
+				
+			</div>
+		</div>
+	</div>
 	
 	<div id="qrCodeContainer" ng-controller="qr-code-widget" class="centered">
 		<img style="float: right; margin-bottom: 8px; cursor: pointer;" ng-click="hide()" src="../resources/images/close.png" />
@@ -70,23 +88,6 @@
     	<div id="qrcode"></div>
     </div>
     
-    <div id="mainBoard" ng-controller="board-page">
-	    <div id="board">
-			<div id="axisX" class="axisX"></div>
-			<div id="axisY" class="axisY"></div>
-			
-			<span id="glad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/glad.png" /></span>
-			<span id="sad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/sad.png" /></span>
-			<span id="mad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/mad.png" /></span>
-			
-			<span id="in-control" class="floating-label">CONTROL</span>
-			<span id="no-control" class="floating-label">NO CONTROL</span>
-		
-			<div id="boardContent" class="board"></div>
-			
-		</div>
-	</div>
-	
 	<script>
 	
 	angular.element(document).ready(function() {

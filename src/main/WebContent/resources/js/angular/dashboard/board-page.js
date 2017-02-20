@@ -25,6 +25,8 @@ app.controller("board-page", function BoardPageController(
 		stickers: [],
 	};
 	
+	$scope.$watch('state.stickers');
+	
 	$scope.initialize = function(shareUrl, code, token) {
 		
 		boardService.initialize($scope.refreshStickers);
@@ -56,7 +58,6 @@ app.controller("board-page", function BoardPageController(
 		
 		setTimeout(function(){ 
 			$scope.refreshParticipants();
-			console.log('Refresh participants loop');
 			$scope.startRefreshingParticipants();
 		}, 3000);
 	};
@@ -86,7 +87,10 @@ app.controller("board-page", function BoardPageController(
 	};
 	
 	$scope.showStickers = function() {
-		$('#stickerCount').html($scope.state.stickers.length);
+		
+		// sticker count has been changed, we have to start a digest cycle
+		$scope.$digest();
+		
 		$('#boardContent').html('');
 		
 		if (!$scope.state.isRevealed) {
@@ -229,8 +233,6 @@ app.controller("board-page", function BoardPageController(
 		var noControlLeft = 50 + this.getBoardWidth() - 150;
 		$('#no-control').css('bottom', '10px');
 		$('#no-control').css('left', noControlLeft + 'px');
-		
-		console.log(gladBottom);
 	};
 	
 	$scope.getBoardWidth = function() {

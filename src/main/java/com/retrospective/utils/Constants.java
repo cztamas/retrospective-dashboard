@@ -18,7 +18,7 @@ public class Constants {
 		}
 		
 		public String getName() {
-			return this.name();
+			return this.name;
 		}
 	}
 
