@@ -1,4 +1,4 @@
 # retrospective-dashboard
 Retrospective tool
 
-![Retrospective Dashboard](https://raw.githubusercontent.com/akos-sereg/retrospective-dashboard/master/retrospective-dashboard/docs/screenshot.png "Screenshot")
+![Retrospective Dashboard](https://github.com/akos-sereg/retrospective-dashboard/blob/master/doc/screenshot.png?raw=true "Screenshot")
