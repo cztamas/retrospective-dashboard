@@ -1,25 +1,26 @@
-var BoardService = {
+app.service('boardService', function BoardService() {
 	
-	participants: [],
-	participantMaxAge: 10, // after this many seconds, participant is considered to be timed out
-	stompClient: null,
-		
-	initialize: function() {
-		var self = this;
-		this.aging();
+	var self = this;
+	
+	self.participants = [];
+	self.participantMaxAge = 10; // after this many seconds, participant is considered to be timed out
+	self.stompClient = null;
+	
+    self.initialize = function(onStickerReceived) {
+		self.aging();
 		
 		var socket = new SockJS(app.rootUrl + '/ws');
-	    this.stompClient = Stomp.over(socket);
-	    this.stompClient.connect({}, function (frame) {
+	    self.stompClient = Stomp.over(socket);
+	    self.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/sticker/' + Context.code + '/' + Context.token, function (sticker) {
-	        	Board.Current.refreshStickers();
+	        	onStickerReceived();
 	        });
 	    });
-	},
-	
-	aging: function() {
-		var self = this;
+    };
+    
+    self.aging = function() {
+		
 		setTimeout(function(){ 
 			
 			for (var i=0; i!=self.participants.length; i++) {
@@ -37,20 +38,20 @@ var BoardService = {
 			console.log('Participant aging cycle executed');
 			self.aging();
 		}, 1000);
-	},
+	};
 	
-	addParticipant: function(participantDetails) {
-		for (var i=0; i!=this.participants.length; i++) {
-			if (this.participants[i].username == participantDetails.username) {
-				this.participants[i].age = this.participantMaxAge;
+	self.addParticipant = function(participantDetails) {
+		for (var i=0; i!=self.participants.length; i++) {
+			if (self.participants[i].username == participantDetails.username) {
+				self.participants[i].age = self.participantMaxAge;
 				return;
 			}
 		}
 		
-		this.participants.push(participantDetails);
-	},
+		self.participants.push(participantDetails);
+	};
 	
-	persistOffsets: function(sessionCode, offsets) {
+	self.persistOffsets = function(sessionCode, offsets) {
 		$.ajax({
 		    method: 'POST',
 		    url: app.rootUrl + "/rest/host/session/" + sessionCode + '/offset',
@@ -69,11 +70,9 @@ var BoardService = {
 	        }
 		});	
 		
-	},
+	};
 
-	getSessionDetails: function(sessionCode, onSuccess) {
-		
-		var self = this;
+	self.getSessionDetails = function(sessionCode, onSuccess) {
 		
 		$.ajax({
 		    method: 'GET',
@@ -99,9 +98,9 @@ var BoardService = {
 	        }
 		});	
 		
-	},
+	};
 	
-	transform: function(stickersFromServer) {
+	self.transform = function(stickersFromServer) {
 		var stickersForUi = [];
 		
 		for (var i=0; i!=stickersFromServer.length; i++) {
@@ -118,6 +117,6 @@ var BoardService = {
 		}
 		
 		return stickersForUi;
-	}
-		
-};
+	};
+    
+});

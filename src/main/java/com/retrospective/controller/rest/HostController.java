@@ -20,6 +20,7 @@ import com.retrospective.exception.DaoException;
 import com.retrospective.exception.SetOffsetException;
 import com.retrospective.model.CreateSessionResponse;
 import com.retrospective.model.GetSessionDetailsResponse;
+import com.retrospective.model.ServerResponse;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.utils.Constants;
 import com.retrospective.utils.CookieHelper;
@@ -38,16 +39,19 @@ public class HostController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/session/{code}/offset", consumes = "application/json", method = RequestMethod.POST)
-	public String setOffsets(@RequestBody String offsets, @PathVariable(value="code") int code, HttpServletRequest request) {
+	public ServerResponse setOffsets(@RequestBody String offsets, @PathVariable(value="code") int code, HttpServletRequest request) {
 		
+		ServerResponse response = new ServerResponse();
 		try {
 			this.hostDao.setOffsets(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName()), offsets);
 		}
 		catch (DaoException error) {
 			
 			ErrorLogger.LogError(new SetOffsetException("Unable to store offsets", error));
+			response.setErrorCode(Constants.ErrorCodes.OffsetRegistrationError.getCode());
 		}
-		return "";
+		
+		return response;
 	}
 
 	@ResponseBody

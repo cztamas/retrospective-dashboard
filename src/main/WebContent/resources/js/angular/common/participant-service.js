@@ -1,21 +1,21 @@
-var ParticipantService = {
-		
-	stompClient: null,
-	webSocketUrl: null,
-	code: null,
-	token: null,
+app.service('participantService', function ParticipantService() {
+	var self = this;
 	
-	onJoin: null,
+	self.stompClient = null;
+	self.webSocketUrl = null;
+	self.code = null;
+	self.token = null;
+	
+	self.onJoin = null;
 		
-	initialize: function(code, token) {
+	self.initialize = function(code, token) {
 		
-		var self = this;
-		this.code = code;
-		this.token = token;
+		self.code = code;
+		self.token = token;
 	
 		var socket = new SockJS(app.rootUrl + '/ws');
-	    this.stompClient = Stomp.over(socket);
-	    this.stompClient.connect({}, function (frame) {
+	    self.stompClient = Stomp.over(socket);
+	    self.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/join/' + self.code + '/' + self.token, function (greeting) {
 	        	var participantJoinedBroadcastMessage = JSON.parse(greeting.body);
@@ -25,12 +25,10 @@ var ParticipantService = {
 	        	}
 	        });
 	    });
-	    
+	};
 	
-	},
-	
-	publish: function(sticker, onSuccess) {
-		var self = this;
+	self.publish = function(sticker, onSuccess) {
+		
 		$.ajax({
 		    method: 'POST',
 		    url: app.rootUrl + "/rest/participant/sticker/" + Context.code + '/' + Context.token,
@@ -56,13 +54,6 @@ var ParticipantService = {
 	            },
 	        }
 		});	
-	},
+	};
 	
-	join: function(username) {
-		KeepaliveService.code = this.code;
-		KeepaliveService.token = this.token;
-		KeepaliveService.username = username;
-		KeepaliveService.start();
-	},
-	
-};
+});
