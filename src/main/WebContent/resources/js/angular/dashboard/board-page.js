@@ -1,7 +1,9 @@
 app.controller("board-page", function BoardPageController(
 		$scope, 
 		configuration,
-		boardService) {
+		boardService,
+		stickerBuilderService,
+		labelBuilderService) {
 	
 	$scope.enum = { 
 		mode: { 
@@ -12,8 +14,6 @@ app.controller("board-page", function BoardPageController(
 	
 	$scope.configuration = {
 		offsetLocalStorageKey: 'retrospective.offset',
-		axisXBottom: 50,
-		axisYLeft: 150,
 		stickerThemes: [ '#ff9999', '#99ff99' ],
 	};
 	
@@ -23,8 +23,6 @@ app.controller("board-page", function BoardPageController(
 		offset: {},
 		stickers: [],
 	};
-	
-	$scope.$watch('state.stickers');
 	
 	$scope.initialize = function(shareUrl, code, token) {
 		
@@ -45,79 +43,19 @@ app.controller("board-page", function BoardPageController(
     
 	$scope.showStickers = function() {
 		
-		// sticker count has been changed, we have to start a digest cycle
 		$scope.$digest();
-		
 		$('#boardContent').html('');
 		
 		if (!$scope.state.isRevealed) {
 			return;
 		}
 		
-		for (var i=0; i!=$scope.state.stickers.length; i++) {
-			var bottom = ($scope.getBoardHeight() * $scope.state.stickers[i].glad) + $scope.configuration.axisXBottom - ($scope.state.stickers[i].glad * configuration.stickerHeight);
-			var left = $scope.configuration.axisYLeft + ($scope.getBoardWidth() * $scope.state.stickers[i].noControl) - ($scope.state.stickers[i].noControl * configuration.stickerWidth);
-			
-			var controlId = 'sticker_' + $scope.state.stickers[i].id;
-			var controlOriginalPlaceholderId = controlId + '_orig';
-			
-			// sticker's original palce marker
-			if ($scope.state.mode == $scope.enum.mode.session) { 
-				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
-						+ 'style="'
-						+ 'width: '+configuration.stickerWidth+'px; '
-						+ 'height: '+configuration.stickerHeight+'px; '
-						+ 'position: absolute; '
-						+ 'transform: rotate('+$scope.state.stickers[i].transform+'deg); '
-						+ 'bottom: '+bottom+'px; '
-						+ 'left: '+left+'px; '
-						+ '" ' 
-						+ '></div>');
-			}
-			
-			// sticker
-			var bottomWithOffset = bottom;
-			var leftWithOffset = left;
-			if ($scope.state.offset[$scope.state.stickers[i].id]) {
-				bottomWithOffset += Utils.isInt($scope.state.offset[$scope.state.stickers[i].id].bottomOffset) ? $scope.state.offset[$scope.state.stickers[i].id].bottomOffset : 0;
-				leftWithOffset += Utils.isInt($scope.state.offset[$scope.state.stickers[i].id].leftOffset) ? $scope.state.offset[$scope.state.stickers[i].id].leftOffset : 0;
-			}
-			
-			$("#boardContent").append('<div '
-					+ 'data-sticker-id="'+$scope.state.stickers[i].id+'" '
-					+ 'data-original-bottom="'+bottom+'" '
-					+ 'data-original-left="'+left+'" '
-					+ 'id='+controlId+' ' 
-					+ 'class="sticker ui-widget-content" '
-					+ 'style="'
-					+ 'font-size: ' + configuration.stickerFontSize + '; '
-					+ 'height: '+configuration.stickerHeight+'px; ' 
-					+ 'width: '+configuration.stickerWidth+'px; ' 
-					+ 'background-image: -ms-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: -moz-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: -o-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0, #FCCD4D), color-stop(50, #FBDF93), color-stop(100, #FCCD4D));'
-					+ 'background-image: -webkit-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: linear-gradient(to top right, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'position: absolute; '
-					+ 'transform: rotate('+$scope.state.stickers[i].transform+'deg); '
-					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+leftWithOffset+'px;" '
-					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+$scope.state.stickers[i].transform+'deg)\'); app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+$scope.state.stickers[i].id+'\'); " '
-					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
-					+'>'+Utils.htmlEncode($scope.state.stickers[i].message)+'</div>');
-			
-			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
-			// value before setting the offset-adjusted position
-			$('#' + controlId).data('originalTop', $('#' + controlId).css('top').replace('px', ''));
-			$('#' + controlId).css('bottom', bottomWithOffset);
-			
-			if ($scope.state.mode == $scope.enum.mode.session) {
-				$('#' + controlId).draggable();	
-			}
-			
-			$('#' + controlOriginalPlaceholderId).hide();
-		}
+		stickerBuilderService.build(
+				$scope.state.stickers, 
+				$scope.state.offset, 
+				$scope.getBoardHeight(), 
+				$scope.getBoardWidth(), 
+				$scope.state.mode == $scope.enum.mode.session);
 	};
 	
 	$scope.registerOffset = function(controlId, stickerId) {
@@ -132,8 +70,8 @@ app.controller("board-page", function BoardPageController(
 		var currentTop = parseInt($('#' + controlId).css('top').replace('px', ''));
 		
 		$scope.state.offset[stickerId] = {
-			leftOffset: currentLeft - originalLeft,
-			bottomOffset: -1 * (currentTop - originalTop)
+			leftOffset: Math.ceil(currentLeft - originalLeft),
+			bottomOffset: Math.ceil(-1 * (currentTop - originalTop))
 		};
 		
 		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
@@ -167,29 +105,8 @@ app.controller("board-page", function BoardPageController(
 		$('#axisX').css('width', $scope.getBoardWidth() + 'px');
 		$('#axisY').css('height', $scope.getBoardHeight() + 'px');
 		
-		$scope.adjustLabels();
+		labelBuilderService.build($scope.getBoardHeight(), $scope.getBoardWidth());
 		$scope.showStickers();
-	};
-	
-	$scope.adjustLabels = function() {
-		var gladBottom = $scope.getBoardHeight() - 20;
-		gladBottom -= 120;
-		$('#glad').css('bottom', gladBottom + 'px');
-		
-		var sadBottom = Math.ceil($scope.getBoardHeight() / 2) + 30;
-		sadBottom -= 70;
-		$('#sad').css('bottom', sadBottom + 'px');
-		
-		var madBottom = 50 + 20;
-		$('#mad').css('bottom', madBottom + 'px');
-		
-		var inControlLeft = 50 + 90;
-		$('#in-control').css('bottom', '10px');
-		$('#in-control').css('left', inControlLeft + 'px');
-		
-		var noControlLeft = 50 + this.getBoardWidth() - 150;
-		$('#no-control').css('bottom', '10px');
-		$('#no-control').css('left', noControlLeft + 'px');
 	};
 	
 	$scope.getBoardWidth = function() {
