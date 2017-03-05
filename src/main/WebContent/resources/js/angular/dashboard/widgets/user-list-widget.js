@@ -6,6 +6,10 @@ app.controller("user-list-widget", function UserListWidgetController($scope, par
 	
 	$scope.$watch('state.users');
 	
+	$scope.activeUserFilter = function (item) { 
+	    return item.age >= 0;
+	};
+	
 	$scope.initialize = function(code, token) {
 		participantService.initialize(code, token);
 		participantService.onJoin = function(participantDetails) {
