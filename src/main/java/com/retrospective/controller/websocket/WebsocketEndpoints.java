@@ -20,6 +20,9 @@ public class WebsocketEndpoints {
 	public WebsocketEndpoints() {
 	}
 	
+	/**
+	 * Called when a participant sends keepalive message. Dashboard is subscribed to this event, to maintain user list widget.
+	 */
 	@MessageMapping("/board/join/{code}/{token}")
     public void websocketJoin(@Payload ParticipantJoinedMessage message, @DestinationVariable("code") int code, @DestinationVariable("token") String token) throws Exception {
 		
@@ -31,6 +34,9 @@ public class WebsocketEndpoints {
 				result);
     }
 	
+	/**
+	 * Called when a participant is publishing a sticker on a session. Dashboard is responsible to reload the board once new sticker is published.
+	 */
 	@MessageMapping("/board/sticker/{code}/{token}")
     public void websocketPublishSticker(@Payload PublishStickerMessage message, @DestinationVariable("code") int code, @DestinationVariable("token") String token) throws Exception {
 		simpMessagingTemplate.convertAndSend(

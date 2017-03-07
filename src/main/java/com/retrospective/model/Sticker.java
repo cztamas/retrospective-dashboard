@@ -91,8 +91,4 @@ public class Sticker {
 	public void setTransform(int transform) {
 		this.transform = transform;
 	}
-
-	
-	
-	
 }

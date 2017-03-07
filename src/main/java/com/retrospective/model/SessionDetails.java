@@ -30,6 +30,4 @@ public class SessionDetails {
 	public void setCode(int code) {
 		this.code = code;
 	}
-	
-	
 }
