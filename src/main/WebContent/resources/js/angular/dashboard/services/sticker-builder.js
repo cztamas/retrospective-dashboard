@@ -10,6 +10,11 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 	
 	self.build = function(stickers, offset, boardHeight, boardWidth, isSession) {
 		for (var i=0; i!=stickers.length; i++) {
+			
+			if (offset[stickers[i].id] && offset[stickers[i].id].removed === true) {
+				continue;
+			}
+			
 			var bottom = (boardHeight * stickers[i].glad) + self.configuration.axisXBottom - (stickers[i].glad * configuration.stickerHeight);
 			var left = self.configuration.axisYLeft + (boardWidth * stickers[i].noControl) - (stickers[i].noControl * configuration.stickerWidth);
 			
@@ -38,6 +43,15 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 				leftWithOffset += Utils.isInt(offset[stickers[i].id].leftOffset) ? offset[stickers[i].id].leftOffset : 0;
 			}
 			
+			var onDragging = '$(\'#' + controlOriginalPlaceholderId+'\').show(); '
+		    	+ '$(\'.label-dbl-click-remove\').show(); '
+		    	+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');';
+			
+			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
+				+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate('+stickers[i].transform+'deg)\'); ' 
+				+ '$(\'.label-dbl-click-remove\').hide(); '
+				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
+			
 			$("#boardContent").append('<div '
 					+ 'data-sticker-id="'+stickers[i].id+'" '
 					+ 'data-original-bottom="'+bottom+'" '
@@ -58,8 +72,8 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'transform: rotate('+stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
 					+ 'left: '+leftWithOffset+'px;" '
-					+ 'onMouseUp="$(\'#' + controlOriginalPlaceholderId+'\').hide(); $(\'#' + controlId+'\').css(\'transform\', \'rotate('+stickers[i].transform+'deg)\'); app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); " '
-					+ 'onMouseDown="$(\'#' + controlOriginalPlaceholderId+'\').show(); $(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');" '
+					+ 'onMouseUp="'+onDraggingOver+'" '
+					+ 'onMouseDown="'+onDragging+'" '
 					+'>'+Utils.htmlEncode(stickers[i].message)+'</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
@@ -76,9 +90,16 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 						
 						ui.position.top = Math.min(self.configuration.headerHeight + 20 + boardHeight - configuration.stickerHeight - 10, ui.position.top);
 						ui.position.top = Math.max(self.configuration.headerHeight + 20, ui.position.top);
-
 				    }
 				});	
+				
+				var stickerId = stickers[i].id;
+				$('#' + controlId).dblclick(function() {
+					if (confirm('Are you sure you want to remove this item?')) {
+						app.getController('board-page').registerRemoved(controlId, stickerId);    
+					}
+					
+				});
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();

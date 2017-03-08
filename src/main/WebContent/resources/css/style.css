@@ -25,6 +25,14 @@
 	background-color: #000000;
 }
 
+.label-dbl-click-remove {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	color: #cccccc;
+	font-size: 9pt;
+}
+
 .floating-label {
 	position: absolute;
 	left: 10px;

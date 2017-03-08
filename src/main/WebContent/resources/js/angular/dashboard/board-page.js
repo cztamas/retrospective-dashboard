@@ -30,7 +30,8 @@ app.controller("board-page", function BoardPageController(
 		
 		$(document).tooltip();
 		$('#dialog').hide();
-		$('#shareUrl').val(shareUrl);
+		$('#shareUrl').html(shareUrl);
+		$('.label-dbl-click-remove').hide();
 		
 		// Load offsets from Local Storage in session mode
 		if ($scope.state.mode == $scope.enum.mode.session && localStorage.getItem($scope.configuration.offsetLocalStorageKey)) {
@@ -56,6 +57,17 @@ app.controller("board-page", function BoardPageController(
 				$scope.getBoardHeight(), 
 				$scope.getBoardWidth(), 
 				$scope.state.mode == $scope.enum.mode.session);
+	};
+	
+	$scope.registerRemoved = function(controlId, stickerId) {
+		if ($scope.state.mode !== $scope.enum.mode.session) {
+			return;
+		}
+		
+		$scope.state.offset[stickerId] = { removed: true };
+		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
+		boardService.persistOffsets(Context.code, $scope.state.offset);
+		$scope.showStickers();
 	};
 	
 	$scope.registerOffset = function(controlId, stickerId) {

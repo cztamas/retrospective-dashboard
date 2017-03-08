@@ -32,7 +32,12 @@
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
+	            <li>
+	            	<button 
+	            		style="margin-top: 16px; margin-left: 20px;" 
+	            		class="btn btn-default btn-xs" 
+	            		onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button>
+	            </li>
 	            <c:if test="${dashboard == null}">
 	            <li>
 	            	<button 
@@ -54,12 +59,19 @@
 	            		height="32"
 	            		onClick="$('#dialog').dialog({width: 600});" 
 	            		style="padding-right: 30px; padding-top: 14px; cursor: pointer;" 
-	            		title="Click here to save the URL of this board" onClick="shareUrl();" />
+	            		title="Permalink: click here to save the URL of this board" onClick="shareUrl();" />
 	            </li>
 	            <c:if test="${dashboard == null}">
-	            	<li><img src="../../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="app.getController('qr-code-widget').show();" /></li>
+	            	<li>
+	            		<img src="../../resources/images/icon-qrcode.png" 
+	            			style="padding-top: 8px; cursor: pointer;" 
+	            			title="Display join QR code of this board" 
+	            			onClick="app.getController('qr-code-widget').show();" />
+	            	</li>
 	            </c:if>
 	          </ul>
+	          
+	          <div class="label-dbl-click-remove">double-click to remove</div>
 	        </div>
 	      </div>
 	    </nav>
