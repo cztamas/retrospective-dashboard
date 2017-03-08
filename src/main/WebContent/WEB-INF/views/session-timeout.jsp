@@ -7,7 +7,7 @@
 
     <title>Retrospective Dashboard - Session Timeout</title>
     
-    <%@include file="dependencies.jsp" %>
+    <%@include file="parts/dependencies.jsp" %>
 
   </head>
   

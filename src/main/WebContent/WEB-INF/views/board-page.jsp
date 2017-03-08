@@ -8,7 +8,7 @@
    
     <title>Retrospective Dashboard</title>
 
-	<%@include file="dependencies.jsp" %>
+	<%@include file="parts/dependencies.jsp" %>
 
 	<script>
 		Context.code = <c:out value="${code}"/>;
@@ -19,7 +19,6 @@
   
   <body ng-app="retrospective" style="margin-left: 120px;">
 	<div ng-controller="board-page">
-		<!-- Fixed navbar -->
 	    <nav class="navbar navbar-default navbar-fixed-top">
 	      <div class="container">
 	        <div class="navbar-header">
@@ -33,7 +32,6 @@
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li><a href="#" onClick="app.getController('qr-code-widget').show();">code: <b><c:out value="${code}"/></b></a></li>
 	            <li><button style="margin-top: 16px; margin-left: 20px;" class="btn btn-default btn-xs" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button></li>
 	            <c:if test="${dashboard == null}">
 	            <li>
@@ -46,53 +44,30 @@
 	            </li>
 	            </c:if>
 	            <li>
-	            	<div ng-controller="user-list-widget" style="margin-left: 20px; top: 16px; position: relative;">
-	            		<span ng-repeat="user in state.users | filter: activeUserFilter" class="board-participant">
-	            			<img width="18" height="18" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/user.png" /> {{user.username}}
-	            		</span>
-	            	</div>
+	            	<%@include file="parts/widgets/user-list.jsp" %>
 	            </li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            <li>
 	            	<img 
-	            		src="../resources/images/share.png" 
+	            		src="../../resources/images/share.png" 
 	            		height="32"
 	            		onClick="$('#dialog').dialog({width: 600});" 
 	            		style="padding-right: 30px; padding-top: 14px; cursor: pointer;" 
 	            		title="Click here to save the URL of this board" onClick="shareUrl();" />
 	            </li>
 	            <c:if test="${dashboard == null}">
-	            	<li><img src="../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="app.getController('qr-code-widget').show();" /></li>
+	            	<li><img src="../../resources/images/icon-qrcode.png" style="padding-top: 8px; cursor: pointer;" title="Display join QR code of this board" onClick="app.getController('qr-code-widget').show();" /></li>
 	            </c:if>
 	          </ul>
-	        </div><!--/.nav-collapse -->
+	        </div>
 	      </div>
 	    </nav>
 	    
-	    <div id="mainBoard">
-		    <div id="board">
-				<div id="axisX" class="axisX"></div>
-				<div id="axisY" class="axisY"></div>
-				
-				<span id="glad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/glad.png" /></span>
-				<span id="sad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/sad.png" /></span>
-				<span id="mad" class="floating-label"><img width="100" src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/mad.png" /></span>
-				
-				<span id="in-control" class="floating-label">CONTROL</span>
-				<span id="no-control" class="floating-label">NO CONTROL</span>
-			
-				<div id="boardContent" class="board"></div>
-				
-			</div>
-		</div>
+	    <%@include file="parts/main-board.jsp" %>
 	</div>
 	
-	<div id="qrCodeContainer" ng-controller="qr-code-widget" class="centered">
-		<img style="float: right; margin-bottom: 8px; cursor: pointer;" ng-click="hide()" src="../resources/images/close.png" />
-		<a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/join/<c:out value="${code}"/>/<c:out value="${token}"/>" target="enter_room">enter room</a> by reading QR code on phone<br/>
-    	<div id="qrcode"></div>
-    </div>
+	<%@include file="parts/widgets/qr-code-widget.jsp" %>
     
 	<script>
 	
@@ -136,14 +111,7 @@
 	
 	</script>
 	
-	<div id="dialog" title="Dashboard">
-  		<p>You can re-open this dashboard any time in the future with the following link:</p>
-  		<input id='shareUrl' type="text" style="width: 95%" disabled  />
-	</div>
 	
-	<div id="errorDialog" title="Error">
-  		<p style="color: #ff0000;" id="errorMessage"></p>
-	</div>
-
+	<%@include file="parts/dialogs.jsp" %>
   </body>
 </html>

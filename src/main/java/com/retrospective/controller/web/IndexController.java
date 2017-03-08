@@ -26,24 +26,12 @@ public class IndexController {
 	}
 	
 	@RequestMapping(value = "/dashboard/{code}/{token}")
-	public void dashboard(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ModelAndView dashboard(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
 		tokenCookie.setPath(Constants.WebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
-		
-		response.sendRedirect(String.format("%s/dashboard/%s", Constants.WebRoot, code));
-	}
-	
-	@RequestMapping(value = "/dashboard/{code}")
-	public ModelAndView dashboardWithCode(@PathVariable(value="code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
-		
-		if (token == null) {
-			return new ModelAndView("session-timeout");
-		}
 		
 		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
@@ -52,27 +40,16 @@ public class IndexController {
 		
 		return page;
 	}
-	
-	
+		
 	@RequestMapping(value = "/start/{code}/{token}")
-	public void start(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ModelAndView start(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
 		tokenCookie.setPath(Constants.WebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
-		response.sendRedirect(String.format("%s/start/%s", Constants.WebRoot, code));
-	}
-	
-	@RequestMapping(value = "/start/{code}")
-	public ModelAndView startWithCode(@PathVariable(value="code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
-		
-		if (token == null) {
-			return new ModelAndView("session-timeout");
-		}
+		//response.sendRedirect(String.format("%s/start/%s", Constants.WebRoot, code));
 		
 		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);

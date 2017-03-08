@@ -19,7 +19,7 @@ app.service('keepaliveService', function() {
 	    self.stompClient.connect({}, function (frame) {
 	        
 	    	try {
-				self.stompClient.send("/app/board/join/" + self.code + '/' + self.token, {}, JSON.stringify({'username': self.username, 'id': 'afsdf'}));	
+				self.stompClient.send("/app/board/join/" + self.code + '/' + self.token, {}, JSON.stringify({'username': self.username}));	
 			}
 			catch (error) {
 				console.log(error);
