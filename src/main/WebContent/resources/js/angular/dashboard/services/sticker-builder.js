@@ -5,6 +5,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 	self.configuration = {
 		axisXBottom: 50,
 		axisYLeft: 150,
+		headerHeight: 50
 	};
 	
 	self.build = function(stickers, offset, boardHeight, boardWidth, isSession) {
@@ -67,7 +68,17 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			$('#' + controlId).css('bottom', bottomWithOffset);
 			
 			if (isSession) {
-				$('#' + controlId).draggable();	
+				$('#' + controlId).draggable({
+					drag: function( event, ui){ 
+
+						ui.position.left = Math.min(boardWidth, ui.position.left);
+						ui.position.left = Math.max(self.configuration.axisYLeft - 25,  ui.position.left);
+						
+						ui.position.top = Math.min(self.configuration.headerHeight + 20 + boardHeight - configuration.stickerHeight - 10, ui.position.top);
+						ui.position.top = Math.max(self.configuration.headerHeight + 20, ui.position.top);
+
+				    }
+				});	
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();
