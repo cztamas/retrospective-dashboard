@@ -29,7 +29,7 @@ public class IndexController {
 	public ModelAndView dashboard(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
-		tokenCookie.setPath(Constants.WebRoot);
+		tokenCookie.setPath(Constants.CookieWebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
@@ -45,7 +45,7 @@ public class IndexController {
 	public ModelAndView start(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
-		tokenCookie.setPath(Constants.WebRoot);
+		tokenCookie.setPath(Constants.CookieWebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
@@ -62,7 +62,7 @@ public class IndexController {
 	public void join(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
-		tokenCookie.setPath(Constants.WebRoot);
+		tokenCookie.setPath(Constants.CookieWebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		

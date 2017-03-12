@@ -2,9 +2,14 @@ package com.retrospective.utils;
 
 public class Constants {
 	
-	public final static String WebRoot = "/retrospective-dashboard";
+	public static String WebRoot = "";
+	public final static String CookieWebRoot = "/";
 	
 	public final static int OneYearInSeconds = 31556926;
+	
+	public Constants(String webRoot) {
+		WebRoot = webRoot;
+	}
 	
 	public enum Cookies {
 		

@@ -7,6 +7,9 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery-ui/jquery-ui.min.js" ></script>
 	
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/app.js"></script>
+	<script>
+		app.rootUrl = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>';
+	</script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/common/configuration.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/common/participant-service.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/board-service.js?ts=<% out.print(Math.random()); %>"></script>
