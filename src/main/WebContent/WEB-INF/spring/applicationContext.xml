@@ -52,6 +52,8 @@
 	</bean>
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/error-pages/**" location="/error-pages/" />
+	<mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
