@@ -1,4 +1,9 @@
 # retrospective-dashboard
-Retrospective tool
+Retrospective tool for scrum masters.
 
-![Retrospective Dashboard](https://github.com/akos-sereg/retrospective-dashboard/blob/master/doc/screenshot.png?raw=true "Screenshot")
+http://www.retrospective-dashboard.org/
+
+## Install
+1. Create a mysql database by executing install/database.sql
+2. Make sure that sql connection parameters are okay (com/retrospective/config/application.dev.properties)
+3. Deploy to Tomcat, or any other servlet container.
