@@ -2,3 +2,4 @@
 /src/main/WebContent/resources/bower_components
 /target/dependency
 /src/main/WebContent/WEB-INF/classes
+/src/main/WebContent/WEB-INF/spring/applicationContext.xml
