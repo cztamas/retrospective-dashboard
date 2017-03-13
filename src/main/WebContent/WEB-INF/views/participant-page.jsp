@@ -62,8 +62,8 @@
   		<label for="slider-fill">Control</label>
   		<input type="range" name="slider-fill-control" id="slider-fill-control" value="60" min="0" max="1000" step="50" data-highlight="true" />
   
-  		<label for="comment">Your Comment</label>
-  		<textarea cols="40" rows="8" name="comment" id="comment"></textarea>
+  		<label for="comment">Your Comment (256 characters max)</label>
+  		<textarea maxlength="256" cols="40" rows="8" name="comment" id="comment"></textarea>
   
   		<button 
   			id="commentAddOrEdit"

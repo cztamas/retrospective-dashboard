@@ -8,6 +8,20 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 		headerHeight: 50
 	};
 	
+	self.calculateLeft = function(boardWidth, noControl, stickerWidth) {
+		return self.configuration.axisYLeft + (boardWidth * noControl) - (noControl * stickerWidth);
+	};
+	
+	self.calculateLeftWidthOffset = function(boardWidth, noControl, stickerWidth, offsetDetails) {
+		var left = self.calculateLeft(boardWidth, noControl, stickerWidth);
+		
+		if (offsetDetails) {
+			left += Utils.isInt(offsetDetails.leftOffset) ? offsetDetails.leftOffset : 0;
+		}
+		
+		return left;
+	};
+	
 	self.build = function(stickers, offset, boardHeight, boardWidth, isSession) {
 		for (var i=0; i!=stickers.length; i++) {
 			
@@ -15,8 +29,13 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 				continue;
 			}
 			
+			var stickerWidth = configuration.stickerWidth;
+			/*if (Utils.htmlEncode(stickers[i].message).length > 50) {
+				stickerWidth = configuration.stickerLargerWidth;
+			}*/
+			
 			var bottom = (boardHeight * stickers[i].glad) + self.configuration.axisXBottom - (stickers[i].glad * configuration.stickerHeight);
-			var left = self.configuration.axisYLeft + (boardWidth * stickers[i].noControl) - (stickers[i].noControl * configuration.stickerWidth);
+			var left = self.calculateLeft(boardWidth, stickers[i].noControl, stickerWidth); //self.configuration.axisYLeft + (boardWidth * stickers[i].noControl) - (stickers[i].noControl * stickerWidth);
 			
 			var controlId = 'sticker_' + stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
@@ -25,7 +44,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			if (isSession) { 
 				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
 						+ 'style="'
-						+ 'width: '+configuration.stickerWidth+'px; '
+						+ 'width: '+stickerWidth+'px; '
 						+ 'height: '+configuration.stickerHeight+'px; '
 						+ 'position: absolute; '
 						+ 'transform: rotate('+stickers[i].transform+'deg); '
@@ -37,11 +56,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			
 			// sticker
 			var bottomWithOffset = bottom;
-			var leftWithOffset = left;
-			if (offset[stickers[i].id]) {
-				bottomWithOffset += Utils.isInt(offset[stickers[i].id].bottomOffset) ? offset[stickers[i].id].bottomOffset : 0;
-				leftWithOffset += Utils.isInt(offset[stickers[i].id].leftOffset) ? offset[stickers[i].id].leftOffset : 0;
-			}
+			var leftWithOffset = self.calculateLeftWidthOffset(boardWidth, stickers[i].noControl, stickerWidth, offset[stickers[i].id]);
 			
 			var onDragging = '$(\'#' + controlOriginalPlaceholderId+'\').show(); '
 		    	+ '$(\'.label-dbl-click-remove\').show(); '
@@ -61,7 +76,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'style="'
 					+ 'font-size: ' + configuration.stickerFontSize + '; '
 					+ 'height: '+configuration.stickerHeight+'px; ' 
-					+ 'width: '+configuration.stickerWidth+'px; ' 
+					+ 'width: '+stickerWidth+'px; '
 					+ 'background-image: -ms-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: -moz-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: -o-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
@@ -81,11 +96,23 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			$('#' + controlId).data('originalTop', $('#' + controlId).css('top').replace('px', ''));
 			$('#' + controlId).css('bottom', bottomWithOffset);
 			
+			// If sticker's text content is too large, it may overflow
+			if (Utils.isOverflowing($('#' + controlId).get(0))) {
+				stickerWidth = configuration.stickerLargerWidth;
+				$('#' + controlId).css('width', stickerWidth + 'px');
+				$('#' + controlId).css('left', self.calculateLeftWidthOffset(boardWidth, stickers[i].noControl, stickerWidth, offset[stickers[i].id]) + 'px');
+				$('#' + controlOriginalPlaceholderId).css('width', configuration.stickerLargerWidth + 'px');
+				$('#' + controlOriginalPlaceholderId).css('left', self.calculateLeft(boardWidth, stickers[i].noControl, stickerWidth) + 'px');
+			}
+			
+			$('#' + controlId).css('overflow', 'hidden');
+			
 			if (isSession) {
 				$('#' + controlId).draggable({
-					drag: function( event, ui){ 
-
-						ui.position.left = Math.min(boardWidth, ui.position.left);
+					drag: function(event, ui) { 
+						
+						var width = parseInt($('#' + ui.helper[0].id).css('width').replace('px', ''));
+						ui.position.left = Math.min(boardWidth - (width - configuration.stickerWidth), ui.position.left);
 						ui.position.left = Math.max(self.configuration.axisYLeft - 25,  ui.position.left);
 						
 						ui.position.top = Math.min(self.configuration.headerHeight + 20 + boardHeight - configuration.stickerHeight - 10, ui.position.top);

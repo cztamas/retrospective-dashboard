@@ -37,6 +37,10 @@ var Utils = {
 	         !isNaN(parseInt(value, 10));
 	},
 	
+	isOverflowing: function(element) {
+		return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+	},
+	
 	handleError: function(message, error) {
 		
 	}
