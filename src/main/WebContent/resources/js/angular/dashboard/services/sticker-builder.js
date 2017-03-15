@@ -30,9 +30,6 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			}
 			
 			var stickerWidth = configuration.stickerWidth;
-			/*if (Utils.htmlEncode(stickers[i].message).length > 50) {
-				stickerWidth = configuration.stickerLargerWidth;
-			}*/
 			
 			var bottom = (boardHeight * stickers[i].glad) + self.configuration.axisXBottom - (stickers[i].glad * configuration.stickerHeight);
 			var left = self.calculateLeft(boardWidth, stickers[i].noControl, stickerWidth); //self.configuration.axisYLeft + (boardWidth * stickers[i].noControl) - (stickers[i].noControl * stickerWidth);
@@ -62,13 +59,12 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var bottomWithOffset = bottom;
 			var leftWithOffset = self.calculateLeftWidthOffset(boardWidth, stickers[i].noControl, stickerWidth, offset[stickers[i].id]);
 			
-			var onDragging = '$(\'#' + controlOriginalPlaceholderId+'\').show(); '
-		    	+ '$(\'.label-dbl-click-remove\').show(); '
-		    	//+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');';
+			if (offset[stickers[i].id]) {
+				bottomWithOffset += Utils.isInt(offset[stickers[i].id].bottomOffset) ? offset[stickers[i].id].bottomOffset : 0;
+			}
 			
+			var onDragging = '$(\'#' + controlOriginalPlaceholderId+'\').show(); ';
 			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
-				//+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate('+stickers[i].transform+'deg)\'); ' 
-				+ '$(\'.label-dbl-click-remove\').hide(); '
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
 			$("#boardContent").append('<div '
@@ -125,15 +121,6 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 						ui.position.top = Math.max(self.configuration.headerHeight + 20, ui.position.top);
 				    }
 				});	
-				
-				var stickerId = stickers[i].id;
-				
-				/*$('#' + controlId).dblclick(function() {
-					if (confirm('Are you sure you want to remove this item?')) {
-						app.getController('board-page').registerRemoved(controlId, stickerId);    
-					}
-					
-				});*/
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();

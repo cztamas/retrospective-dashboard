@@ -54,12 +54,11 @@
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            <li>
-	            	<img 
-	            		src="../../resources/images/share.png" 
-	            		height="32"
-	            		onClick="$('#dialog').dialog({width: 600});" 
-	            		style="padding-right: 30px; padding-top: 14px; cursor: pointer;" 
-	            		title="Permalink: click here to save the URL of this board" onClick="shareUrl();" />
+	            	<button
+	            		title="Click here to save the URL of this board"
+	            		style="margin-top: 16px; margin-left: 20px; margin-right: 20px;" 
+	            		onClick="$('#dialog').dialog({width: 600}); shareUrl();"  
+	            		class="btn btn-default btn-xs">Save permalink</button>
 	            </li>
 	            <c:if test="${dashboard == null}">
 	            	<li>
@@ -71,7 +70,6 @@
 	            </c:if>
 	          </ul>
 	          
-	          <div class="label-dbl-click-remove">double-click to remove</div>
 	        </div>
 	      </div>
 	    </nav>
@@ -102,7 +100,6 @@
    		qrCodeWidget.show();
    		
    		var dashboardUrl = app.domain + '<% out.print(com.retrospective.utils.Constants.WebRoot); %>' + '/dashboard/${code}/${token}';
-		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
 		
 		<c:if test="${dashboard == null}">
    			qrCodeWidget.show();
@@ -114,6 +111,8 @@
 			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
 			boardPageScope.reveal(<c:out value="${code}"/>);
 		</c:if>
+		
+		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
 	
 	});
 
