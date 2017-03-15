@@ -40,6 +40,8 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var controlId = 'sticker_' + stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
 			
+			var deleteStickerImage = '';
+			
 			// sticker's original palce marker
 			if (isSession) { 
 				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
@@ -52,6 +54,8 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 						+ 'left: '+left+'px; '
 						+ '" ' 
 						+ '></div>');
+				
+				deleteStickerImage = '<img onClick="if (confirm(\'Are you sure you want to remove this item?\')) { app.getController(\'board-page\').registerRemoved(\''+controlId+'\', '+stickers[i].id+'); }" id="remove_image_'+controlId+'" src="' + app.rootUrl + '/resources/images/remove.png" class="remove-button"/>';
 			}
 			
 			// sticker
@@ -60,10 +64,10 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			
 			var onDragging = '$(\'#' + controlOriginalPlaceholderId+'\').show(); '
 		    	+ '$(\'.label-dbl-click-remove\').show(); '
-		    	+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');';
+		    	//+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate(0deg)\');';
 			
 			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
-				+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate('+stickers[i].transform+'deg)\'); ' 
+				//+ '$(\'#' + controlId+'\').css(\'transform\', \'rotate('+stickers[i].transform+'deg)\'); ' 
 				+ '$(\'.label-dbl-click-remove\').hide(); '
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
@@ -89,7 +93,9 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'left: '+leftWithOffset+'px;" '
 					+ 'onMouseUp="'+onDraggingOver+'" '
 					+ 'onMouseDown="'+onDragging+'" '
-					+'>'+Utils.htmlEncode(stickers[i].message)+'</div>');
+					+ 'onMouseOver="$(\'#remove_image_'+controlId+'\').show();" '
+					+ 'onMouseOut="$(\'#remove_image_'+controlId+'\').hide();" '
+					+'>'+Utils.htmlEncode(stickers[i].message) + deleteStickerImage + '</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
 			// value before setting the offset-adjusted position
@@ -121,15 +127,17 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 				});	
 				
 				var stickerId = stickers[i].id;
-				$('#' + controlId).dblclick(function() {
+				
+				/*$('#' + controlId).dblclick(function() {
 					if (confirm('Are you sure you want to remove this item?')) {
 						app.getController('board-page').registerRemoved(controlId, stickerId);    
 					}
 					
-				});
+				});*/
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();
+			$('#remove_image_' + controlId).hide();
 		}
 	};
     
