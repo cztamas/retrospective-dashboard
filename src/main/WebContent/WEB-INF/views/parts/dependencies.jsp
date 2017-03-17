@@ -20,10 +20,12 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/init-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/board-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/participant-page.js?ts=<% out.print(Math.random()); %>"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/participant-web-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/services/keepalive-service.js?ts=<% out.print(Math.random()); %>"></script>
 	
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/context.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/utils.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/extensions.js"></script>
 	
 	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/style.css">
 	

@@ -20,7 +20,7 @@
   
   	    angular.element(document).ready(function() {
   	    	
- 	    	app.getController('participant-page as participantPage').initialize(${code}, '${token}');
+ 	    	app.getController('participant-page as participantPage').initialize(${code}, '${token}', true);
  	    	
  	    	Context.code = ${code};
  	    	Context.token = '${token}';
@@ -80,7 +80,7 @@
   <div data-role="page" id="commentsPage">
   		<div data-role="header">
   			<h1>&nbsp;</h1>
-			<button ng-click="navigateToCreateComment()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
+			<button ng-click="navigateToCreateComment(true)" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
 		</div>
 		
   		<ul id="stickersContainer" data-role="listview" data-inset="true"></ul>

@@ -49,8 +49,6 @@ public class IndexController {
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
-		//response.sendRedirect(String.format("%s/start/%s", Constants.WebRoot, code));
-		
 		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
@@ -58,7 +56,7 @@ public class IndexController {
 		return page;
 	}
 	
-	@RequestMapping(value = "/join/{code}/{token}")
+	@RequestMapping(value = "/join-mobile/{code}/{token}")
 	public void join(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
@@ -66,10 +64,10 @@ public class IndexController {
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
-		response.sendRedirect(String.format("%s/join/%s", Constants.WebRoot, code));
+		response.sendRedirect(String.format("%s/join-mobile/%s", Constants.WebRoot, code));
 	}
 	
-	@RequestMapping(value = "/join/{code}")
+	@RequestMapping(value = "/join-mobile/{code}")
 	public ModelAndView joinWithCode(@PathVariable(value="code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
@@ -78,7 +76,22 @@ public class IndexController {
 			return new ModelAndView("session-timeout");
 		}
 		
-		ModelAndView page = new ModelAndView("participant-page");
+		ModelAndView page = new ModelAndView("participant-mobile-page");
+		page.addObject("code", code);
+		page.addObject("token", token);
+		
+		return page;
+	}
+	
+	@RequestMapping(value = "/join-web/{code}/{token}")
+	public ModelAndView joinWebApp(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
+		tokenCookie.setPath(Constants.CookieWebRoot);
+		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
+		response.addCookie(tokenCookie);
+		
+		ModelAndView page = new ModelAndView("participant-web-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		
