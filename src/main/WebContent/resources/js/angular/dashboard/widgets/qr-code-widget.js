@@ -31,6 +31,7 @@ app.controller("qr-code-widget", function QrCodeWidgetController($scope) {
 	};
 	
 	$scope.show = function() {
+		$('#join-url').val(app.domain + app.rootUrl + '/join-web/' + Context.code + '/' + Context.token);
 		$('#' + $scope.configuration.placeholders.qrCodeContainer).show();
 		$('#' + $scope.configuration.placeholders.boardContainer).hide();
 	};

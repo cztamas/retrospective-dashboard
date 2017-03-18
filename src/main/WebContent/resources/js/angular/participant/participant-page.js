@@ -44,7 +44,7 @@ app.controller("participant-page", function ParticipantPageController(
 		}
 		
 		if (username == null || username == '') {
-			alert('Username is empty');
+			BootstrapDialog.alert({ type: BootstrapDialog.TYPE_WARNING, title: 'Warning', message: 'Username is empty' });
 			return;
 		}
 		
@@ -54,8 +54,10 @@ app.controller("participant-page", function ParticipantPageController(
 	
 	$scope.onJoined = function() {
 		if (!$scope.state.isMobileView) {
+			$('#set-button').hide();
+			$('#username').attr('readonly', 'readonly');
 			Utils.setCookie('username', $('#username').val());
-			alert('Joined');
+			BootstrapDialog.alert('Username is now set, thanks.');
 		}
 	};
 	
@@ -180,8 +182,9 @@ app.controller("participant-page", function ParticipantPageController(
 			$('#slider-fill-glad').val('0').slider("refresh");	
 		}
 		else {
-			$('#slider-fill-control').bootstrapSlider('setValue', 0);
-			$('#slider-fill-glad').bootstrapSlider('setValue', 0);
+			// we are using a different slider for desktop web client
+			$('#slider-fill-control').bootstrapSlider('setValue', 500);
+			$('#slider-fill-glad').bootstrapSlider('setValue', 500);
 		}
 		
 		if ($('#commentAddOrEdit').data('mode') == 'add') {
@@ -286,6 +289,11 @@ app.controller("participant-page", function ParticipantPageController(
 		}
 		else {
 			username = $('#username').val(); 
+		}
+		
+		if (!$scope.state.isMobileView && username == null || username == '') {
+			BootstrapDialog.alert({ type: BootstrapDialog.TYPE_WARNING, title: 'Warning', message: 'Username is not set' });
+			return;
 		}
 		
 		if (sticker == null) {

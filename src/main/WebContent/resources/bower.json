@@ -20,6 +20,7 @@
     "sockjs": "^0.3.4",
     "stomp-client": "^0.0.2",
     "jquery-ui": "^1.12.1",
-    "seiyria-bootstrap-slider": "^9.7.2"
+    "seiyria-bootstrap-slider": "^9.7.2",
+    "bootstrap3-dialog": "bootstrap-dialog#^1.35.3"
   }
 }
