@@ -7,15 +7,22 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import com.retrospective.model.ActiveSessionList;
 import com.retrospective.model.websocket.ParticipantJoinedBroadcastMessage;
 import com.retrospective.model.websocket.ParticipantJoinedMessage;
 import com.retrospective.model.websocket.PublishStickerMessage;
+import com.retrospective.utils.ErrorLogger;
 
 @Controller
 public class WebsocketEndpoints {
 
 	@Autowired 
 	private SimpMessagingTemplate simpMessagingTemplate;
+	
+	@Autowired
+	private ActiveSessionList activeSessionList;
+	
+	private Object activeSessionLock = new Object();
 	
 	public WebsocketEndpoints() {
 	}
@@ -28,6 +35,15 @@ public class WebsocketEndpoints {
 		
 		ParticipantJoinedBroadcastMessage result = new ParticipantJoinedBroadcastMessage();
 		result.setUsername(message.getUsername());
+		
+		try {
+			synchronized(activeSessionLock) {
+				activeSessionList.add(token);	
+			}
+		}
+		catch (Exception error) {
+			ErrorLogger.LogError(error);
+		}
 		
 		simpMessagingTemplate.convertAndSend(
 				String.format("/topic/join/%s/%s", code, token), 

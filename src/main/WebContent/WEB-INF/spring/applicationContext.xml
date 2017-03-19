@@ -17,7 +17,10 @@
 	
 	<bean id="constants" class="com.retrospective.utils.Constants">
 	   <constructor-arg value="${application.baseUrl}"/>
+	   <constructor-arg value="${application.monitor.token}"/>
 	</bean>
+	
+	<bean id="activeSessionsStorage" class="com.retrospective.model.ActiveSessionList"></bean>
 
     <!-- Database -->
 	<bean id="hostDao" class="com.retrospective.dao.HostDaoImpl">

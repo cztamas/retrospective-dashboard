@@ -3,12 +3,14 @@ package com.retrospective.utils;
 public class Constants {
 	
 	public static String WebRoot = "";
+	public static String MonitorToken = "";
 	public final static String CookieWebRoot = "/";
 	
 	public final static int OneYearInSeconds = 31556926;
 	
-	public Constants(String webRoot) {
+	public Constants(String webRoot, String monitorToken) {
 		WebRoot = webRoot;
+		MonitorToken = monitorToken;
 	}
 	
 	public enum Cookies {
