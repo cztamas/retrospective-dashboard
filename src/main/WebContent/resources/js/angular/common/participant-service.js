@@ -1,6 +1,7 @@
 app.service('participantService', function ParticipantService() {
 	var self = this;
 	
+	self.socket = null;
 	self.stompClient = null;
 	self.webSocketUrl = null;
 	self.code = null;
@@ -13,8 +14,37 @@ app.service('participantService', function ParticipantService() {
 		self.code = code;
 		self.token = token;
 	
-		var socket = new SockJS(app.rootUrl + '/ws');
-	    self.stompClient = Stomp.over(socket);
+		self.connect();
+		self.checkConnection();
+	};
+	
+	self.checkConnection = function() {
+		setTimeout(function() {
+			if (!self.stompClient.connected) {
+				console.error('Warning: participant service lost websocket connection, attempting to reconnect');
+				self.connect();
+			}
+			
+			self.checkConnection();
+		}, 5000);
+	};
+	
+	self.connect = function() {
+		
+		if (self.stompClient && self.stompClient.connected) {
+			return;
+		}
+		
+		if (self.socket && self.socket != null) {
+			self.socket.close();
+		}
+    	
+    	if (self.stompClient && self.stompClient != null) {
+			self.stompClient.disconnect();
+		}
+		
+		self.socket = new SockJS(app.rootUrl + '/ws');	
+		self.stompClient = Stomp.over(self.socket);
 	    self.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/join/' + self.code + '/' + self.token, function (greeting) {
@@ -24,6 +54,9 @@ app.service('participantService', function ParticipantService() {
 	        		self.onJoin(participantJoinedBroadcastMessage);
 	        	}
 	        });
+	    }, 
+	    function(error) {
+	    	console.log(error);
 	    });
 	};
 	

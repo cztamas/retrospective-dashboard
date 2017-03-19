@@ -2,21 +2,56 @@ app.service('boardService', function BoardService() {
 	
 	var self = this;
 	
+	self.socket = null;
 	self.participants = [];
 	self.participantMaxAge = 10; // after this many seconds, participant is considered to be timed out
 	self.stompClient = null;
+	self.onStickerReceived = null;
 	
-    self.initialize = function(onStickerReceived) {
-		self.aging();
-		
-		var socket = new SockJS(app.rootUrl + '/ws');
-	    self.stompClient = Stomp.over(socket);
+    self.initialize = function(onStickerReceived, isReconnect) {
+    	
+    	self.onStickerReceived = onStickerReceived;
+    	if (!isReconnect) {
+    		self.aging();	
+    	}
+    	
+    	if (self.stompClient && self.stompClient.connected) {
+			return;
+		}
+    	
+    	if (self.socket && self.socket != null) {
+			self.socket.close();
+		}
+    	
+    	if (self.stompClient && self.stompClient != null) {
+			self.stompClient.disconnect();
+		}
+    	
+		self.socket = new SockJS(app.rootUrl + '/ws');	
+		self.stompClient = Stomp.over(self.socket);
 	    self.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/sticker/' + Context.code + '/' + Context.token, function (sticker) {
-	        	onStickerReceived();
+	        	self.onStickerReceived();
 	        });
+	    }, function(error) {
+	    	console.log(error);
 	    });
+	    
+	    if (!isReconnect) {
+	    	self.checkConnection();	
+	    }
+    };
+    
+    self.checkConnection = function() {
+    	setTimeout(function() {
+    		if (!self.stompClient.connected) {
+    			console.error('Warning: board service lost websocket connection, attempting to reconnect');
+    			self.initialize(self.onStickerReceived, true);
+    		}
+    		
+    		self.checkConnection();
+    	}, 5000);
     };
     
     self.aging = function() {

@@ -88,7 +88,7 @@
 	    var userListWidget = app.getController('user-list-widget');
 	
 		qrCodeWidget.initialize(
-			app.domain + app.rootUrl + "/join/${code}/${token}", 
+			app.domain + app.rootUrl + "/join-mobile/${code}/${token}", 
 			{ 
 				qrCodeContainer: 'qrCodeContainer',
 				qrCodeImageContainer: 'qrcode',

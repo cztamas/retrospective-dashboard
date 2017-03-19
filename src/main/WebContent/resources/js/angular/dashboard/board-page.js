@@ -26,7 +26,7 @@ app.controller("board-page", function BoardPageController(
 	
 	$scope.initialize = function(shareUrl, code, token) {
 		
-		boardService.initialize($scope.refreshStickers);
+		boardService.initialize($scope.refreshStickers, false);
 		
 		$(document).tooltip();
 		$('#dialog').hide();
