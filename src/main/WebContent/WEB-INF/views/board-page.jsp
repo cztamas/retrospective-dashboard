@@ -8,7 +8,8 @@
    
     <title>Retrospective Dashboard</title>
 
-	<%@include file="parts/dependencies.jsp" %>
+	<%@ include file="parts/dependencies.jsp" %>
+	<%@ include file="parts/google-analytics.jsp" %>
 
 	<script>
 		Context.code = <c:out value="${code}"/>;

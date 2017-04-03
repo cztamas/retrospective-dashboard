@@ -291,7 +291,7 @@ app.controller("participant-page", function ParticipantPageController(
 			username = $('#username').val(); 
 		}
 		
-		if (!$scope.state.isMobileView && username == null || username == '') {
+		if (!$scope.state.isMobileView && !keepaliveService.isRunning) {
 			BootstrapDialog.alert({ type: BootstrapDialog.TYPE_WARNING, title: 'Warning', message: 'Username is not set' });
 			return;
 		}

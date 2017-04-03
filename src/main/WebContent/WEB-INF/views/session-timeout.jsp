@@ -7,7 +7,8 @@
 
     <title>Retrospective Dashboard - Session Timeout</title>
     
-    <%@include file="parts/dependencies.jsp" %>
+    <%@ include file="parts/dependencies.jsp" %>
+    <%@ include file="parts/google-analytics.jsp" %>
 
   </head>
   

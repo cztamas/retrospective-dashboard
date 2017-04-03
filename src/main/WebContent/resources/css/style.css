@@ -16,9 +16,16 @@
 	top: 2px;
 }
 
+.footer-text {
+	color: #999999;
+	font-size: 9pt;
+}
+
 .banner {
 	width: 100%;
 	background: #e2e2e2; 
+	border-top: solid 1px #CECECE;
+	border-bottom: solid 1px #CECECE;
 }
 
 .hide {

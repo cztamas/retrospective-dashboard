@@ -7,7 +7,8 @@
 
     <title>Retrospective Dashboard</title>
     
-    <%@include file="parts/dependencies.jsp" %>
+    <%@ include file="parts/dependencies.jsp" %>
+    <%@ include file="parts/google-analytics.jsp" %>
     
     <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" ></script>
     <script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js" ></script>
