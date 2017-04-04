@@ -10,6 +10,9 @@
 
 	<%@ include file="parts/dependencies.jsp" %>
 	<%@ include file="parts/google-analytics.jsp" %>
+	
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js" ></script>
+    <link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
 
 	<script>
 		Context.code = <c:out value="${code}"/>;
@@ -48,10 +51,18 @@
 	            </li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
+	          	<li>
+				              
+				    <button
+	            		title="Configuration"
+	            		style="margin-top: 16px; margin-left: 20px; margin-right: 10px;" 
+	            		onClick="$('#settings-dialog').dialog({width: 600});"  
+	            		class="btn btn-default btn-xs">Settings</button>
+	          	</li>
 	            <li>
 	            	<button
 	            		title="Click here to save the URL of this board"
-	            		style="margin-top: 16px; margin-left: 20px; margin-right: 20px;" 
+	            		style="margin-top: 16px; margin-right: 10px;" 
 	            		onClick="$('#dialog').dialog({width: 600}); shareUrl();"  
 	            		class="btn btn-default btn-xs">Save permalink</button>
 	            </li>
@@ -112,6 +123,19 @@
 		</c:if>
 		
 		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
+		
+		// box size slider
+		$('#settings-dialog').hide();
+		$('#postit-size-slider').slider().on('change', function(event) {
+		    boardPageScope.resizePostIts(event.value.newValue);
+		});
+		
+		var postitSize = Utils.getCookie('postit-size-${token}');
+		if (postitSize != null) {
+			boardPageScope.resizePostIts(postitSize);
+			$("#postit-size-slider").attr('data-slider-value', postitSize);
+			$("#postit-size-slider").slider('refresh');
+		}
 	
 	});
 

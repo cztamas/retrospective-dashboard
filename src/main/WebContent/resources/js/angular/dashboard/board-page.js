@@ -22,9 +22,11 @@ app.controller("board-page", function BoardPageController(
 		isRevealed: false,
 		offset: {},
 		stickers: [],
+		token: null
 	};
 	
 	$scope.initialize = function(shareUrl, code, token) {
+		$scope.state.token = token;
 		
 		boardService.initialize($scope.refreshStickers, false);
 		
@@ -67,6 +69,28 @@ app.controller("board-page", function BoardPageController(
 		$scope.state.offset[stickerId] = { removed: true };
 		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
 		boardService.persistOffsets(Context.code, $scope.state.offset);
+		$scope.showStickers();
+	};
+	
+	$scope.resizePostIts = function(size) {
+		
+		var configs = [{ 
+			boxSizeRatio: 0.5,
+			stickerFontSize: '7pt'
+		}, 
+		{ 
+			boxSizeRatio: 0.75,
+			stickerFontSize: '10pt'
+		}, 
+		{ 
+			boxSizeRatio: 1.0,
+			stickerFontSize: '14pt'
+		}];
+		
+		stickerBuilderService.configuration.boxSizeRatio = configs[size].boxSizeRatio;
+		stickerBuilderService.configuration.stickerFontSize = configs[size].stickerFontSize;
+		Utils.setCookie('postit-size-' + $scope.state.token, size, 365);
+		
 		$scope.showStickers();
 	};
 	
