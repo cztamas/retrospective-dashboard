@@ -21,14 +21,8 @@
   <body ng-app="retrospective" style="margin-left: 120px;">
 	<div ng-controller="board-page">
 	    <nav class="navbar navbar-default navbar-fixed-top">
-	      <div class="container">
+	      <div class="container-fullwidth">
 	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
 	          <a class="navbar-brand" href="#">Retrospective</a>
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
@@ -69,6 +63,10 @@
 	            			onClick="app.getController('qr-code-widget').show();" />
 	            	</li>
 	            </c:if>
+	            
+	            <li>
+	            	<img src="../../resources/images/spacer.gif" height="1" width="60" />
+	            </li>
 	          </ul>
 	          
 	        </div>
