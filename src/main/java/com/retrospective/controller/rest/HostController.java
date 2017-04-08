@@ -22,6 +22,7 @@ import com.retrospective.model.CreateSessionResponse;
 import com.retrospective.model.GetSessionDetailsResponse;
 import com.retrospective.model.ServerResponse;
 import com.retrospective.model.SessionDetails;
+import com.retrospective.model.SessionParameters;
 import com.retrospective.utils.Constants;
 import com.retrospective.utils.CookieHelper;
 import com.retrospective.utils.ErrorLogger;
@@ -35,6 +36,23 @@ public class HostController {
 	@Autowired
 	public void setHostDao(HostDao hostDao) {
 		this.hostDao = hostDao;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/session/{code}/params", consumes = "application/json", method = RequestMethod.POST)
+	public ServerResponse setSessionParameters(@RequestBody SessionParameters parameters, @PathVariable(value="code") int code, HttpServletRequest request) {
+		
+		ServerResponse response = new ServerResponse();
+		try {
+			this.hostDao.setSessionParameters(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName()), parameters);
+		}
+		catch (DaoException error) {
+			
+			ErrorLogger.LogError(new SetOffsetException("Unable to store session parameters", error));
+			response.setErrorCode(Constants.ErrorCodes.SessionParametersRegistrationError.getCode());
+		}
+		
+		return response;
 	}
 	
 	@ResponseBody
@@ -84,6 +102,7 @@ public class HostController {
 					CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
 			
 			result.setOffsetSettings(this.hostDao.getOffsetSettings(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
+			result.setSessionParameters(this.hostDao.getSessionParameters(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
 			
 			return result;
 		}

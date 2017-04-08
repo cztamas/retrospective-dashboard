@@ -54,29 +54,30 @@
 	          	<li>
 				              
 				    <button
-	            		title="Configuration"
-	            		style="margin-top: 16px; margin-left: 20px; margin-right: 10px;" 
+	            		title="Board Settings"
+	            		style="margin-top: 8px; margin-left: 20px; margin-right: 10px;" 
 	            		onClick="$('#settings-dialog').dialog({width: 600});"  
-	            		class="btn btn-default btn-xs">Settings</button>
+	            		class="btn btn-default btn"><img src="../../resources/images/settings.png" /></button>
 	          	</li>
 	            <li>
 	            	<button
-	            		title="Click here to save the URL of this board"
-	            		style="margin-top: 16px; margin-right: 10px;" 
+	            		title="Permalink: save this url when finished"
+	            		style="margin-top: 8px; margin-right: 10px;" 
 	            		onClick="$('#dialog').dialog({width: 600}); shareUrl();"  
-	            		class="btn btn-default btn-xs">Save permalink</button>
+	            		class="btn btn-default btn"><img src="../../resources/images/share.png" /></button>
 	            </li>
 	            <c:if test="${dashboard == null}">
 	            	<li>
-	            		<img src="../../resources/images/icon-qrcode.png" 
-	            			style="padding-top: 8px; cursor: pointer;" 
-	            			title="Display join QR code of this board" 
-	            			onClick="app.getController('qr-code-widget').show();" />
+	            		<button
+		            		title="QR Code and Join URL" 
+		            		style="margin-top: 8px; margin-right: 10px;" 
+		            		onClick="app.getController('qr-code-widget').show();"
+		            		class="btn btn-default btn"><img src="../../resources/images/qr.png" /></button>
 	            	</li>
 	            </c:if>
 	            
 	            <li>
-	            	<img src="../../resources/images/spacer.gif" height="1" width="60" />
+	            	<img src="../../resources/images/spacer.gif" height="1" width="20" />
 	            </li>
 	          </ul>
 	          
@@ -129,14 +130,6 @@
 		$('#postit-size-slider').slider().on('change', function(event) {
 		    boardPageScope.resizePostIts(event.value.newValue);
 		});
-		
-		var postitSize = Utils.getCookie('postit-size-${token}');
-		if (postitSize != null) {
-			boardPageScope.resizePostIts(postitSize);
-			$("#postit-size-slider").attr('data-slider-value', postitSize);
-			$("#postit-size-slider").slider('refresh');
-		}
-	
 	});
 
 	$(window).resize(function() {

@@ -245,7 +245,7 @@ app.controller("participant-page", function ParticipantPageController(
 	$scope.refreshStickersForWeb = function() {
 		
 		if ($scope.stickers.length == 0) {
-			$('#stickersContainer').html('<i>You have not added any comment yet</i>');
+			$('#stickersContainer').html('<i style="color: #aaaaaa;">There is no feedback to be published.</i>');
 			return;
 		}
 		

@@ -9,6 +9,8 @@ public class GetSessionDetailsResponse extends ServerResponse {
 	private List<Sticker> stickers;
 	
 	private String offsetSettings;
+	
+	private SessionParameters sessionParameters;
 
 	public List<Sticker> getStickers() {
 		return stickers;
@@ -24,6 +26,14 @@ public class GetSessionDetailsResponse extends ServerResponse {
 
 	public void setOffsetSettings(String offsetSettings) {
 		this.offsetSettings = offsetSettings;
+	}
+
+	public SessionParameters getSessionParameters() {
+		return sessionParameters;
+	}
+
+	public void setSessionParameters(SessionParameters sessionParameters) {
+		this.sessionParameters = sessionParameters;
 	}
 
 	public static GetSessionDetailsResponse error() {

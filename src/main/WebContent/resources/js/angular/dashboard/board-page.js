@@ -72,8 +72,7 @@ app.controller("board-page", function BoardPageController(
 		$scope.showStickers();
 	};
 	
-	$scope.resizePostIts = function(size) {
-		
+	$scope.setPostItSize = function(size) {
 		var configs = [{ 
 			boxSizeRatio: 0.5,
 			stickerFontSize: '7pt'
@@ -87,9 +86,18 @@ app.controller("board-page", function BoardPageController(
 			stickerFontSize: '14pt'
 		}];
 		
+		if (size >= configs.length) {
+			return;
+		}
+		
 		stickerBuilderService.configuration.boxSizeRatio = configs[size].boxSizeRatio;
 		stickerBuilderService.configuration.stickerFontSize = configs[size].stickerFontSize;
-		Utils.setCookie('postit-size-' + $scope.state.token, size, 365);
+	};
+	
+	$scope.resizePostIts = function(size) {
+		
+		$scope.setPostItSize(size);
+		boardService.registerSessionParameters(Context.code, { size: size });
 		
 		$scope.showStickers();
 	};
@@ -116,7 +124,7 @@ app.controller("board-page", function BoardPageController(
 	
 	$scope.refreshStickers = function() {
 		
-		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings) {
+		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings, sessionParameters) {
 			
 			try {
 				if (offsetSettings != null) {
@@ -127,7 +135,19 @@ app.controller("board-page", function BoardPageController(
 				Utils.handleError('Dashboard: unable to apply offsets', error);
 			}
 			
+			// initialize stickers
 			$scope.state.stickers = stickers;
+			
+			// set post-it size
+			try {
+				$scope.setPostItSize(sessionParameters.size);
+				$("#postit-size-slider").bootstrapSlider('setValue', sessionParameters.size);	
+			}
+			catch (error) {
+				Utils.handleError('Dashboard: unable to apply post-it size', error);
+			}
+			
+			// render stickers
 			$scope.showStickers();
 		});
 	};

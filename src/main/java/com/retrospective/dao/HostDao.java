@@ -5,6 +5,7 @@ import java.util.List;
 import com.retrospective.exception.AuthorizationException;
 import com.retrospective.exception.DaoException;
 import com.retrospective.model.SessionDetails;
+import com.retrospective.model.SessionParameters;
 import com.retrospective.model.Sticker;
 
 public interface HostDao {
@@ -15,5 +16,9 @@ public interface HostDao {
 	
 	public void setOffsets(int sessionCode, String sessionToken, String offsets) throws DaoException;
 	
+	public void setSessionParameters(int sessionCode, String sessionToken, SessionParameters parameters) throws DaoException;
+	
 	public String getOffsetSettings(int sessionCode, String sessionToken) throws DaoException;
+	
+	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException;
 }

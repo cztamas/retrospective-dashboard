@@ -7,7 +7,7 @@
  	<p style="color: #ff0000;" id="errorMessage"></p>
 </div>
 
-<div id="settings-dialog" title="Settings">
+<div id="settings-dialog" title="Board Settings">
 
 	<table width="100%">
 	<tr>

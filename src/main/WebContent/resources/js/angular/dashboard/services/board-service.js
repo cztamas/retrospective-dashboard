@@ -86,6 +86,26 @@ app.service('boardService', function BoardService() {
 		self.participants.push(participantDetails);
 	};
 	
+	self.registerSessionParameters = function(sessionCode, sessionParameters) {
+		$.ajax({
+		    method: 'POST',
+		    url: app.rootUrl + "/rest/host/session/" + sessionCode + '/params',
+		    dataType: 'json',
+		    contentType: 'application/json',
+		    data: JSON.stringify(sessionParameters),
+		    
+		    statusCode: {
+		    	200: function(data) {
+		    		
+		    		if (data.errorCode !== 0) {
+		    			console.log(data);
+		    			return;
+		    		}   
+	            },
+	        }
+		});	
+	};
+	
 	self.persistOffsets = function(sessionCode, offsets) {
 		$.ajax({
 		    method: 'POST',
@@ -128,7 +148,7 @@ app.service('boardService', function BoardService() {
 		    			return;
 		    		}
 		    		
-		    		onSuccess(self.transform(data.stickers), data.offsetSettings);   
+		    		onSuccess(self.transform(data.stickers), data.offsetSettings, data.sessionParameters);   
 	            },
 	        }
 		});	

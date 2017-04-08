@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.retrospective.exception.AuthorizationException;
 import com.retrospective.exception.DaoException;
 import com.retrospective.model.SessionDetails;
+import com.retrospective.model.SessionParameters;
 import com.retrospective.model.Sticker;
 
 public class HostDaoImpl implements HostDao {
@@ -96,7 +97,22 @@ public class HostDaoImpl implements HostDao {
 					});
 		}
 		catch (Exception error) {
-			throw new DaoException("Database error occurred while fetching stickers", error);
+			throw new DaoException("Database error occurred while registering offsets", error);
+		}
+	}
+	
+	@Override
+	public void setSessionParameters(int sessionCode, String sessionToken, SessionParameters parameters) throws DaoException {
+		try {
+			this.jdbcTemplate.update("UPDATE session SET size = ? WHERE code = ? AND token = ?", 
+					new Object [] {
+						parameters.getSize(), 
+						sessionCode,
+						sessionToken
+					});
+		}
+		catch (Exception error) {
+			throw new DaoException("Database error occurred while storing session parameters", error);
 		}
 	}
 	
@@ -111,6 +127,32 @@ public class HostDaoImpl implements HostDao {
 		catch (Exception error) {
 			error.printStackTrace();
 			throw new DaoException("Database error occurred while fetching stickers", error);
+		}
+	}
+	
+	@Override
+	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException {
+		try {
+			return this.jdbcTemplate.queryForObject("SELECT size FROM session WHERE code = ? AND token = ?", 
+					new Object[] { sessionCode, sessionToken },
+					new RowMapper<SessionParameters>() {
+
+						@Override
+						public SessionParameters mapRow(ResultSet rs, int rowNum) throws SQLException {
+							SessionParameters sessionParameters = new SessionParameters();
+							sessionParameters.setSize(rs.getInt("size"));
+							if (rs.wasNull()) {
+								// if size was not set, using default (3) which is normal size
+								sessionParameters.setSize(3); 
+						    }
+						    return sessionParameters;
+						}
+				
+					});
+		}
+		catch (Exception error) {
+			error.printStackTrace();
+			throw new DaoException("Database error occurred while fetching session parameters", error);
 		}
 	}
 	

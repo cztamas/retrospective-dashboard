@@ -34,7 +34,8 @@ public class Constants {
 		CreateSessionFailed (1),
 		GetSessionDetailsFailed (2),
 		UnableToStoreSticker (3),
-		OffsetRegistrationError (4);
+		OffsetRegistrationError (4),
+		SessionParametersRegistrationError (5);
 		
 		private int code;
 		
