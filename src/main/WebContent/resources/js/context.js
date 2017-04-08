@@ -3,5 +3,6 @@ var Context = {
 	token: null,
 	
 	// configuration
-	displayUsernames: false
+	displayUsernames: false,
+	sessionName: null
 }

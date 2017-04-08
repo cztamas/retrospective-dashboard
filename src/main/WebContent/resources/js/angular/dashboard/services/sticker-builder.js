@@ -41,6 +41,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var controlId = 'sticker_' + stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
 			
+			var actionButtons = '';
 			var deleteStickerImage = '';
 			
 			// sticker's original palce marker
@@ -58,6 +59,8 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 				
 				deleteStickerImage = '<img onClick="if (confirm(\'Are you sure you want to remove this item?\')) { app.getController(\'board-page\').registerRemoved(\''+controlId+'\', '+stickers[i].id+'); }" id="remove_image_'+controlId+'" src="' + app.rootUrl + '/resources/images/remove.png" class="remove-button"/>';
 			}
+			
+			actionButtons += deleteStickerImage;
 			
 			// sticker
 			var bottomWithOffset = bottom;
@@ -82,6 +85,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
 					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 
 					+ 'width: '+stickerWidth+'px; '
+					+ 'cursor: pointer; '
 					+ 'background-image: -ms-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: -moz-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
 					+ 'background-image: -o-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
@@ -96,7 +100,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'onMouseDown="'+onDragging+'" '
 					+ 'onMouseOver="$(\'#remove_image_'+controlId+'\').show();" '
 					+ 'onMouseOut="$(\'#remove_image_'+controlId+'\').hide();" '
-					+'>'+Utils.htmlEncode(stickers[i].message) + deleteStickerImage + '</div>');
+					+'>'+Utils.htmlEncode(stickers[i].message) + actionButtons + '</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
 			// value before setting the offset-adjusted position

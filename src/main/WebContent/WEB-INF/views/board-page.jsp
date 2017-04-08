@@ -26,7 +26,7 @@
 	    <nav class="navbar navbar-default navbar-fixed-top">
 	      <div class="container-fullwidth">
 	        <div class="navbar-header">
-	          <a class="navbar-brand" href="#">Retrospective</a>
+	          <a class="navbar-brand" href="#" ng-bind="state.sessionParameters.name"></a>
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">

@@ -1,0 +1,14 @@
+2017-04-08: 
+  * Allow scrum master to resize post-it
+  * Anonymous mode switch
+  * Avoid user list overflow
+  
+2017-03-19:
+  * Making websocket channel more stable: reconnect on error, retry on fail
+  * Making post-it wider in case of long text
+  * Desktop web client added
+  * GA tracking
+  
+2017-03-09:
+  * Launch www.retrospective-dashboard.org
+  * Allow user to remove post-it

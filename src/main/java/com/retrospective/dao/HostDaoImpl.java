@@ -31,7 +31,7 @@ public class HostDaoImpl implements HostDao {
 		sessionDetails.setCode(this.generate6digitCode());
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at) VALUES (default, ?, ?, NOW())", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name) VALUES (default, ?, ?, NOW(), 'Retrospective')", 
 					new Object[] { 
 							sessionDetails.getCode(),
 							sessionDetails.getToken() });
@@ -104,9 +104,10 @@ public class HostDaoImpl implements HostDao {
 	@Override
 	public void setSessionParameters(int sessionCode, String sessionToken, SessionParameters parameters) throws DaoException {
 		try {
-			this.jdbcTemplate.update("UPDATE session SET size = ? WHERE code = ? AND token = ?", 
+			this.jdbcTemplate.update("UPDATE session SET size = ?, name = ? WHERE code = ? AND token = ?", 
 					new Object [] {
 						parameters.getSize(), 
+						parameters.getName(),
 						sessionCode,
 						sessionToken
 					});
@@ -133,7 +134,7 @@ public class HostDaoImpl implements HostDao {
 	@Override
 	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT size FROM session WHERE code = ? AND token = ?", 
+			return this.jdbcTemplate.queryForObject("SELECT size, name FROM session WHERE code = ? AND token = ?", 
 					new Object[] { sessionCode, sessionToken },
 					new RowMapper<SessionParameters>() {
 
@@ -145,6 +146,8 @@ public class HostDaoImpl implements HostDao {
 								// if size was not set, using default (3) which is normal size
 								sessionParameters.setSize(3); 
 						    }
+							sessionParameters.setName(rs.getString("name"));
+							
 						    return sessionParameters;
 						}
 				

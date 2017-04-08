@@ -22,6 +22,7 @@ app.controller("board-page", function BoardPageController(
 		isRevealed: false,
 		offset: {},
 		stickers: [],
+		sessionParameters: {},
 		token: null
 	};
 	
@@ -95,12 +96,22 @@ app.controller("board-page", function BoardPageController(
 		
 		stickerBuilderService.configuration.boxSizeRatio = configs[size].boxSizeRatio;
 		stickerBuilderService.configuration.stickerFontSize = configs[size].stickerFontSize;
+		
+		$scope.state.sessionParameters.size = size;
+	};
+	
+	$scope.setSessionName = function(name) {
+		$scope.state.sessionParameters.name = name;
+		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() {
+			alert('Session name has been changed.');
+			$scope.$apply();
+		});
 	};
 	
 	$scope.resizePostIts = function(size) {
 		
 		$scope.setPostItSize(size);
-		boardService.registerSessionParameters(Context.code, { size: size });
+		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters);
 		
 		$scope.showStickers();
 	};
@@ -143,7 +154,9 @@ app.controller("board-page", function BoardPageController(
 			
 			// set post-it size
 			try {
+				$scope.state.sessionParameters = sessionParameters;
 				$scope.setPostItSize(sessionParameters.size);
+				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
 				$("#postit-size-slider").bootstrapSlider('setValue', sessionParameters.size);	
 			}
 			catch (error) {

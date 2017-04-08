@@ -12,6 +12,30 @@
 	<table width="100%">
 	<tr>
 		<td width="200">
+			<b>Name</b><br/>
+			<span style="font-size: 8pt;">
+				Name of the retrospective session 
+			</span>
+		</td>
+		<td>&nbsp;&nbsp;</td>
+		<td style="padding-left: 60px; font-family: Tahoma; font-size: 9pt;">
+			<table>
+			<tr>
+				<td width="90%"><input id="sessionName" class="form-control" type="text" onChange=""/></td>
+				<td style="padding-left: 10px;"><button onClick="app.getController('board-page').setSessionName($('#sessionName').val());" class="btn btn-default btn">set</button></td>
+			</tr>
+			</table>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="border-top: solid 1px #dddddd;">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="200">
 			<b>Post-it size</b><br/>
 			<span style="font-size: 8pt;">
 				You can scale the post-it sizes with this option

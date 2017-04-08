@@ -86,7 +86,7 @@ app.service('boardService', function BoardService() {
 		self.participants.push(participantDetails);
 	};
 	
-	self.registerSessionParameters = function(sessionCode, sessionParameters) {
+	self.registerSessionParameters = function(sessionCode, sessionParameters, onSuccess) {
 		$.ajax({
 		    method: 'POST',
 		    url: app.rootUrl + "/rest/host/session/" + sessionCode + '/params',
@@ -101,6 +101,10 @@ app.service('boardService', function BoardService() {
 		    			console.log(data);
 		    			return;
 		    		}   
+		    		
+		    		if (onSuccess) {
+		    			onSuccess();
+		    		}
 	            },
 	        }
 		});	
