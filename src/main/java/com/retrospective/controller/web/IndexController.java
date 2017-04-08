@@ -21,6 +21,7 @@ public class IndexController {
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ModelAndView modelView = new ModelAndView("init-page");
+		modelView.addObject("isInitPage", true);
 		
 		return modelView;
 	}
@@ -80,6 +81,8 @@ public class IndexController {
 		ModelAndView page = new ModelAndView("participant-mobile-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
+		page.addObject("isParticipant", true);
+		page.addObject("isMobile", true);
 		
 		return page;
 	}
@@ -95,6 +98,8 @@ public class IndexController {
 		ModelAndView page = new ModelAndView("participant-web-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
+		page.addObject("isParticipant", true);
+		page.addObject("isMobile", false);
 		
 		return page;
 	}
