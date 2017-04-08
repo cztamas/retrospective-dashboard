@@ -36,7 +36,7 @@ public class IndexController {
 		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
-		page.addObject("dashboard", true);
+		page.addObject("isDashboard", true);
 		
 		return page;
 	}
@@ -52,6 +52,7 @@ public class IndexController {
 		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
+		page.addObject("isDashboard", false);
 		
 		return page;
 	}

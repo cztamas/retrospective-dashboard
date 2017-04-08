@@ -10,7 +10,13 @@ app.controller("user-list-widget", function UserListWidgetController($scope, par
 	    return item.age >= 0;
 	};
 	
-	$scope.initialize = function(code, token) {
+	$scope.initialize = function(code, token, isDashboard) {
+		
+		if (isDashboard) {
+			// do not want to initialize participant service, we are not waiting for join actions over websocket channel
+			return;
+		}
+		
 		participantService.initialize(code, token);
 		participantService.onJoin = function(participantDetails) {
 			$scope.addParticipant(participantDetails);

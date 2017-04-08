@@ -28,7 +28,10 @@ app.controller("board-page", function BoardPageController(
 	$scope.initialize = function(shareUrl, code, token) {
 		$scope.state.token = token;
 		
-		boardService.initialize($scope.refreshStickers, false);
+		if ($scope.state.mode == $scope.enum.mode.session) {
+			// websocket connection is allowed only for Session mode (disabled in Dashboard mode)
+			boardService.initialize($scope.refreshStickers, false);	
+		}
 		
 		$(document).tooltip();
 		$('#dialog').hide();
