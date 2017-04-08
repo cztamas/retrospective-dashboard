@@ -77,6 +77,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'data-original-left="'+left+'" '
 					+ 'id='+controlId+' ' 
 					+ 'class="sticker ui-widget-content" '
+					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'"' : '')
 					+ 'style="'
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
 					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 

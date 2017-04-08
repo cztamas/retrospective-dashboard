@@ -166,7 +166,8 @@ app.service('boardService', function BoardService() {
 				message: stickersFromServer[i].comment, 
 				glad: stickersFromServer[i].glad, 
 				noControl: stickersFromServer[i].noControl,
-				transform: stickersFromServer[i].transform
+				transform: stickersFromServer[i].transform,
+				username: stickersFromServer[i].username
 			});
 			
 		}

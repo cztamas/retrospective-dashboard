@@ -1,4 +1,7 @@
 var Context = {
 	code: null,
-	token: null
+	token: null,
+	
+	// configuration
+	displayUsernames: false
 }

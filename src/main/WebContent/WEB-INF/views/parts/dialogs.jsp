@@ -18,7 +18,7 @@
 			</span>
 		</td>
 		<td>&nbsp;&nbsp;</td>
-		<td align="center" valign="top" style="padding-top: 20px;">
+		<td valign="top" style="padding-top: 20px; padding-left: 60px;">
 			<input id="postit-size-slider" type="text"
 	            data-provide="slider"
 	            data-slider-ticks="[0, 1, 2]"
@@ -28,6 +28,24 @@
 	            data-slider-step="1"
 	            data-slider-value="2"
 	            data-slider-tooltip="hide" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="border-top: solid 1px #dddddd;">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="200">
+			<b>Anonymous Mode</b><br/>
+			<span style="font-size: 8pt;">
+				If anonymous mode is unchecked, usernames are displayed when hovering over a post-it. 
+			</span>
+		</td>
+		<td>&nbsp;&nbsp;</td>
+		<td style="padding-left: 60px; font-family: Tahoma; font-size: 9pt;">
+			<input type="checkbox" id="anonymousCheckBox" onChange="Context.displayUsernames = !this.checked; app.getController('board-page').showStickers();" name="isAnonymous" CHECKED /> <label for="anonymousCheckBox">Anonymous</label>
 		</td>
 	</tr>
 	</table>
