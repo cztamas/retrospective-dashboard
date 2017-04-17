@@ -1,4 +1,4 @@
-app.service('stickerBuilderService', function StickerBuilderService(configuration) {
+app.service('stickerBuilderService', function StickerBuilderService(configuration, stickerColorThemeService) {
 	
 	var self = this;
 	
@@ -41,9 +41,6 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var controlId = 'sticker_' + stickers[i].id;
 			var controlOriginalPlaceholderId = controlId + '_orig';
 			
-			var actionButtons = '';
-			var deleteStickerImage = '';
-			
 			// sticker's original palce marker
 			if (isSession) { 
 				$("#boardContent").append('<div class="original-sticker-place" id="'+controlOriginalPlaceholderId+'" '
@@ -56,11 +53,12 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 						+ 'left: '+left+'px; '
 						+ '" ' 
 						+ '></div>');
-				
-				deleteStickerImage = '<img onClick="if (confirm(\'Are you sure you want to remove this item?\')) { app.getController(\'board-page\').registerRemoved(\''+controlId+'\', '+stickers[i].id+'); }" id="remove_image_'+controlId+'" src="' + app.rootUrl + '/resources/images/remove.png" class="remove-button"/>';
 			}
 			
-			actionButtons += deleteStickerImage;
+			/*actionButtons += '<span ' 
+				+ 'id="change_color_'+controlId+'" ' 
+				+ 'style="cursor: pointer; position: absolute; left: 2px; bottom: 2px; font-size: 6pt;" '
+				+ 'onClick="app.getController(\'board-page\').registerColorChange(\''+controlId+'\', '+stickers[i].id+');">change color</span>';*/
 			
 			// sticker
 			var bottomWithOffset = bottom;
@@ -75,6 +73,9 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
 			$("#boardContent").append('<div '
+					+ 'data-toggle="context" '
+					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
+					+ 'data-target="#context-menu" '
 					+ 'data-sticker-id="'+stickers[i].id+'" '
 					+ 'data-original-bottom="'+bottom+'" '
 					+ 'data-original-left="'+left+'" '
@@ -85,13 +86,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
 					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 
 					+ 'width: '+stickerWidth+'px; '
-					+ 'cursor: pointer; '
-					+ 'background-image: -ms-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: -moz-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: -o-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0, #FCCD4D), color-stop(50, #FBDF93), color-stop(100, #FCCD4D));'
-					+ 'background-image: -webkit-linear-gradient(bottom left, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
-					+ 'background-image: linear-gradient(to top right, #FCCD4D 0%, #FBDF93 50%, #FCCD4D 100%);'
+					+ self.getStickerBackgroundCss(offset[stickers[i].id] ? offset[stickers[i].id].colorTheme : undefined)
 					+ 'position: absolute; '
 					+ 'transform: rotate('+stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
@@ -100,7 +95,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'onMouseDown="'+onDragging+'" '
 					+ 'onMouseOver="$(\'#remove_image_'+controlId+'\').show();" '
 					+ 'onMouseOut="$(\'#remove_image_'+controlId+'\').hide();" '
-					+'>'+Utils.htmlEncode(stickers[i].message) + actionButtons + '</div>');
+					+'>'+Utils.htmlEncode(stickers[i].message) + '</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
 			// value before setting the offset-adjusted position
@@ -136,5 +131,30 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			$('#remove_image_' + controlId).hide();
 		}
 	};
-    
+	
+	self.getStickerBackgroundCss = function(colorTheme) {
+		if (!colorTheme) {
+			return stickerColorThemeService.getStickerBackgroundCssList()[0];
+		}
+		else {
+			return stickerColorThemeService.getStickerBackgroundCssList()[colorTheme];
+		}
+	};
+	
+	self.getNextColorTheme = function(sticker) {
+		var length = stickerColorThemeService.getStickerBackgroundCssList();
+		var next = 0;
+		if (!sticker.colorTheme) {
+			return next;
+		}
+		else {
+			next = sticker.colorTheme + 1;
+		}
+		
+		if (next >= length) {
+			next = 0;
+		}
+		
+		return;
+	};
 });

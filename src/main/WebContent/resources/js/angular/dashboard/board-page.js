@@ -3,6 +3,7 @@ app.controller("board-page", function BoardPageController(
 		configuration,
 		boardService,
 		stickerBuilderService,
+		stickerColorThemeService,
 		labelBuilderService) {
 	
 	$scope.enum = { 
@@ -44,8 +45,18 @@ app.controller("board-page", function BoardPageController(
 			$scope.state.offset = JSON.parse(localStorage.getItem($scope.configuration.offsetLocalStorageKey));
 		}
 		
+		// Setup context menu
+		var colorThemes = stickerColorThemeService.getStickerBackgroundCssList();
+		for (var i=0; i!=colorThemes.length; i++) {
+			$('#color-sample-' + i).attr('style', colorThemes[i]);
+		}
+		
 		$scope.resize();
 		$scope.refreshStickers();
+    };
+    
+    $scope.getStickerBackgroundCssList = function() {
+    	return stickerColorThemeService.getStickerBackgroundCssList();
     };
     
 	$scope.showStickers = function() {
@@ -71,6 +82,23 @@ app.controller("board-page", function BoardPageController(
 		}
 		
 		$scope.state.offset[stickerId] = { removed: true };
+		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
+		boardService.persistOffsets(Context.code, $scope.state.offset);
+		$scope.showStickers();
+	};
+	
+	$scope.registerColorChange = function(controlId, stickerId, colorIndex) {
+		
+		if ($scope.state.mode !== $scope.enum.mode.session) {
+			return;
+		}
+		
+		if (!$scope.state.offset[stickerId]) {
+			$scope.state.offset[stickerId] = {};
+		}
+		
+		$scope.state.offset[stickerId].colorTheme = colorIndex;
+		
 		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
 		boardService.persistOffsets(Context.code, $scope.state.offset);
 		$scope.showStickers();
@@ -127,10 +155,12 @@ app.controller("board-page", function BoardPageController(
 		var currentLeft = parseInt($('#' + controlId).css('left').replace('px', ''));
 		var currentTop = parseInt($('#' + controlId).css('top').replace('px', ''));
 		
-		$scope.state.offset[stickerId] = {
-			leftOffset: Math.ceil(currentLeft - originalLeft),
-			bottomOffset: Math.ceil(-1 * (currentTop - originalTop))
-		};
+		if (!$scope.state.offset[stickerId]){
+			$scope.state.offset[stickerId] = {};
+		}
+		
+		$scope.state.offset[stickerId].leftOffset = Math.ceil(currentLeft - originalLeft);
+		$scope.state.offset[stickerId].bottomOffset = Math.ceil(-1 * (currentTop - originalTop));
 		
 		localStorage.setItem($scope.configuration.offsetLocalStorageKey, JSON.stringify($scope.state.offset));	
 		boardService.persistOffsets(Context.code, $scope.state.offset);

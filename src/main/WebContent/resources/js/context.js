@@ -4,5 +4,7 @@ var Context = {
 	
 	// configuration
 	displayUsernames: false,
-	sessionName: null
+	sessionName: null,
+	lastRightClickOnSticker: null, // stickerId
+	lastRightClickOnStickerControlId: null // controlId of sticker
 }

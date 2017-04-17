@@ -25,6 +25,7 @@
 	<c:if test="${isDashboard != null}">
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/qrcodejs/qrcode.min.js"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/board-service.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-color-theme-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-builder.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/label-builder.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/qr-code-widget.js?ts=<% out.print(Math.random()); %>"></script>

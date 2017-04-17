@@ -12,7 +12,9 @@
 	<%@ include file="parts/google-analytics.jsp" %>
 	
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js" ></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap-contextmenu/bootstrap-contextmenu.js" ></script>
     <link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/board-page.css">
 
 	<script>
 		Context.code = <c:out value="${code}"/>;
@@ -51,7 +53,7 @@
 	            </li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
-	            <c:if test="${isDashboard == false}">
+	          	<c:if test="${isDashboard == false}">
 		          	<li>
 					    <button
 		            		title="Board Settings"
@@ -139,7 +141,8 @@
 	
 	</script>
 	
-	
 	<%@include file="parts/dialogs.jsp" %>
+	<%@include file="parts/context-menu/sticker-context-menu.jsp" %>
+	
   </body>
 </html>
