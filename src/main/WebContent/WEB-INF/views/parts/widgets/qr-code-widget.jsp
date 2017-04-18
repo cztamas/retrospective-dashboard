@@ -1,6 +1,6 @@
 <div id="qrCodeContainer" ng-controller="qr-code-widget" class="centered">
 	
-	<table width="100%" style="margin-bottom: 10px;">
+	<table width="100%" style="margin-bottom: 10px; min-width: 400px;">
 		<tr>
 			<td colspan="2">
 				<b>Waiting for participants to join ...</b>
@@ -16,7 +16,7 @@
 				  	id="join-url" 
 				  	type="text" 
 				  	class="form-control"
-				  	style="width: 70%;"
+				  	style="width: 60%;"
 				  	placeholder="share url">
 				  <button style="margin-left: 5px;" class="btn btn-primary btn-sm" onClick="Utils.copyToClipboard($('#join-url').val())">copy</button>
 				  <button style="margin-left: 5px;" class="btn btn-primary btn-sm" onClick="Utils.openInNewTab($('#join-url').val())">open</button>

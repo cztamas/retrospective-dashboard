@@ -22,8 +22,8 @@ app.controller("qr-code-widget", function QrCodeWidgetController($scope) {
 		
 		new QRCode(document.getElementById($scope.configuration.placeholders.qrCodeImageContainer), {
 		    text: $scope.state.codedUrl,
-		    width: window.innerHeight * 0.70,
-		    height: window.innerHeight * 0.70,
+		    width: window.innerHeight * 0.60,
+		    height: window.innerHeight * 0.60,
 		    colorDark : $scope.configuration.colors.dark,
 		    colorLight : $scope.configuration.colors.light,
 		    correctLevel : QRCode.CorrectLevel.H

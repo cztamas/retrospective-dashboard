@@ -77,10 +77,8 @@ app.controller("participant-page", function ParticipantPageController(
 	$scope.addSticker = function() {
 		
 		var glad = $('#slider-fill-glad').val();
-		var control = $('#slider-fill-control').val();
+		var noControl = $('#slider-fill-control').val();
 		var comment = $('#comment').val();
-		
-		var noControl = 1000 - control;
 		
 		var isAdding = $('#commentAddOrEdit').data('mode') == 'add';
 		if (comment == '') {
@@ -142,13 +140,13 @@ app.controller("participant-page", function ParticipantPageController(
 		$('#comment').val(sticker.comment);
 		
 		if ($scope.state.isMobileView) {
-			$('#slider-fill-control').val(1000 - sticker.noControl);
+			$('#slider-fill-control').val(sticker.noControl);
 			$('#slider-fill-glad').val(sticker.glad);
 			$('#slider-fill-control').slider('refresh');
 			$('#slider-fill-glad').slider('refresh');	
 		}
 		else {
-			$('#slider-fill-control').bootstrapSlider('setValue', 1000 - sticker.noControl)
+			$('#slider-fill-control').bootstrapSlider('setValue', sticker.noControl)
 			$('#slider-fill-glad').bootstrapSlider('setValue', sticker.glad);
 		}
 		
@@ -159,6 +157,8 @@ app.controller("participant-page", function ParticipantPageController(
 		}
 		else {
 			$('#create-comment-dialog').modal('show');
+			$('#marker-ball').addClass('hidden');
+			$scope.setCrosshair(sticker.glad, sticker.noControl, 'plot-area', 10);
 		}
 	};
 	
@@ -185,6 +185,9 @@ app.controller("participant-page", function ParticipantPageController(
 			// we are using a different slider for desktop web client
 			$('#slider-fill-control').bootstrapSlider('setValue', 500);
 			$('#slider-fill-glad').bootstrapSlider('setValue', 500);
+			
+			// and we are using coordinates as well
+			$('#marker-ball').addClass('hidden');
 		}
 		
 		if ($('#commentAddOrEdit').data('mode') == 'add') {
@@ -193,6 +196,35 @@ app.controller("participant-page", function ParticipantPageController(
 		else {
 			$('#commentAddOrEdit').html('Edit');
 		}
+	};
+	
+	$scope.setCrosshair = function(glad, noControl, plotId, renderPlotTryCount) {
+		
+		$('#marker-ball').removeClass('hidden');
+		var pos = $("#" + plotId).position();
+		
+		if (pos.left == 0 && pos.top == 0 && renderPlotTryCount > 0) {
+			setTimeout(function() {
+				console.warn('Trying to render marker dot on plot area (attempt '+(11-renderPlotTryCount)+'), plot area is not visible yet, position can not be determined');
+				$scope.setCrosshair(glad, noControl, plotId, renderPlotTryCount - 1)
+			}, 100);
+			return;
+		}
+		
+		console.log('Plot Area visible, rendering marker dot');
+		
+		var plotSize = { 
+			width: $("#" + plotId).width(), 
+			height: $("#" + plotId).height() 
+		};
+		
+		var relativeX = (noControl / 1000) * plotSize.width;
+		var relativeY = (1 - (glad / 1000)) * plotSize.height;
+		
+		$('#' + plotId).data('glad', glad);
+		$('#' + plotId).data('noControl', noControl);
+		
+		$('#marker-ball').attr('style', 'position: absolute; left: ' + (pos.left + relativeX - 5) + 'px; top: ' + (pos.top + relativeY - 5) + 'px; ');
 	};
 	
 	$scope.refreshStickers = function() {
@@ -217,11 +249,11 @@ app.controller("participant-page", function ParticipantPageController(
 				    + '% glad</div>'
 				    +'</div>';
 			
-			var controlPercentage = parseInt((1000-$scope.stickers[i].noControl) / 10);
+			var controlPercentage = parseInt(($scope.stickers[i].noControl) / 10);
 			var controlHtml = '<div class="progress">'
 				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+controlPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+controlPercentage+'%;"> ' 
 				    + controlPercentage
-				    + '% control</div>'
+				    + '% no control</div>'
 				    +'</div>';
 			
 			$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
@@ -258,7 +290,7 @@ app.controller("participant-page", function ParticipantPageController(
 	  		  + '     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {gladPercentage}%;">Glad</div>'
 			  + '  </div>'
 			  + '  <div class="progress">'
-	  		  + '     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {controlPercentage}%;">Control</div>'
+	  		  + '     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {controlPercentage}%;">No Control</div>'
 			  + '</div>'
 				
 			  + '<div class="btn-group" role="group" aria-label="...">'
@@ -269,7 +301,7 @@ app.controller("participant-page", function ParticipantPageController(
 		
 		for (var i=0; i!=$scope.stickers.length; i++) {
 			var gladPercentage = parseInt($scope.stickers[i].glad / 10);
-			var controlPercentage = parseInt((1000-$scope.stickers[i].noControl) / 10);
+			var controlPercentage = parseInt(($scope.stickers[i].noControl) / 10);
 			
 			$('#stickersContainer').append(template
 					.replaceAll('{gladPercentage}', gladPercentage)

@@ -7,6 +7,10 @@
     left: 0;
  }
  
+ .hidden {
+ 	visibility: hidden;
+ }
+ 
  .color-theme-sample {
  	width: 16px;
  	height: 16px;

@@ -33,7 +33,8 @@
   
   	    angular.element(document).ready(function() {
   	    	
- 	    	app.getController('participant-page as participantPage').initialize(${code}, '${token}', false);
+  	    	var pageController = app.getController('participant-page as participantPage');
+ 	    	pageController.initialize(${code}, '${token}', false);
  	    	
  	    	Context.code = ${code};
  	    	Context.token = '${token}';
@@ -42,8 +43,31 @@
 				return Math.ceil((value / 1000)*100) + '%';
 			};
 			
+			// slider selector
+			// ----------------------------------------------------------------------------
  	    	$('#slider-fill-control').bootstrapSlider({formatter: sliderFormatter});
  	    	$('#slider-fill-glad').bootstrapSlider({formatter: sliderFormatter});
+ 	    	
+ 	    	// coordinate selector
+ 	    	// ----------------------------------------------------------------------------
+ 	    	$("#plot-area").click(function(e) {
+ 	    	
+			  var offset = $(this).offset();
+			  var relativeX = (e.pageX - offset.left);
+			  var relativeY = (e.pageY - offset.top);
+			  var plotSize = { 
+					width: $("#plot-area").width(), 
+					height: $("#plot-area").height() 
+			  };
+				
+			  var glad = Math.ceil(1000 - ((relativeY / plotSize.height) * 1000));
+			  var noControl = Math.ceil((relativeX / plotSize.width) * 1000);
+			  
+			  pageController.setCrosshair(glad, noControl, 'plot-area', 0);
+			  
+			  $('#slider-fill-glad').bootstrapSlider('setValue', glad);
+			  $('#slider-fill-control').bootstrapSlider('setValue', noControl);
+			});
   	    });
  	    
    </script>
@@ -90,11 +114,32 @@
 	      </div>
 	      <div class="modal-body">
 	        Comment:<br/>
+	        <span class="footer-text">keep it short, it will be displayed on a small virtual post-it</span><br/>
 	        <textarea type="text" id="comment" style="width: 100%;"></textarea><br/><br/>
-	        Glad: <br/>
-	        <input id="slider-fill-glad" style="width: 100%;" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="500"/><br/><br/>
-	        Control: <br/>
-	        <input id="slider-fill-control" style="width: 100%;" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="500"/>
+	        
+	        <!-- Slider Selector is disabled -->
+	        <div class="hidden">
+		        Glad: <br/>
+		        <span class="footer-text">indicates how glad you are with this this</span><br/>
+		        <input id="slider-fill-glad" style="width: 100%;" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="500"/><br/><br/>
+		        No Control: <br/>
+		        <span class="footer-text">indicates how much control you feel about this item. eg.: 0% means you (or your team) have full control on this feedback item.</span><br/>
+		        <input id="slider-fill-control" style="width: 100%;" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="500"/>
+	        </div>
+	        <div>
+	        	Indicate your feelings about this item<br/>
+	        	<span class="footer-text">place this feedback item to the correct area below, indicating how glad you are with it and how much control you feel over this item</span><br/><br/>
+	        	<span>Glad</span><br/>
+	        	<img 
+	        		data-glad="500"
+	        		data-no-control="500" 
+	        		src="../../resources/images/plot.png" 
+	        		id="plot-area" 
+	        		style="cursor: crosshair;" /><br/>
+	        	<span style="position: float; float: right;">No Control</span><br/>
+	        	<img src="../../resources/images/ball.png" id="marker-ball" class="hidden" />
+	        	<br/>
+	        </div>
 	        
 	        <span id="errorLabel" class="error"></span>
 	      </div>

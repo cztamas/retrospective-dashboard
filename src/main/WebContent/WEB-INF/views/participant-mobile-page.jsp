@@ -58,9 +58,11 @@
     <div role="main" class="ui-content">
     	
   		<label for="slider-fill">Glad</label>
+  		<span class="footer-text">indicates how glad you are with this this</span><br/>
   		<input type="range" class="ui-hidden-accessible" name="slider-fill-glad" id="slider-fill-glad" value="0" min="0" max="1000" step="50" data-highlight="true" />
   
-  		<label for="slider-fill">Control</label>
+  		<label for="slider-fill">No Control</label>
+  		<span class="footer-text">indicates how much control you feel about this item. eg.: 0% means you (or your team) have full control on this feedback item.</span><br/>
   		<input type="range" class="ui-hidden-accessible" name="slider-fill-control" id="slider-fill-control" value="0" min="0" max="1000" step="50" data-highlight="true" />
   
   		<label for="comment">Your Comment (256 characters max)</label>
