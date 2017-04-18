@@ -4,7 +4,8 @@
     	<a 
     		tabindex="-1" 
     		href="#" 
-    		onClick="if (confirm('Are you sure you want to remove this item?')) { app.getController('board-page').registerRemoved(Context.lastRightClickOnStickerControlId, Context.lastRightClickOnSticker); }">Remove
+    		onClick="if (confirm('Are you sure you want to remove this item?')) { app.getController('board-page').registerRemoved(Context.lastRightClickOnStickerControlId, Context.lastRightClickOnSticker); }">
+    		<img src="../../resources/images/remove.png" height="16" width="16" /> Remove ...
     	</a>
     </li>
     <li>
