@@ -55,11 +55,6 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 						+ '></div>');
 			}
 			
-			/*actionButtons += '<span ' 
-				+ 'id="change_color_'+controlId+'" ' 
-				+ 'style="cursor: pointer; position: absolute; left: 2px; bottom: 2px; font-size: 6pt;" '
-				+ 'onClick="app.getController(\'board-page\').registerColorChange(\''+controlId+'\', '+stickers[i].id+');">change color</span>';*/
-			
 			// sticker
 			var bottomWithOffset = bottom;
 			var leftWithOffset = self.calculateLeftWidthOffset(boardWidth, stickers[i].noControl, stickerWidth, offset[stickers[i].id]);
@@ -73,7 +68,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
 			$("#boardContent").append('<div '
-					+ 'data-toggle="context" '
+					+ (isSession ? 'data-toggle="context" ' : '')
 					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
 					+ 'data-target="#context-menu" '
 					+ 'data-sticker-id="'+stickers[i].id+'" '

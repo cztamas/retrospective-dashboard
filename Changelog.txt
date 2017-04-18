@@ -1,7 +1,10 @@
+2017-04-18:
+  * Participant page: Glad / Control selection on canvas instead of slider 
+  * bugfix: QR Code size adjustment, avoid overflow
+ 
 2017-04-17:
   * Post-it coloring added
   * Edit session name
-  * bugfix: QR Code size adjustment, avoid overflow
 
 2017-04-08: 
   * Allow scrum master to resize post-it
