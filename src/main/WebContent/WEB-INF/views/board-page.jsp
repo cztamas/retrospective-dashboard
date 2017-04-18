@@ -44,7 +44,7 @@
 		            		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
 		            		style="margin-top: 16px; margin-left: 20px;" 
 		            		class="btn btn-primary btn-xs"
-		            		ng-click="reveal(<c:out value="${code}"/>)">Reveal <span class="badge">{{state.stickers.length}}</span>
+		            		ng-click="revealAll()">Reveal <span class="badge">{{state.stickers.length}}</span>
 		            	</button>
 		            </li>
 	            </c:if>
@@ -123,7 +123,7 @@
 		<c:if test="${isDashboard == true}">
 			qrCodeWidget.hide();
 			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
-			boardPageScope.reveal(<c:out value="${code}"/>);
+			boardPageScope.reveal();
 		</c:if>
 		
 		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');

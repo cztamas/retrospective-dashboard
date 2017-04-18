@@ -26,10 +26,16 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 		return left;
 	};
 	
-	self.build = function(stickers, offset, boardHeight, boardWidth, isSession) {
+	self.build = function(stickers, offset, boardHeight, boardWidth, isSession, revealedUsers) {
 		for (var i=0; i!=stickers.length; i++) {
 			
+			// sticker got removed
 			if (offset[stickers[i].id] && offset[stickers[i].id].removed === true) {
+				continue;
+			}
+			
+			// showing stickers for revealed users only
+			if (revealedUsers && !revealedUsers[stickers[i].username]) {
 				continue;
 			}
 			

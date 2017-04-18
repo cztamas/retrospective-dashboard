@@ -21,6 +21,8 @@ app.controller("board-page", function BoardPageController(
 	$scope.state = {
 		mode: null, // session | dashboard
 		isRevealed: false,
+		isPartialReveal: false,
+		revealedUsers: {},
 		offset: {},
 		stickers: [],
 		sessionParameters: {},
@@ -73,7 +75,8 @@ app.controller("board-page", function BoardPageController(
 				$scope.state.offset, 
 				$scope.getBoardHeight(), 
 				$scope.getBoardWidth(), 
-				$scope.state.mode == $scope.enum.mode.session);
+				$scope.state.mode == $scope.enum.mode.session,
+				$scope.state.isPartialReveal ? $scope.state.revealedUsers : null);
 	};
 	
 	$scope.registerRemoved = function(controlId, stickerId) {
@@ -198,8 +201,16 @@ app.controller("board-page", function BoardPageController(
 		});
 	};
 	
-	$scope.reveal = function(code) {
+	$scope.revealAll = function() {
 		$scope.state.isRevealed = true;
+		$scope.state.isPartialReveal = false;
+		$scope.refreshStickers();
+	};
+	
+	$scope.revealPartial = function(revealedUsers) {
+		$scope.state.isRevealed = true;
+		$scope.state.revealedUsers = revealedUsers;
+		$scope.state.isPartialReveal = true;
 		$scope.refreshStickers();
 	};
 		
