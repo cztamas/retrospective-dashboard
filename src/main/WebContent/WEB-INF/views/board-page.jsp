@@ -53,6 +53,12 @@
 	            </li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
+	          	<li>
+	          		<img 
+	          		    style="margin-top: 8px; " 
+	          			src="../../resources/images/loading.gif" 
+	          			id="loading-gif" />
+	          	</li>
 	          	<c:if test="${isDashboard == false}">
 		          	<li>
 					    <button
@@ -123,7 +129,7 @@
 		<c:if test="${isDashboard == true}">
 			qrCodeWidget.hide();
 			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
-			boardPageScope.reveal();
+			boardPageScope.revealAll();
 		</c:if>
 		
 		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');

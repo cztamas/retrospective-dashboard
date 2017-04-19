@@ -1,3 +1,6 @@
+2017-?:
+  * Partial reveal support: allow scrum master to reveal feedbacks from specific participants
+
 2017-04-18:
   * Participant page: Glad / Control selection on canvas instead of slider 
   * bugfix: QR Code size adjustment, avoid overflow

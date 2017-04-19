@@ -4,7 +4,8 @@ app.controller("board-page", function BoardPageController(
 		boardService,
 		stickerBuilderService,
 		stickerColorThemeService,
-		labelBuilderService) {
+		labelBuilderService,
+		loadingService) {
 	
 	$scope.enum = { 
 		mode: { 
@@ -171,6 +172,7 @@ app.controller("board-page", function BoardPageController(
 	
 	$scope.refreshStickers = function() {
 		
+		loadingService.start();
 		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings, sessionParameters) {
 			
 			try {
@@ -198,6 +200,7 @@ app.controller("board-page", function BoardPageController(
 			
 			// render stickers
 			$scope.showStickers();
+			loadingService.end();
 		});
 	};
 	
