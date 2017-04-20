@@ -4,9 +4,6 @@
      	ng-click="revealUser(user.username)"
      	title="Reveal feedbacks from {{user.username}}"
      	ng-class="{'board-participant-revealed': state.revealedUsers[user.username], 'board-participant': !state.revealedUsers[user.username]}" >
-		<img 
-			width="18" 
-			height="18"
-			src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/images/user.png" /> {{user.username}}
+		{{user.username}}
 	</span>
 </div>
