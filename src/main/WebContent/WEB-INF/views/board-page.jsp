@@ -32,20 +32,32 @@
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li>
-	            	<button 
-	            		style="margin-top: 16px; margin-left: 20px;" 
-	            		class="btn btn-default btn-xs" 
-	            		onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/';">Start New</button>
-	            </li>
 	            <c:if test="${isDashboard == false}">
 		            <li>
-		            	<button 
-		            		title="Show notes on the board. Once you reveal the team's notes, new ones will be automatically displayed" 
-		            		style="margin-top: 16px; margin-left: 20px;" 
-		            		class="btn btn-primary btn-xs"
-		            		ng-click="revealAll()">Reveal <span class="badge">{{state.stickers.length}}</span>
-		            	</button>
+		            	
+						<div class="btn-group" style="margin-top: 16px; margin-left: 20px;" >
+						  <button type="button" class="btn btn-xs btn-primary" ng-click="revealAll()">Reveal All <span class="badge">{{state.stickers.length}}</span></button>
+						  <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    <span class="caret"></span>
+						    <span class="sr-only">Toggle Dropdown</span>
+						  </button>
+						  <ul class="dropdown-menu">
+						    <li 
+						    	ng-repeat="user in state.usersWithPublishedStickers">
+						    	<a 
+						    		href="#"
+						    		style="font-size: 8pt;"
+						    		ng-click="revealUser(user.username)">
+						    		<input 
+						    			type="checkbox"
+						    			ng-checked="user.isRevealed || (state.isRevealed && !state.isPartialReveal)" 
+						    			disabled 
+						    			readonly /> Reveal feedbacks from <b>{{user.username}}</b>
+						    	</a>
+						    </li>
+						  </ul>
+						</div>
+		            	
 		            </li>
 	            </c:if>
 	            <li>

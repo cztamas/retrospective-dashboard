@@ -5,6 +5,7 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/sockjs/sockjs.min.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/stomp-websocket/lib/stomp.min.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery-ui/jquery-ui.min.js" ></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/app.js"></script>
 	<script>
@@ -29,6 +30,7 @@
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-builder.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/label-builder.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/loading-service.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/reveal-dropdown-provider-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/qr-code-widget.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/user-list-widget.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/board-page.js?ts=<% out.print(Math.random()); %>"></script>

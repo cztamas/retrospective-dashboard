@@ -100,23 +100,6 @@
 	font-weight: bold;
 }
 
-.board-participant-revealed {
-	border-radius: 25px;
-	border: solid 1px #cccccc;
-    background: #DAF0C5;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px; 
-    margin-left: 5px;
-    margin-right: 5px;
-    color: #000000;
-    font-size: 8pt;
-    font-family: Tahoma;
-    cursor: pointer;
-    cursor: hand;
-}
-
 .board-participant {
 	border-radius: 25px;
 	border: solid 1px #cccccc;
@@ -130,8 +113,6 @@
     color: #000000;
     font-size: 8pt;
     font-family: Tahoma;
-    cursor: pointer;
-    cursor: hand;
 }
 
 .error {

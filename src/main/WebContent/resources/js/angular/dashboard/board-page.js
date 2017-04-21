@@ -5,7 +5,8 @@ app.controller("board-page", function BoardPageController(
 		stickerBuilderService,
 		stickerColorThemeService,
 		labelBuilderService,
-		loadingService) {
+		loadingService,
+		revealDropdownProviderService) {
 	
 	$scope.enum = { 
 		mode: { 
@@ -24,11 +25,14 @@ app.controller("board-page", function BoardPageController(
 		isRevealed: false,
 		isPartialReveal: false,
 		revealedUsers: {},
+		usersWithPublishedStickers: [], // item: { username: "akos-sereg", isRevealed: true }
 		offset: {},
 		stickers: [],
 		sessionParameters: {},
 		token: null
 	};
+	
+	$scope.$watch('state.usersWithPublishedStickers');
 	
 	$scope.initialize = function(shareUrl, code, token) {
 		$scope.state.token = token;
@@ -187,6 +191,9 @@ app.controller("board-page", function BoardPageController(
 			// initialize stickers
 			$scope.state.stickers = stickers;
 			
+			$scope.state.usersWithPublishedStickers = revealDropdownProviderService.extractUsers(stickers, $scope.state.revealedUsers);
+			$scope.$digest();
+			
 			// set post-it size
 			try {
 				$scope.state.sessionParameters = sessionParameters;
@@ -207,6 +214,8 @@ app.controller("board-page", function BoardPageController(
 	$scope.revealAll = function() {
 		$scope.state.isRevealed = true;
 		$scope.state.isPartialReveal = false;
+		$scope.state.revealedUsers = revealDropdownProviderService.getUsersWithPublishedStickers($scope.state.stickers);
+		
 		$scope.refreshStickers();
 	};
 	
@@ -214,7 +223,20 @@ app.controller("board-page", function BoardPageController(
 		$scope.state.isRevealed = true;
 		$scope.state.revealedUsers = revealedUsers;
 		$scope.state.isPartialReveal = true;
+		
 		$scope.refreshStickers();
+	};
+	
+	$scope.revealUser = function(username) {
+		
+		if (!$scope.state.revealedUsers[username]) {
+			$scope.state.revealedUsers[username] = true;
+		}
+		else {
+			$scope.state.revealedUsers[username] = undefined;
+		}
+	
+		$scope.revealPartial($scope.state.revealedUsers);
 	};
 		
 	$scope.resize = function() {
