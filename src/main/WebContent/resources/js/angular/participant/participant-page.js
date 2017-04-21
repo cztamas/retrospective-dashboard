@@ -284,10 +284,16 @@ app.controller("participant-page", function ParticipantPageController(
 	$scope.refreshStickersForWeb = function() {
 		
 		if ($scope.stickers.length == 0) {
-			$('#stickersContainer').html('<i style="color: #aaaaaa;">There is no feedback to be published.</i>');
+			$('#publish-all-btn').prop('disabled', true);
+			$('#stickersContainer').html('<table width="100%">' 
+					+ '<tr>' 
+					+ '  <td align="middle" style="font-size: 12pt; color: #cccccc; border: solid 1px #cccccc; padding-top: 20px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px;">'
+					+ '    <i>No feedback to be published.</i></td>'
+					+ '</tr></table>');
 			return;
 		}
 		
+		$('#publish-all-btn').prop('disabled', false);
 		$('#stickersContainer').html('');
 		
 		var template = '<div class="panel panel-default">'

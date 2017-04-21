@@ -92,8 +92,8 @@
 	   
 	   <br/><br/>
 	   <div class="btn-group" role="group" aria-label="..."  style="position: float; float: right;">
+	   	  <button ng-click="publishAll()" id="publish-all-btn" type="button" class="btn btn-primary btn-sm">Publish All</button>
 	      <button type="button" class="btn btn-success btn-sm" ng-click="navigateToCreateComment(false)">Create</button>
-		  <!-- <button type="button" class="btn btn-primary btn-sm">Publish All</button> -->
 	   </div>
 	   
 	   <h4>Your comments for retrospective</h4>
