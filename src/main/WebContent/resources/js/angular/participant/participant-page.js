@@ -143,8 +143,15 @@ app.controller("participant-page", function ParticipantPageController(
 		if ($scope.state.isMobileView) {
 			$('#slider-fill-control').val(sticker.noControl);
 			$('#slider-fill-glad').val(sticker.glad);
-			$('#slider-fill-control').slider('refresh');
-			$('#slider-fill-glad').slider('refresh');	
+			
+			try {
+				$('#slider-fill-control').slider('refresh');
+				$('#slider-fill-glad').slider('refresh');	
+			} catch (error) {
+				// if slider is not initialized yet (user navigates to "edit" page without visiting "add comment" page), 
+				// we can get an error
+			}
+				
 		}
 		else {
 			$('#slider-fill-control').bootstrapSlider('setValue', sticker.noControl)
@@ -154,13 +161,14 @@ app.controller("participant-page", function ParticipantPageController(
 		$('#commentAddOrEdit').data('commentid', commentId);
 		
 		if ($scope.state.isMobileView) {
-			$.mobile.changePage('#feedbackPage');	
+			$.mobile.changePage('#feedbackPage');
 		}
 		else {
 			$('#create-comment-dialog').modal('show');
 			$('#marker-ball').addClass('hidden');
-			$scope.setCrosshair(sticker.glad, sticker.noControl, 'plot-area', 10);
 		}
+		
+		$scope.setCrosshair(sticker.glad, sticker.noControl, 'plot-area', 10);
 	};
 	
 	$scope.getSticker = function(commentId) {
@@ -179,8 +187,15 @@ app.controller("participant-page", function ParticipantPageController(
 		
 		if ($scope.state.isMobileView) {
 			// we are using jQuery Mobile's Slider in mobile view
-			$('#slider-fill-control').val('0').slider("refresh");
-			$('#slider-fill-glad').val('0').slider("refresh");
+			try {
+				$('#slider-fill-control').val('0').slider("refresh");
+				$('#slider-fill-glad').val('0').slider("refresh");
+					
+			} 
+			catch(error) {
+				// if slider is not initialized yet (user navigates to "edit" page without visiting "add comment" page), 
+				// we can get an error
+			}
 			
 			// and we are using coordinates as well
 			$('#marker-ball').addClass('hidden');

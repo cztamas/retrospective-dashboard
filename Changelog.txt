@@ -1,8 +1,11 @@
 2017-?:
   * Partial reveal support: allow scrum master to reveal feedbacks from specific participants
+  * Participant page / mobile: Glad / Control selection plot area
+  * Participant page: Publish All button added
+  * Full Screen button added
 
 2017-04-18:
-  * Participant page: Glad / Control selection on canvas instead of slider 
+  * Participant page / web: Glad / Control selection plot area
   * bugfix: QR Code size adjustment, avoid overflow
  
 2017-04-17:
