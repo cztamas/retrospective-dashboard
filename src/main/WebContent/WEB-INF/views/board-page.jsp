@@ -76,8 +76,17 @@
 	          	<c:if test="${isDashboard == false}">
 		          	<li>
 					    <button
-		            		title="Board Settings"
+		            		title="Full Screen"
 		            		style="margin-top: 8px; margin-left: 20px; margin-right: 10px;" 
+		            		onClick="Utils.requestFullScreen();"  
+		            		class="btn btn-default btn"><img src="../../resources/images/fullscreen.png" /></button>
+		          	</li>
+	          	</c:if>
+	          	<c:if test="${isDashboard == false}">
+		          	<li>
+					    <button
+		            		title="Board Settings"
+		            		style="margin-top: 8px; margin-right: 10px;" 
 		            		onClick="$('#settings-dialog').dialog({width: 600});"  
 		            		class="btn btn-default btn"><img src="../../resources/images/settings.png" /></button>
 		          	</li>
