@@ -1,5 +1,6 @@
 package com.retrospective.controller.rest;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.retrospective.dao.ParticipantDao;
+import com.retrospective.exception.DaoException;
 import com.retrospective.model.ServerResponse;
 import com.retrospective.model.Sticker;
 import com.retrospective.utils.Constants;
@@ -28,19 +30,23 @@ public class ParticipantController {
 
 	@ResponseBody
 	@RequestMapping(value = "/sticker/{code}/{token}", method = RequestMethod.POST)
-	public ServerResponse serverMessage(@RequestBody Sticker sticker, @PathVariable(value="code") int code, @PathVariable(value="token") String token) {
+	public ServerResponse serverMessage(@RequestBody List<Sticker> stickers, @PathVariable(value="code") int code, @PathVariable(value="token") String token) {
 		ServerResponse response = new ServerResponse();
 		
-		try {
-			Random r = new Random();
-			sticker.setTransform(r.nextInt(30) - 15);
-			this.participantDao.storeSticker(sticker);
-		}
-		catch (Exception error) {
-			error.printStackTrace();
-			response.setErrorCode(Constants.ErrorCodes.UnableToStoreSticker.getCode());
-		}
+		Random r = new Random();
 		
+		stickers.forEach((sticker) -> {
+			
+			sticker.setTransform(r.nextInt(30) - 15);
+			
+			try {
+				participantDao.storeSticker(sticker);
+			} catch (DaoException error) {
+				error.printStackTrace();
+				response.setErrorCode(Constants.ErrorCodes.UnableToStoreSticker.getCode());
+			}	
+		});
+	
 		return response;
 	}
 }

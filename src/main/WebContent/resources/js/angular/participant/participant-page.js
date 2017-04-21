@@ -4,6 +4,7 @@ app.controller("participant-page", function ParticipantPageController(
 		participantService) {
 	
 	$scope.stickers = [];
+	
 	$scope.state = {
 		isMobileView: null
 	};
@@ -229,7 +230,7 @@ app.controller("participant-page", function ParticipantPageController(
 	
 	$scope.refreshStickers = function() {
 		if ($scope.state.isMobileView) {
-			$scope.refreshStickersForMobile();
+			$scope.refreshStickersForMobile();			
 		}
 		else {
 			$scope.refreshStickersForWeb();
@@ -237,7 +238,7 @@ app.controller("participant-page", function ParticipantPageController(
 	};
 	
 	$scope.refreshStickersForMobile = function() {
-		
+		$('#publish-all-btn').prop('disabled', false);
 		$('#stickersContainer').html('');
 		
 		for (var i=0; i!=$scope.stickers.length; i++) {
@@ -270,7 +271,13 @@ app.controller("participant-page", function ParticipantPageController(
 		}
 		
 		if ($scope.stickers.length == 0) {
-			$('#stickersContainer').html('<li><i>There is no comment in pending state.<br/>You can add a comment, then <b>Publish</b> to the board whenever you want.</i></li>');
+			$('#publish-all-btn').prop('disabled', true);
+			$('#stickersContainer').html('<li><table width="100%">' 
+					+ '<tr>' 
+					+ '  <td width="33%">&nbsp;</td>'
+					+ '  <td style="font-size: 8pt; color: #cccccc; border: solid 1px #cccccc; padding-top: 20px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px;"><i>No feedback to be published.</i></td>'
+					+ '  <td width="33%">&nbsp;</td>'
+					+ '</tr></table><br/></li>');
 		}
 	};
 	
@@ -310,12 +317,17 @@ app.controller("participant-page", function ParticipantPageController(
 					.replaceAll('{stickerId}', $scope.stickers[i].id));
 		}
 	};
-	
-	$scope.publishSticker = function(commentId) {
+
+	$scope.publishAll = function() {
 		
-		var sticker = $scope.getSticker(commentId);
+		// make sure that username is sent to server
+		if (!$scope.state.isMobileView && !keepaliveService.isRunning) {
+			BootstrapDialog.alert({ type: BootstrapDialog.TYPE_WARNING, title: 'Warning', message: 'Username is not set' });
+			return;
+		}
+		
+		// determine username
 		var username = null;
-		
 		if ($scope.state.isMobileView) {
 			username = Utils.getCookie('username');	
 		}
@@ -323,6 +335,34 @@ app.controller("participant-page", function ParticipantPageController(
 			username = $('#username').val(); 
 		}
 		
+		$scope.confirmDialog('Publish', 'Are you sure you want to publish all comments?', 'Publish All', function() {
+			
+			var comments = [];
+			for (var i=0; i!=$scope.stickers.length; i++) {
+				comments.push($scope.createRequestModel($scope.stickers[i], username));
+			}
+			
+			participantService.publish(comments, function() {
+				$scope.stickers = [];
+				$scope.deleteComment(null);
+			});
+		});
+	};
+	
+	$scope.publishSticker = function(commentId) {
+		
+		var sticker = $scope.getSticker(commentId);
+		
+		// determine username
+		var username = null;
+		if ($scope.state.isMobileView) {
+			username = Utils.getCookie('username');	
+		}
+		else {
+			username = $('#username').val(); 
+		}
+		
+		// make sure that username is sent to server
 		if (!$scope.state.isMobileView && !keepaliveService.isRunning) {
 			BootstrapDialog.alert({ type: BootstrapDialog.TYPE_WARNING, title: 'Warning', message: 'Username is not set' });
 			return;
@@ -333,20 +373,25 @@ app.controller("participant-page", function ParticipantPageController(
 		}
 		
 		$scope.confirmDialog('Publish', 'Are you sure you want to publish this comment?', 'Publish', function() {
-			var requestModel = {
-				comment: sticker.comment,
-				glad: sticker.glad / 1000,
-				noControl: sticker.noControl / 1000,
-				userId: null,
-				username: username,
-				sessionCode: Context.code,
-				sessionToken: Context.token
-			};
-				
-			participantService.publish(requestModel, function() {
+			
+			var requestModel = $scope.createRequestModel(sticker, username);
+			
+			participantService.publish([requestModel], function() {
 				$scope.deleteComment(commentId);
 			});
 		});
+	};
+	
+	$scope.createRequestModel = function(sticker, username) {
+		return {
+			comment: sticker.comment,
+			glad: sticker.glad / 1000,
+			noControl: sticker.noControl / 1000,
+			userId: null,
+			username: username,
+			sessionCode: Context.code,
+			sessionToken: Context.token
+		};
 	};
 	
 	$scope.startDeleteComment = function(commentId) {

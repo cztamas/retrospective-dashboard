@@ -1,17 +1,19 @@
 package com.retrospective.model.websocket;
 
+import java.util.List;
+
 import com.retrospective.model.Sticker;
 
 public class PublishStickerMessage {
 
-	private Sticker sticker;
+	private List<Sticker> stickers;
 
-	public Sticker getSticker() {
-		return sticker;
+	public List<Sticker> getStickers() {
+		return stickers;
 	}
 
-	public void setSticker(Sticker sticker) {
-		this.sticker = sticker;
+	public void setStickers(List<Sticker> stickers) {
+		this.stickers = stickers;
 	}
 	
 	

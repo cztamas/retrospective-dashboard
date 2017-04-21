@@ -60,14 +60,14 @@ app.service('participantService', function ParticipantService() {
 	    });
 	};
 	
-	self.publish = function(sticker, onSuccess) {
+	self.publish = function(stickers, onSuccess) {
 		
 		$.ajax({
 		    method: 'POST',
 		    url: app.rootUrl + "/rest/participant/sticker/" + Context.code + '/' + Context.token,
 		    dataType: 'json',
 		    contentType: 'application/json',
-		    data: JSON.stringify(sticker),
+		    data: JSON.stringify(stickers),
 		    
 		    statusCode: {
 		    	200: function(data) {
@@ -78,7 +78,7 @@ app.service('participantService', function ParticipantService() {
 		    		}
 		    		
 		    		try {
-		    			self.stompClient.send("/app/board/sticker/" + self.code + '/' + self.token, {}, JSON.stringify(sticker));
+		    			self.stompClient.send("/app/board/sticker/" + self.code + '/' + self.token, {}, JSON.stringify({ stickers: stickers }));
 		    			onSuccess();
 		    		}
 		    		catch (error) {

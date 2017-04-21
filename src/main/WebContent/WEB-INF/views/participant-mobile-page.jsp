@@ -86,7 +86,13 @@
 			<button ng-click="navigateToCreateComment(true)" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-plus">Add comment</button>
 		</div>
 		
+		<button 
+			id="publish-all-btn"
+  			class="ui-btn" 
+  			ng-click="publishAll()">Publish All</button>
+  			
   		<ul id="stickersContainer" data-role="listview" data-inset="true"></ul>
+  		
   </div>
   
   <!-- DIALOGS ===================================================  -->
