@@ -180,7 +180,10 @@ app.controller("participant-page", function ParticipantPageController(
 		if ($scope.state.isMobileView) {
 			// we are using jQuery Mobile's Slider in mobile view
 			$('#slider-fill-control').val('0').slider("refresh");
-			$('#slider-fill-glad').val('0').slider("refresh");	
+			$('#slider-fill-glad').val('0').slider("refresh");
+			
+			// and we are using coordinates as well
+			$('#marker-ball').addClass('hidden');
 		}
 		else {
 			// we are using a different slider for desktop web client

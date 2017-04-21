@@ -21,10 +21,32 @@
   
   	    angular.element(document).ready(function() {
   	    	
- 	    	app.getController('participant-page as participantPage').initialize(${code}, '${token}', true);
+  	    	var pageController = app.getController('participant-page as participantPage');
+ 	    	pageController.initialize(${code}, '${token}', true);
  	    	
  	    	Context.code = ${code};
  	    	Context.token = '${token}';
+ 	    	
+ 	    	// coordinate selector
+ 	    	// ----------------------------------------------------------------------------
+ 	    	$("#plot-area").click(function(e) {
+ 	    	
+			  var offset = $(this).offset();
+			  var relativeX = (e.pageX - offset.left);
+			  var relativeY = (e.pageY - offset.top);
+			  var plotSize = { 
+					width: $("#plot-area").width(), 
+					height: $("#plot-area").height() 
+			  };
+				
+			  var glad = Math.ceil(1000 - ((relativeY / plotSize.height) * 1000));
+			  var noControl = Math.ceil((relativeX / plotSize.width) * 1000);
+			  
+			  pageController.setCrosshair(glad, noControl, 'plot-area', 0);
+			  
+			  $('#slider-fill-glad').val(glad);
+			  $('#slider-fill-control').val(noControl);
+			});
   	    });
  	    
    </script>
@@ -57,16 +79,35 @@
 	
     <div role="main" class="ui-content">
     	
-  		<label for="slider-fill">Glad</label>
-  		<span class="footer-text">indicates how glad you are with this this</span><br/>
-  		<input type="range" class="ui-hidden-accessible" name="slider-fill-glad" id="slider-fill-glad" value="0" min="0" max="1000" step="50" data-highlight="true" />
-  
-  		<label for="slider-fill">No Control</label>
-  		<span class="footer-text">indicates how much control you feel about this item. eg.: 0% means you (or your team) have full control on this feedback item.</span><br/>
-  		<input type="range" class="ui-hidden-accessible" name="slider-fill-control" id="slider-fill-control" value="0" min="0" max="1000" step="50" data-highlight="true" />
-  
-  		<label for="comment">Your Comment (256 characters max)</label>
+    	<div class="hidden">
+	  		<label for="slider-fill">Glad</label>
+	  		<span class="footer-text">indicates how glad you are with this this</span><br/>
+	  		<input type="range" class="ui-hidden-accessible" name="slider-fill-glad" id="slider-fill-glad" value="0" min="0" max="1000" step="50" data-highlight="true" />
+	  
+	  		<label for="slider-fill">No Control</label>
+	  		<span class="footer-text">indicates how much control you feel about this item. eg.: 0% means you (or your team) have full control on this feedback item.</span><br/>
+	  		<input type="range" class="ui-hidden-accessible" name="slider-fill-control" id="slider-fill-control" value="0" min="0" max="1000" step="50" data-highlight="true" />
+        </div>
+        
+  		<label for="comment">Your Comment</label>
+  		<span class="footer-text">keep it short, 256 characters max.</span>
   		<textarea maxlength="256" cols="40" rows="8" name="comment" id="comment"></textarea>
+  		
+  		<div>
+        	Indicate your feelings about this item<br/>
+        	<span class="footer-text">tap on below area - put the marker to the correct place indicating how glad you are, and how much control you feel</span><br/><br/>
+        	<span>Glad</span><br/>
+        	<img 
+        		data-glad="500"
+        		data-no-control="500" 
+        		src="../resources/images/plot.png" 
+        		id="plot-area" 
+        		width="100%"
+        		style="cursor: crosshair;" /><br/>
+        	<span style="position: float; float: right;">No Control</span><br/>
+        	<img src="../resources/images/ball.png" id="marker-ball" class="hidden" />
+        	<br/>
+        </div>
   
   		<button 
   			id="commentAddOrEdit"
