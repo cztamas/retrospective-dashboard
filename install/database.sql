@@ -28,16 +28,16 @@ USE retrospective;
 DROP TABLE IF EXISTS `note`;
 CREATE TABLE `note` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(64) DEFAULT NULL,
-  `user_id` varchar(128) DEFAULT NULL,
+  `username` varchar(64) CHARACTER SET latin1 DEFAULT NULL,
+  `user_id` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
   `comment` varchar(256) DEFAULT NULL,
   `session_code` int(11) DEFAULT NULL,
-  `session_token` varchar(128) DEFAULT NULL,
+  `session_token` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
   `glad` double DEFAULT NULL,
   `no_control` double DEFAULT NULL,
   `transform` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=359 DEFAULT CHARSET=utf8;
 
 --
 -- Definition of table `session`
@@ -47,9 +47,18 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` int(11) DEFAULT NULL,
-  `token` varchar(128) DEFAULT NULL,
+  `token` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `offset_settings` text,
+  `offset_settings` text CHARACTER SET latin1,
+  `size` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
 
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
