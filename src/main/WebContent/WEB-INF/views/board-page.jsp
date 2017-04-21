@@ -55,6 +55,8 @@
 						    			readonly /> Reveal feedbacks from <b>{{user.username}}</b>
 						    	</a>
 						    </li>
+						    <li role="separator" class="divider"></li>
+						    <li><a ng-click="revealPartial([])" href="#" style="font-size: 8pt;">Uncheck All</a></li>
 						  </ul>
 						</div>
 		            	
