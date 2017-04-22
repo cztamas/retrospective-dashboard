@@ -73,6 +73,15 @@
 	          			src="../../resources/images/loading.gif" 
 	          			id="loading-gif" />
 	          	</li>
+	          	<c:if test="${isDashboard == true}">
+	            	<li>
+	            		<button
+		            		title="Action Items" 
+		            		style="margin-top: 8px; margin-left: 10px; margin-right: 10px;" 
+		            		onClick="$('#sessionCommentDialog').dialog({width: 600});"
+		            		class="btn btn-default btn"><img src="../../resources/images/comment.png" /></button>
+	            	</li>
+	            </c:if>
 	          	<c:if test="${isDashboard == false}">
 		          	<li>
 					    <button

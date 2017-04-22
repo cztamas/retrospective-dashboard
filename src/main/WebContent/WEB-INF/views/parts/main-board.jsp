@@ -1,4 +1,4 @@
-<div id="mainBoard">
+<div id="mainBoard" class="noselect">
     <div id="board">
 		<div id="axisX" class="axisX"></div>
 		<div id="axisY" class="axisY"></div>

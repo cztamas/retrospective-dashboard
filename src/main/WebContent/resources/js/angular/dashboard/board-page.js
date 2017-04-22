@@ -113,18 +113,9 @@ app.controller("board-page", function BoardPageController(
 	};
 	
 	$scope.setPostItSize = function(size) {
-		var configs = [{ 
-			boxSizeRatio: 0.5,
-			stickerFontSize: '7pt'
-		}, 
-		{ 
-			boxSizeRatio: 0.75,
-			stickerFontSize: '10pt'
-		}, 
-		{ 
-			boxSizeRatio: 1.0,
-			stickerFontSize: '14pt'
-		}];
+		var configs = [{ boxSizeRatio: 0.5, stickerFontSize: '7pt' }, 
+		               { boxSizeRatio: 0.75, stickerFontSize: '10pt' }, 
+		               { boxSizeRatio: 1.0, stickerFontSize: '14pt' }];
 		
 		if (size >= configs.length) {
 			return;
@@ -148,7 +139,6 @@ app.controller("board-page", function BoardPageController(
 		$scope.state.sessionParameters.comment = comment;
 		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() {
 			alert('Comment has been changed.');
-			$scope.$apply();
 		});
 	};
 	
@@ -208,6 +198,7 @@ app.controller("board-page", function BoardPageController(
 				$scope.setPostItSize(sessionParameters.size);
 				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
 				$('#sessionComment').val(Utils.htmlEncode($scope.state.sessionParameters.comment));
+				$('#sessionCommentText').html(Utils.nl2br(Utils.htmlEncode($scope.state.sessionParameters.comment)));
 				$("#postit-size-slider").bootstrapSlider('setValue', sessionParameters.size);	
 			}
 			catch (error) {
