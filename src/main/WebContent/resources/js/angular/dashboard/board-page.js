@@ -144,6 +144,14 @@ app.controller("board-page", function BoardPageController(
 		});
 	};
 	
+	$scope.setSessionComment = function(comment) {
+		$scope.state.sessionParameters.comment = comment;
+		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() {
+			alert('Comment has been changed.');
+			$scope.$apply();
+		});
+	};
+	
 	$scope.resizePostIts = function(size) {
 		
 		$scope.setPostItSize(size);
@@ -199,6 +207,7 @@ app.controller("board-page", function BoardPageController(
 				$scope.state.sessionParameters = sessionParameters;
 				$scope.setPostItSize(sessionParameters.size);
 				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
+				$('#sessionComment').val(Utils.htmlEncode($scope.state.sessionParameters.comment));
 				$("#postit-size-slider").bootstrapSlider('setValue', sessionParameters.size);	
 			}
 			catch (error) {

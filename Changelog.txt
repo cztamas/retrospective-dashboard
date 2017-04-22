@@ -3,6 +3,8 @@
   * Participant page / mobile: Glad / Control selection plot area
   * Participant page: Publish All button added
   * Full Screen button added
+  * UTF8 character encoding
+  * Session comments
 
 2017-04-18:
   * Participant page / web: Glad / Control selection plot area

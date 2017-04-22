@@ -104,10 +104,11 @@ public class HostDaoImpl implements HostDao {
 	@Override
 	public void setSessionParameters(int sessionCode, String sessionToken, SessionParameters parameters) throws DaoException {
 		try {
-			this.jdbcTemplate.update("UPDATE session SET size = ?, name = ? WHERE code = ? AND token = ?", 
+			this.jdbcTemplate.update("UPDATE session SET size = ?, name = ?, comment = ? WHERE code = ? AND token = ?", 
 					new Object [] {
 						parameters.getSize(), 
 						parameters.getName(),
+						parameters.getComment(),
 						sessionCode,
 						sessionToken
 					});
@@ -134,7 +135,7 @@ public class HostDaoImpl implements HostDao {
 	@Override
 	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT size, name FROM session WHERE code = ? AND token = ?", 
+			return this.jdbcTemplate.queryForObject("SELECT size, name, comment FROM session WHERE code = ? AND token = ?", 
 					new Object[] { sessionCode, sessionToken },
 					new RowMapper<SessionParameters>() {
 
@@ -146,7 +147,9 @@ public class HostDaoImpl implements HostDao {
 								// if size was not set, using default (3) which is normal size
 								sessionParameters.setSize(3); 
 						    }
+							
 							sessionParameters.setName(rs.getString("name"));
+							sessionParameters.setComment(rs.getString("comment"));
 							
 						    return sessionParameters;
 						}

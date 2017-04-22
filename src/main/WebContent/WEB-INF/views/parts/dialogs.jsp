@@ -36,10 +36,29 @@
 		<td colspan="3" style="border-top: solid 1px #dddddd;">&nbsp;</td>
 	</tr>
 	<tr>
+		<td width="200" valign="top">
+			<b>Action Items</b><br/>
+			<span style="font-size: 8pt;">
+				Your notes about the outcome of the retrospective session.
+			</span>
+		</td>
+		<td>&nbsp;&nbsp;</td>
+		<td style="padding-left: 60px; font-family: Tahoma; font-size: 9pt;">
+			<textarea id="sessionComment" style="width: 100%; height: 150px;"></textarea><br/>
+			<button style="float: right;" onClick="app.getController('board-page').setSessionComment($('#sessionComment').val());" class="btn btn-default btn">set</button>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="border-top: solid 1px #dddddd;">&nbsp;</td>
+	</tr>
+	<tr>
 		<td width="200">
 			<b>Post-it size</b><br/>
 			<span style="font-size: 8pt;">
-				You can scale the post-it sizes with this option
+				You can scale the post-it sizes with this option. It might be helpful if you have low screen resolution.
 			</span>
 		</td>
 		<td>&nbsp;&nbsp;</td>
