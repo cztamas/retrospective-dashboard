@@ -31,7 +31,7 @@ public class HostDaoImpl implements HostDao {
 		sessionDetails.setCode(this.generate6digitCode());
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size) VALUES (default, ?, ?, NOW(), 'Retro', 1)", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous) VALUES (default, ?, ?, NOW(), 'Retro', 1, 1)", 
 					new Object[] { 
 							sessionDetails.getCode(),
 							sessionDetails.getToken() });
@@ -104,11 +104,12 @@ public class HostDaoImpl implements HostDao {
 	@Override
 	public void setSessionParameters(int sessionCode, String sessionToken, SessionParameters parameters) throws DaoException {
 		try {
-			this.jdbcTemplate.update("UPDATE session SET size = ?, name = ?, comment = ? WHERE code = ? AND token = ?", 
+			this.jdbcTemplate.update("UPDATE session SET size = ?, name = ?, comment = ?, is_anonymous = ? WHERE code = ? AND token = ?", 
 					new Object [] {
 						parameters.getSize(), 
 						parameters.getName(),
 						parameters.getComment(),
+						parameters.getIsAnonymous() ? 1 : 0,
 						sessionCode,
 						sessionToken
 					});
@@ -135,7 +136,7 @@ public class HostDaoImpl implements HostDao {
 	@Override
 	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT size, name, comment FROM session WHERE code = ? AND token = ?", 
+			return this.jdbcTemplate.queryForObject("SELECT size, name, comment, is_anonymous FROM session WHERE code = ? AND token = ?", 
 					new Object[] { sessionCode, sessionToken },
 					new RowMapper<SessionParameters>() {
 
@@ -150,6 +151,7 @@ public class HostDaoImpl implements HostDao {
 							
 							sessionParameters.setName(rs.getString("name"));
 							sessionParameters.setComment(rs.getString("comment"));
+							sessionParameters.setIsAnonymous(rs.getInt("is_anonymous") == 1);
 							
 						    return sessionParameters;
 						}

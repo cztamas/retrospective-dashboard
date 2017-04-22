@@ -100,13 +100,15 @@
 		            		class="btn btn-default btn"><img src="../../resources/images/settings.png" /></button>
 		          	</li>
 	          	</c:if>
-	            <li>
-	            	<button
-	            		title="Permalink: save this url when finished"
-	            		style="margin-top: 8px; margin-right: 10px;" 
-	            		onClick="$('#dialog').dialog({width: 600});"  
-	            		class="btn btn-default btn"><img src="../../resources/images/share.png" /></button>
-	            </li>
+	          	<c:if test="${isDashboard == false}">
+		            <li>
+		            	<button
+		            		title="Permalink: save this url when finished"
+		            		style="margin-top: 8px; margin-right: 10px;" 
+		            		onClick="$('#dialog').dialog({width: 600});"  
+		            		class="btn btn-default btn"><img src="../../resources/images/share.png" /></button>
+		            </li>
+		        </c:if>
 	            <c:if test="${isDashboard == false}">
 	            	<li>
 	            		<button

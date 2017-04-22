@@ -142,6 +142,11 @@ app.controller("board-page", function BoardPageController(
 		});
 	};
 	
+	$scope.setSessionIsAnonymous = function(isAnonymous) {
+		$scope.state.sessionParameters.isAnonymous = isAnonymous;
+		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() { });
+	};
+	
 	$scope.resizePostIts = function(size) {
 		
 		$scope.setPostItSize(size);
@@ -199,6 +204,8 @@ app.controller("board-page", function BoardPageController(
 				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
 				$('#sessionComment').val(Utils.htmlEncode($scope.state.sessionParameters.comment));
 				$('#sessionCommentText').html(Utils.nl2br(Utils.htmlEncode($scope.state.sessionParameters.comment)));
+				$('#anonymousCheckBox').prop('checked', $scope.state.sessionParameters.isAnonymous);
+				Context.displayUsernames = !$scope.state.sessionParameters.isAnonymous
 				$("#postit-size-slider").bootstrapSlider('setValue', sessionParameters.size);	
 			}
 			catch (error) {

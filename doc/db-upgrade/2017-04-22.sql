@@ -3,3 +3,5 @@ ALTER TABLE `retrospective`.`note` MODIFY COLUMN `comment` VARCHAR(256) CHARACTE
 ALTER TABLE `retrospective`.`session` CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `retrospective`.`session` MODIFY COLUMN `name` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL;
 ALTER TABLE session ADD COLUMN comment TEXT;
+ALTER TABLE session ADD COLUMN is_anonymous int(11) DEFAULT 1;
+

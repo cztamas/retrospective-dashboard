@@ -52,6 +52,8 @@ CREATE TABLE `session` (
   `offset_settings` text CHARACTER SET latin1,
   `size` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `comment` text DEFAULT NULL,
+  `is_anonymous` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
 

@@ -7,6 +7,8 @@ public class SessionParameters {
 	private String name;
 	
 	private String comment;
+	
+	private boolean isAnonymous;
 
 	public int getSize() {
 		return size;
@@ -30,6 +32,14 @@ public class SessionParameters {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public boolean getIsAnonymous() {
+		return isAnonymous;
+	}
+
+	public void setIsAnonymous(boolean isAnonymous) {
+		this.isAnonymous = isAnonymous;
 	}
 	
 	

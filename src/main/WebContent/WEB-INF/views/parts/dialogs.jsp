@@ -93,7 +93,7 @@
 		</td>
 		<td>&nbsp;&nbsp;</td>
 		<td style="padding-left: 60px; font-family: Tahoma; font-size: 9pt;">
-			<input type="checkbox" id="anonymousCheckBox" onChange="Context.displayUsernames = !this.checked; app.getController('board-page').showStickers();" name="isAnonymous" CHECKED /> <label for="anonymousCheckBox">Anonymous</label>
+			<input type="checkbox" id="anonymousCheckBox" onChange="Context.displayUsernames = !this.checked; app.getController('board-page').setSessionIsAnonymous(this.checked); app.getController('board-page').showStickers();" name="isAnonymous" CHECKED /> <label for="anonymousCheckBox">Anonymous</label>
 		</td>
 	</tr>
 	</table>
