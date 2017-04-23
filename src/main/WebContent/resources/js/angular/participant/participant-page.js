@@ -158,13 +158,13 @@ app.controller("participant-page", function ParticipantPageController(
 				// if slider is not initialized yet (user navigates to "edit" page without visiting "add comment" page), 
 				// we can get an error
 			}
-			
-			$scope.gsmEditor.editSticker(sticker);
 		}
 		else {
 			$('#slider-fill-control').bootstrapSlider('setValue', sticker.noControl)
 			$('#slider-fill-glad').bootstrapSlider('setValue', sticker.glad);
 		}
+		
+		$scope.gsmEditor.editSticker(sticker, $scope.state.isMobileView);
 		
 		$('#commentAddOrEdit').data('commentid', commentId);
 		
@@ -204,17 +204,14 @@ app.controller("participant-page", function ParticipantPageController(
 				// if slider is not initialized yet (user navigates to "edit" page without visiting "add comment" page), 
 				// we can get an error
 			}
-			
-			$scope.gsmEditor.clearForm();
 		}
 		else {
 			// we are using a different slider for desktop web client
 			$('#slider-fill-control').bootstrapSlider('setValue', 500);
 			$('#slider-fill-glad').bootstrapSlider('setValue', 500);
-			
-			// and we are using coordinates as well
-			$('#marker-ball').addClass('hidden');
 		}
+		
+		$scope.gsmEditor.clearForm($scope.state.isMobileView);
 		
 		if ($('#commentAddOrEdit').data('mode') == 'add') {
 			$('#commentAddOrEdit').html('Add');

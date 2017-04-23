@@ -108,18 +108,21 @@ public class IndexController {
 	}
 	
 	@RequestMapping(value = "/join-web/{code}/{token}")
-	public ModelAndView joinWebApp(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ModelAndView joinWebApp(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException, NumberFormatException, DaoException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
 		tokenCookie.setPath(Constants.CookieWebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
+		SessionDetails details = this.hostDao.getSessionDetails(Integer.parseInt(code), token);
+		
 		ModelAndView page = new ModelAndView("participant-web-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		page.addObject("isParticipant", true);
 		page.addObject("isMobile", false);
+		page.addObject("boardType", details.getDashboardType());
 		
 		return page;
 	}

@@ -2,11 +2,11 @@ app.service('gsmEditorPlot', function() {
 	
 	var self = this;
 	
-	self.editSticker = function(sticker) {
+	self.editSticker = function(sticker, isMobileView) {
 		
 	};
 	
-	self.clearForm = function() {
+	self.clearForm = function(isMobileView) {
 		$('#marker-ball').addClass('hidden');
 	};
 	

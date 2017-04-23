@@ -2,24 +2,45 @@ app.service('gsmEditorDiscrete', function() {
 	
 	var self = this;
 	
-	self.editSticker = function(sticker) {
+	self.editSticker = function(sticker, isMobileView) {
 		var happinessIndex = null;
 		if (sticker.glad == 1.0) happinessIndex = 'glad';
 		if (sticker.glad == 0.5) happinessIndex = 'sad';
 		if (sticker.glad == 0.0) happinessIndex = 'mad';
 		
-		$('input:radio[name="glad-sad-mad-radio"]').attr('checked', false);
-		$('label[name="label-gsm"]').removeClass('ui-btn-active');
-		$('input:radio[name="glad-sad-mad-radio"]').filter('[value="'+happinessIndex+'"]').attr('checked', true);
-		$('label[id="label-'+happinessIndex+'"]').addClass('ui-btn-active');
+		happinessIndex = self.getHappinessIndexFrom1To1000(sticker);
+		
+		if (isMobileView) {
+			$('input:radio[name="glad-sad-mad-radio"]').attr('checked', false);
+			$('label[name="label-gsm"]').removeClass('ui-btn-active');
+			$('input:radio[name="glad-sad-mad-radio"]').filter('[value="'+happinessIndex+'"]').attr('checked', true);
+			$('label[id="label-'+happinessIndex+'"]').addClass('ui-btn-active');	
+		}
+		else {
+			
+			$('#gsm-glad').prop('checked', false);
+			$('#gsm-sad').prop('checked', false);
+			$('#gsm-mad').prop('checked', false);
+			$('#gsm-' + happinessIndex).prop('checked', true);
+		}
+		
 	};
 	
-	self.clearForm = function() {
-		$('#slider-fill-glad').val(1.0);
-		$('input:radio[name="glad-sad-mad-radio"]').attr('checked', false);
-		$('label[name="label-gsm"]').removeClass('ui-btn-active');
-		$('input:radio[name="glad-sad-mad-radio"]').filter('[value="glad"]').attr('checked', true);
-		$('label[id="label-glad"]').addClass('ui-btn-active');	
+	self.clearForm = function(isMobileView) {
+		
+		if (isMobileView) {
+			$('#slider-fill-glad').val(1.0);
+			$('input:radio[name="glad-sad-mad-radio"]').attr('checked', false);
+			$('label[name="label-gsm"]').removeClass('ui-btn-active');
+			$('input:radio[name="glad-sad-mad-radio"]').filter('[value="glad"]').attr('checked', true);
+			$('label[id="label-glad"]').addClass('ui-btn-active');	
+		} 
+		else {
+			$('#gsm-glad').prop('checked', true);
+			$('#gsm-sad').prop('checked', false);
+			$('#gsm-mad').prop('checked', false);
+			$('#slider-fill-glad').bootstrapSlider('setValue', 1000);
+		}
 	};
 	
 	self.renderStickerForMobile = function(sticker, stickersCount) {
@@ -76,7 +97,7 @@ app.service('gsmEditorDiscrete', function() {
 		var happinessIndex = null;
 		if (sticker.glad > 666) happinessIndex = 'glad';
 		if (sticker.glad > 333 && sticker.glad <= 666) happinessIndex = 'sad';
-		if (sticker.glad > 0 && sticker.glad <= 333) happinessIndex = 'mad';
+		if (sticker.glad > -1 && sticker.glad <= 333) happinessIndex = 'mad';
 		
 		return happinessIndex;
 	}
