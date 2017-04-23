@@ -41,17 +41,20 @@ public class IndexController {
 	}
 	
 	@RequestMapping(value = "/dashboard/{code}/{token}")
-	public ModelAndView dashboard(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ModelAndView dashboard(@PathVariable(value="code") String code, @PathVariable(value="token") String token, HttpServletRequest request, HttpServletResponse response) throws IOException, NumberFormatException, DaoException {
 
 		Cookie tokenCookie = new Cookie(Constants.Cookies.Token.getName(), token);
 		tokenCookie.setPath(Constants.CookieWebRoot);
 		tokenCookie.setMaxAge(Constants.OneYearInSeconds);
 		response.addCookie(tokenCookie);
 		
+		SessionDetails details = this.hostDao.getSessionDetails(Integer.parseInt(code), token);
+		
 		ModelAndView page = new ModelAndView("board-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		page.addObject("isDashboard", true);
+		page.addObject("boardType", details.getDashboardType());
 		
 		return page;
 	}
