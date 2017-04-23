@@ -1,20 +1,26 @@
 app.controller("participant-page", function ParticipantPageController(
 		$scope, 
 		keepaliveService,
-		participantService) {
+		participantService,
+		gsmEditorPlot,
+		gsmEditorDiscrete) {
 	
 	$scope.stickers = [];
+	$scope.gsmEditor = gsmEditorPlot;
 	
 	$scope.state = {
-		isMobileView: null
+		isMobileView: null,
+		boardType: null
 	};
 	
 	$scope.constants = {
 		stickersLocalStorageKey: 'retrospective.stickers',
 	};
 		
-	$scope.initialize = function(code, token, isMobileView) {
+	$scope.initialize = function(code, token, isMobileView, boardType) {
 		
+		$scope.gsmEditor = (boardType == 1) ? gsmEditorPlot : gsmEditorDiscrete;
+		$scope.state.boardType = boardType;
 		$scope.state.isMobileView = isMobileView;
 		
 		participantService.initialize(code, token);
@@ -141,6 +147,7 @@ app.controller("participant-page", function ParticipantPageController(
 		$('#comment').val(sticker.comment);
 		
 		if ($scope.state.isMobileView) {
+			// slider
 			$('#slider-fill-control').val(sticker.noControl);
 			$('#slider-fill-glad').val(sticker.glad);
 			
@@ -151,7 +158,8 @@ app.controller("participant-page", function ParticipantPageController(
 				// if slider is not initialized yet (user navigates to "edit" page without visiting "add comment" page), 
 				// we can get an error
 			}
-				
+			
+			$scope.gsmEditor.editSticker(sticker);
 		}
 		else {
 			$('#slider-fill-control').bootstrapSlider('setValue', sticker.noControl)
@@ -197,8 +205,7 @@ app.controller("participant-page", function ParticipantPageController(
 				// we can get an error
 			}
 			
-			// and we are using coordinates as well
-			$('#marker-ball').addClass('hidden');
+			$scope.gsmEditor.clearForm();
 		}
 		else {
 			// we are using a different slider for desktop web client
@@ -218,6 +225,11 @@ app.controller("participant-page", function ParticipantPageController(
 	};
 	
 	$scope.setCrosshair = function(glad, noControl, plotId, renderPlotTryCount) {
+		
+		if ($scope.state.boardType == 2) {
+			// we are not using plot are for Vertical Board (only glad, sad, mad discrete values are allowed)
+			return;
+		}
 		
 		$('#marker-ball').removeClass('hidden');
 		var pos = $("#" + plotId).position();
@@ -260,32 +272,7 @@ app.controller("participant-page", function ParticipantPageController(
 		$('#stickersContainer').html('');
 		
 		for (var i=0; i!=$scope.stickers.length; i++) {
-			
-			var gladPercentage = parseInt($scope.stickers[i].glad / 10);
-			var gladHtml = '<div class="progress">'
-				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+gladPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+gladPercentage+'%;"> ' 
-				    + gladPercentage 
-				    + '% glad</div>'
-				    +'</div>';
-			
-			var controlPercentage = parseInt(($scope.stickers[i].noControl) / 10);
-			var controlHtml = '<div class="progress">'
-				    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+controlPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+controlPercentage+'%;"> ' 
-				    + controlPercentage
-				    + '% no control</div>'
-				    +'</div>';
-			
-			$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
-					+ (i == $scope.stickers.length-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
-					+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
-					+ '<strong style="font-size: 16pt;">'+$scope.stickers[i].comment+'</strong>'
-					+ '<p>'
-					+gladHtml + controlHtml
-					+ '</p><p>'
-					+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').startDeleteComment(\''+$scope.stickers[i].id+'\')" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
-					+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').editSticker(\''+$scope.stickers[i].id+'\')" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
-					+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').publishSticker(\''+$scope.stickers[i].id+'\')" class="ui-btn ui-btn-inline ui-icon-action ui-btn-icon-left">Publish</a>'
-					+'</p></li>');	
+			$scope.gsmEditor.renderStickerForMobile($scope.stickers[i], $scope.stickers.length);
 		}
 		
 		if ($scope.stickers.length == 0) {
@@ -314,31 +301,8 @@ app.controller("participant-page", function ParticipantPageController(
 		$('#publish-all-btn').prop('disabled', false);
 		$('#stickersContainer').html('');
 		
-		var template = '<div class="panel panel-default">'
-			  + '<div class="panel-heading">{comment}</div>'
-			  + '<div class="panel-body">'
-			  + '  <div class="progress">'
-	  		  + '     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {gladPercentage}%;">Glad</div>'
-			  + '  </div>'
-			  + '  <div class="progress">'
-	  		  + '     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {controlPercentage}%;">No Control</div>'
-			  + '</div>'
-				
-			  + '<div class="btn-group" role="group" aria-label="...">'
-			  + '  <button type="button" class="btn btn-default" onClick="app.getController(\'participant-page as participantPage\').startDeleteComment(\'{stickerId}\')">Delete</button>'
-			  + '  <button type="button" class="btn btn-default" onClick="app.getController(\'participant-page as participantPage\').editSticker(\'{stickerId}\')">Edit</button>'
-			  + '  <button type="button" class="btn btn-default" onClick="app.getController(\'participant-page as participantPage\').publishSticker(\'{stickerId}\')">Publish</button>'
-			  + '</div></div></div>';
-		
 		for (var i=0; i!=$scope.stickers.length; i++) {
-			var gladPercentage = parseInt($scope.stickers[i].glad / 10);
-			var controlPercentage = parseInt(($scope.stickers[i].noControl) / 10);
-			
-			$('#stickersContainer').append(template
-					.replaceAll('{gladPercentage}', gladPercentage)
-					.replaceAll('{controlPercentage}', controlPercentage)
-					.replaceAll('{comment}', $scope.stickers[i].comment)
-					.replaceAll('{stickerId}', $scope.stickers[i].id));
+			$scope.gsmEditor.renderStickerForWeb($scope.stickers[i]);
 		}
 	};
 

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,7 +87,7 @@ public class IndexController {
 	}
 	
 	@RequestMapping(value = "/join-mobile/{code}")
-	public ModelAndView joinWithCode(@PathVariable(value="code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ModelAndView joinWithCode(@PathVariable(value="code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException, NumberFormatException, DaoException {
 
 		String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
 		
@@ -96,11 +95,14 @@ public class IndexController {
 			return new ModelAndView("session-timeout");
 		}
 		
+		SessionDetails details = this.hostDao.getSessionDetails(Integer.parseInt(code), token);
+		
 		ModelAndView page = new ModelAndView("participant-mobile-page");
 		page.addObject("code", code);
 		page.addObject("token", token);
 		page.addObject("isParticipant", true);
 		page.addObject("isMobile", true);
+		page.addObject("boardType", details.getDashboardType());
 		
 		return page;
 	}

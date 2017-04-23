@@ -57,6 +57,13 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 				stickerWidth = configuration.stickerLargerWidth * self.configuration.boxSizeRatio;
 				$('#' + controlId).css('width', stickerWidth + 'px');
 			}
+			
+			if (Utils.isOverflowing($('#' + controlId).get(0))) {
+				stickerWidth = configuration.stickerEvenLargerWidth * self.configuration.boxSizeRatio;
+				$('#' + controlId).css('width', stickerWidth + 'px');
+			}
+			
+			$('#' + controlId).css('overflow', 'hidden');
 		}
 		
 	};

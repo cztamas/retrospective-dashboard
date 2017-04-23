@@ -22,31 +22,37 @@
   	    angular.element(document).ready(function() {
   	    	
   	    	var pageController = app.getController('participant-page as participantPage');
- 	    	pageController.initialize(${code}, '${token}', true);
+ 	    	pageController.initialize(${code}, '${token}', true, ${boardType});
  	    	
  	    	Context.code = ${code};
  	    	Context.token = '${token}';
  	    	
- 	    	// coordinate selector
- 	    	// ----------------------------------------------------------------------------
- 	    	$("#plot-area").click(function(e) {
- 	    	
-			  var offset = $(this).offset();
-			  var relativeX = (e.pageX - offset.left);
-			  var relativeY = (e.pageY - offset.top);
-			  var plotSize = { 
-					width: $("#plot-area").width(), 
-					height: $("#plot-area").height() 
-			  };
-				
-			  var glad = Math.ceil(1000 - ((relativeY / plotSize.height) * 1000));
-			  var noControl = Math.ceil((relativeX / plotSize.width) * 1000);
-			  
-			  pageController.setCrosshair(glad, noControl, 'plot-area', 0);
-			  
-			  $('#slider-fill-glad').val(glad);
-			  $('#slider-fill-control').val(noControl);
-			});
+ 	    	<c:if test="${boardType == 1}">
+	 	    	// coordinate selector
+	 	    	// ----------------------------------------------------------------------------
+	 	    	$("#plot-area").click(function(e) {
+	 	    	
+					  var offset = $(this).offset();
+					  var relativeX = (e.pageX - offset.left);
+					  var relativeY = (e.pageY - offset.top);
+					  var plotSize = { 
+							width: $("#plot-area").width(), 
+							height: $("#plot-area").height() 
+					  };
+						
+					  var glad = Math.ceil(1000 - ((relativeY / plotSize.height) * 1000));
+					  var noControl = Math.ceil((relativeX / plotSize.width) * 1000);
+					  
+					  pageController.setCrosshair(glad, noControl, 'plot-area', 0);
+					  
+					  $('#slider-fill-glad').val(glad);
+					  $('#slider-fill-control').val(noControl);
+				 });
+			  </c:if>
+			  <c:if test="${boardType == 2}">
+			  	  $('#slider-fill-control').val(0.0);
+			  </c:if>
+			
   	    });
  	    
    </script>
@@ -93,21 +99,36 @@
   		<span class="footer-text">keep it short, 256 characters max.</span>
   		<textarea maxlength="256" cols="40" rows="8" name="comment" id="comment"></textarea>
   		
-  		<div>
-        	Indicate your feelings about this item<br/>
-        	<span class="footer-text">tap on below area - put the marker to the correct place indicating how glad you are, and how much control you feel</span><br/><br/>
-        	<span>Glad</span><br/>
-        	<img 
-        		data-glad="500"
-        		data-no-control="500" 
-        		src="../resources/images/plot.png" 
-        		id="plot-area" 
-        		width="100%"
-        		style="cursor: crosshair;" /><br/>
-        	<span style="position: float; float: right;">No Control</span><br/>
-        	<img src="../resources/images/ball.png" id="marker-ball" class="hidden" />
-        	<br/>
-        </div>
+  		<c:if test="${boardType == 1}">
+  			<div>
+	        	Indicate your feelings about this item<br/>
+	        	<span class="footer-text">tap on below area - put the marker to the correct place indicating how glad you are, and how much control you feel</span><br/><br/>
+	        	<span>Glad</span><br/>
+	        	<img 
+	        		data-glad="500"
+	        		data-no-control="500" 
+	        		src="../resources/images/plot.png" 
+	        		id="plot-area" 
+	        		width="100%"
+	        		style="cursor: crosshair;" /><br/>
+	        	<span style="position: float; float: right;">No Control</span><br/>
+	        	<img src="../resources/images/ball.png" id="marker-ball" class="hidden" />
+	        	<br/>
+	        </div>
+  		</c:if>
+  		
+  		<c:if test="${boardType == 2}">
+	  		<fieldset data-role="controlgroup" data-type="horizontal" >
+		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(1.0);" id="radio-choice-1" value="glad" checked="checked" />
+		     	<label name="label-gsm" id="label-glad" for="radio-choice-1">Glad</label>
+		
+		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(0.5);" id="radio-choice-2" value="sad"  />
+		     	<label name="label-gsm" id="label-sad" for="radio-choice-2">Sad</label>
+		
+		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(0.0);" id="radio-choice-3" value="mad"  />
+		     	<label name="label-gsm" id="label-mad" for="radio-choice-3">Mad</label>
+			</fieldset>
+        </c:if>
   
   		<button 
   			id="commentAddOrEdit"
