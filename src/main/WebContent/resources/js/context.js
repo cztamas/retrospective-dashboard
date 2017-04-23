@@ -6,5 +6,6 @@ var Context = {
 	displayUsernames: false,
 	sessionName: null,
 	lastRightClickOnSticker: null, // stickerId
-	lastRightClickOnStickerControlId: null // controlId of sticker
+	lastRightClickOnStickerControlId: null, // controlId of sticker
+	stompClientDebug: false
 }

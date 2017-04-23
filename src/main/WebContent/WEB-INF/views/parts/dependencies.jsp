@@ -33,6 +33,7 @@
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/reveal-dropdown-provider-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/qr-code-widget.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/user-list-widget.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/widgets/session-settings-widget.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/board-page.js?ts=<% out.print(Math.random()); %>"></script>
 	</c:if>
 	

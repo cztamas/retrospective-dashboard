@@ -167,12 +167,6 @@
 		</c:if>
 		
 		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
-		
-		// box size slider
-		$('#settings-dialog').hide();
-		$('#postit-size-slider').slider().on('change', function(event) {
-		    boardPageScope.resizePostIts(event.value.newValue);
-		});
 	});
 
 	$(window).resize(function() {

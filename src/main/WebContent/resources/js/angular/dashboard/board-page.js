@@ -58,6 +58,9 @@ app.controller("board-page", function BoardPageController(
 			$('#color-sample-' + i).attr('style', colorThemes[i]);
 		}
 		
+		// Initialize sesttings dialog
+		app.getController('session-settings-widget').initialize();
+		
 		$scope.resize();
 		$scope.refreshStickers();
     };
@@ -68,7 +71,8 @@ app.controller("board-page", function BoardPageController(
     
 	$scope.showStickers = function() {
 		
-		$scope.$digest();
+		$scope.safeDigest();
+		
 		$('#boardContent').html('');
 		
 		if (!$scope.state.isRevealed) {
@@ -127,26 +131,6 @@ app.controller("board-page", function BoardPageController(
 		$scope.state.sessionParameters.size = size;
 	};
 	
-	$scope.setSessionName = function(name) {
-		$scope.state.sessionParameters.name = name;
-		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() {
-			alert('Session name has been changed.');
-			$scope.$apply();
-		});
-	};
-	
-	$scope.setSessionComment = function(comment) {
-		$scope.state.sessionParameters.comment = comment;
-		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() {
-			alert('Comment has been changed.');
-		});
-	};
-	
-	$scope.setSessionIsAnonymous = function(isAnonymous) {
-		$scope.state.sessionParameters.isAnonymous = isAnonymous;
-		boardService.registerSessionParameters(Context.code, $scope.state.sessionParameters, function() { });
-	};
-	
 	$scope.resizePostIts = function(size) {
 		
 		$scope.setPostItSize(size);
@@ -195,7 +179,7 @@ app.controller("board-page", function BoardPageController(
 			$scope.state.stickers = stickers;
 			
 			$scope.state.usersWithPublishedStickers = revealDropdownProviderService.extractUsers(stickers, $scope.state.revealedUsers);
-			$scope.$digest();
+			$scope.safeDigest();
 			
 			// set post-it size
 			try {
@@ -204,7 +188,7 @@ app.controller("board-page", function BoardPageController(
 				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
 				$('#sessionComment').val(Utils.htmlEncode($scope.state.sessionParameters.comment));
 				$('#sessionCommentText').html(Utils.nl2br(Utils.htmlEncode($scope.state.sessionParameters.comment)));
-				$('#anonymousCheckBox').prop('checked', $scope.state.sessionParameters.isAnonymous);
+				app.getController('session-settings-widget').state.isAnonymous = $scope.state.sessionParameters.isAnonymous;
 				Context.displayUsernames = !$scope.state.sessionParameters.isAnonymous
 				$("#postit-size-slider").bootstrapSlider('setValue', sessionParameters.size);	
 			}
@@ -262,5 +246,13 @@ app.controller("board-page", function BoardPageController(
 		return window.innerHeight - 50 - 70;
 	};
 		
-	
+	$scope.safeDigest = function() {
+    	try {
+    		$scope.$digest();	
+    	}
+    	catch (error) {
+    		
+    	}
+    	
+    };
 });

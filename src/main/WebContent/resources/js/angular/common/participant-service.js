@@ -45,6 +45,11 @@ app.service('participantService', function ParticipantService() {
 		
 		self.socket = new SockJS(app.rootUrl + '/ws');	
 		self.stompClient = Stomp.over(self.socket);
+		
+		if (!Context.stompClientDebug) {
+			self.stompClient.debug = null;
+		}
+		
 	    self.stompClient.connect({}, function (frame) {
 	        
 	        self.stompClient.subscribe('/topic/join/' + self.code + '/' + self.token, function (greeting) {
