@@ -28,6 +28,7 @@
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/board-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-color-theme-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-builder.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-builder-v2.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/label-builder.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/loading-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/reveal-dropdown-provider-service.js?ts=<% out.print(Math.random()); %>"></script>

@@ -1,0 +1,1 @@
+ALTER TABLE session ADD COLUMN board_type INT(11) DEFAULT 1;

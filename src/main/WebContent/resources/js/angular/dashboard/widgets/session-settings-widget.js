@@ -37,7 +37,7 @@ app.controller("session-settings-widget", function SessionSettingsWidgetControll
 		var isChecked = $('#anonymousCheckBox').prop('checked');
 		var boardPage = app.getController('board-page');
 		
-		Context.displayUsernames = isChecked; 
+		Context.displayUsernames = !isChecked; 
 		boardPage.state.sessionParameters.isAnonymous = isChecked;
 		boardService.registerSessionParameters(Context.code, boardPage.state.sessionParameters, function() { });
 		

@@ -83,7 +83,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'id='+controlId+' ' 
 					+ 'class="sticker ui-widget-content" '
 					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'"' : '')
-					+ 'style="'
+					+ ' style="'
 					+ (isSession ? 'cursor: move; ' : '')
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
 					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 
@@ -92,11 +92,10 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'position: absolute; '
 					+ 'transform: rotate('+stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+leftWithOffset+'px;" '
+					+ 'left: '+leftWithOffset+'px; '
+					+ '" '
 					+ 'onMouseUp="'+onDraggingOver+'" '
 					+ 'onMouseDown="'+onDragging+'" '
-					+ 'onMouseOver="$(\'#remove_image_'+controlId+'\').show();" '
-					+ 'onMouseOut="$(\'#remove_image_'+controlId+'\').hide();" '
 					+'>'+Utils.htmlEncode(stickers[i].message) + '</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
@@ -130,7 +129,6 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();
-			$('#remove_image_' + controlId).hide();
 		}
 	};
 	

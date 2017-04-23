@@ -14,6 +14,7 @@ import com.retrospective.exception.DaoException;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.model.SessionParameters;
 import com.retrospective.model.Sticker;
+import com.retrospective.model.enums.BoardType;
 
 public class HostDaoImpl implements HostDao {
 
@@ -29,12 +30,15 @@ public class HostDaoImpl implements HostDao {
 		SessionDetails sessionDetails = new SessionDetails();
 		sessionDetails.setToken(UUID.randomUUID().toString());
 		sessionDetails.setCode(this.generate6digitCode());
+		sessionDetails.setDashboardType(BoardType.Vertical.getValue());
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous) VALUES (default, ?, ?, NOW(), 'Retro', 1, 1)", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 1, 1, ?)", 
 					new Object[] { 
 							sessionDetails.getCode(),
-							sessionDetails.getToken() });
+							sessionDetails.getToken(),
+							sessionDetails.getDashboardType()
+					});
 			
 			return sessionDetails;
 		}
@@ -161,6 +165,30 @@ public class HostDaoImpl implements HostDao {
 		catch (Exception error) {
 			error.printStackTrace();
 			throw new DaoException("Database error occurred while fetching session parameters", error);
+		}
+	}
+	
+	public SessionDetails getSessionDetails(int sessionCode, String sessionToken) throws DaoException {
+		try {
+			return this.jdbcTemplate.queryForObject("SELECT board_type FROM session WHERE code = ? AND token = ?", 
+					new Object[] { sessionCode, sessionToken },
+					new RowMapper<SessionDetails>() {
+
+						@Override
+						public SessionDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
+							SessionDetails row = new SessionDetails();
+							row.setCode(sessionCode);
+							row.setToken(sessionToken);
+							row.setDashboardType(rs.getInt("board_type"));
+							
+							return row;
+						}
+				
+					});
+		}
+		catch (Exception error) {
+			error.printStackTrace();
+			throw new DaoException("Database error occurred while fetching session details", error);
 		}
 	}
 	

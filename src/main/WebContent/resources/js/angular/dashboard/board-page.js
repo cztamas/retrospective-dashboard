@@ -3,10 +3,13 @@ app.controller("board-page", function BoardPageController(
 		configuration,
 		boardService,
 		stickerBuilderService,
+		stickerBuilderV2Service,
 		stickerColorThemeService,
 		labelBuilderService,
 		loadingService,
 		revealDropdownProviderService) {
+	
+	$scope.stickerBuilderProvider = stickerBuilderService;
 	
 	$scope.enum = { 
 		mode: { 
@@ -34,7 +37,21 @@ app.controller("board-page", function BoardPageController(
 	
 	$scope.$watch('state.usersWithPublishedStickers');
 	
-	$scope.initialize = function(shareUrl, code, token) {
+	$scope.initialize = function(shareUrl, code, token, boardType) {
+		
+		switch (boardType) {
+		
+			// Plot
+			case 1:
+				$scope.stickerBuilderProvider = stickerBuilderService;
+				break;
+				
+			// Vertical
+			case 2: 
+				$scope.stickerBuilderProvider = stickerBuilderV2Service;
+				break;
+		}
+		
 		$scope.state.token = token;
 		
 		if ($scope.state.mode == $scope.enum.mode.session) {
@@ -79,7 +96,7 @@ app.controller("board-page", function BoardPageController(
 			return;
 		}
 		
-		stickerBuilderService.build(
+		$scope.stickerBuilderProvider.build(
 				$scope.state.stickers, 
 				$scope.state.offset, 
 				$scope.getBoardHeight(), 
@@ -125,8 +142,8 @@ app.controller("board-page", function BoardPageController(
 			return;
 		}
 		
-		stickerBuilderService.configuration.boxSizeRatio = configs[size].boxSizeRatio;
-		stickerBuilderService.configuration.stickerFontSize = configs[size].stickerFontSize;
+		$scope.stickerBuilderProvider.configuration.boxSizeRatio = configs[size].boxSizeRatio;
+		$scope.stickerBuilderProvider.configuration.stickerFontSize = configs[size].stickerFontSize;
 		
 		$scope.state.sessionParameters.size = size;
 	};

@@ -23,7 +23,15 @@
 
   </head>
   
-  <body ng-app="retrospective" style="margin-left: 120px;">
+  <c:choose>
+    <c:when test="${boardType == 1}">
+        <body ng-app="retrospective" style="margin-left: 120px;"> 
+    </c:when>    
+    <c:otherwise>
+        <body ng-app="retrospective">
+    </c:otherwise>
+  </c:choose>
+  
 	<div ng-controller="board-page">
 	    <nav class="navbar navbar-default navbar-fixed-top">
 	      <div class="container-fullwidth">
@@ -128,7 +136,8 @@
 	      </div>
 	    </nav>
 	    
-	    <%@include file="parts/main-board.jsp" %>
+	    <c:if test="${boardType == 1}"><%@include file="parts/main-board.jsp" %></c:if>
+	    <c:if test="${boardType == 2}"><%@include file="parts/main-board-v2.jsp" %></c:if>
 	</div>
 	
 	<%@include file="parts/widgets/qr-code-widget.jsp" %>
@@ -166,7 +175,7 @@
 			boardPageScope.revealAll();
 		</c:if>
 		
-		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
+		boardPageScope.initialize(dashboardUrl, ${code}, '${token}', ${boardType});
 	});
 
 	$(window).resize(function() {

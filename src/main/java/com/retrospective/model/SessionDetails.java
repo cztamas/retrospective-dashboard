@@ -6,6 +6,8 @@ public class SessionDetails {
 	
 	private int code;
 	
+	private int dashboardType;
+	
 	public SessionDetails() {
 		
 	}
@@ -30,4 +32,14 @@ public class SessionDetails {
 	public void setCode(int code) {
 		this.code = code;
 	}
+
+	public int getDashboardType() {
+		return dashboardType;
+	}
+
+	public void setDashboardType(int dashboardType) {
+		this.dashboardType = dashboardType;
+	}
+	
+	
 }

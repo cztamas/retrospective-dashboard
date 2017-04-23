@@ -21,4 +21,6 @@ public interface HostDao {
 	public String getOffsetSettings(int sessionCode, String sessionToken) throws DaoException;
 	
 	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException;
+	
+	public SessionDetails getSessionDetails(int sessionCode, String sessionToken) throws DaoException;
 }
