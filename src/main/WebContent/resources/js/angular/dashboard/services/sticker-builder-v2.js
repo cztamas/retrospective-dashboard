@@ -35,18 +35,20 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 			if (stickers[i].glad > -0.10 && stickers[i].glad <= 0.33) stickerPlace = self.configuration.placeholders.mad;
 			
 			var controlId = 'sticker_' + stickers[i].id;
-			
+			var usernameClass = 'user-' + stickers[i].username.hashCode();
 			$(stickerPlace).append('<div '
 					+ (isSession ? 'data-toggle="context" ' : '')
 					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
 					+ 'data-target="#context-menu" '
 					+ 'data-sticker-id="'+stickers[i].id+'" '
+					+ 'onMouseOver="$(\'.'+usernameClass+'\').css(\'border\', \'solid 1px #888888\');" '
+					+ 'onMouseOut="$(\'.'+usernameClass+'\').css(\'border\', \'solid 1px #ffffff\');" ' // change color in style.css/.sticker-v2/border
 					+ 'id='+controlId+' ' 
-					+ 'class="sticker ui-widget-content" '
+					+ 'class="sticker-v2 ui-widget-content '+usernameClass+'" '
 					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'" ' : '')
 					+ ' style="'
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
-					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 
+					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; '
 					+ 'width: '+configuration.stickerWidth+'px; '
 					+ self.getStickerBackgroundCss(offset[stickers[i].id] ? offset[stickers[i].id].colorTheme : undefined)
 					+ 'position: float; float: left;'

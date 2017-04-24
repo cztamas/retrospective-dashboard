@@ -100,6 +100,14 @@
 	font-weight: bold;
 }
 
+.sticker-v2 {
+	padding: 10px;
+	border: solid 2px #ffffff;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-weight: bold;
+	border-radius: 15px;
+}
+
 .board-participant {
 	border-radius: 25px;
 	border: solid 1px #cccccc;

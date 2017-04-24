@@ -27,6 +27,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 	};
 	
 	self.build = function(stickers, offset, boardHeight, boardWidth, isSession, revealedUsers) {
+		
 		for (var i=0; i!=stickers.length; i++) {
 			
 			// sticker got removed
@@ -73,6 +74,8 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
+			var usernameClass = 'user-' + stickers[i].username.hashCode();
+			
 			$("#boardContent").append('<div '
 					+ (isSession ? 'data-toggle="context" ' : '')
 					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
@@ -80,8 +83,10 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'data-sticker-id="'+stickers[i].id+'" '
 					+ 'data-original-bottom="'+bottom+'" '
 					+ 'data-original-left="'+left+'" '
+					+ 'onMouseOver="$(\'.'+usernameClass+'\').css(\'border\', \'solid 1px #888888\');" '
+					+ 'onMouseOut="$(\'.'+usernameClass+'\').css(\'border\', \'solid 1px #ffffff\');" ' // change color in style.css/.sticker/border
 					+ 'id='+controlId+' ' 
-					+ 'class="sticker ui-widget-content" '
+					+ 'class="sticker ui-widget-content '+usernameClass+'" '
 					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'"' : '')
 					+ ' style="'
 					+ (isSession ? 'cursor: move; ' : '')
