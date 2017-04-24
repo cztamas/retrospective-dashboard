@@ -45,7 +45,7 @@
 			          			<span class="footer-text">Optimal for large teams (more than 5 members)</span>
 			          			<br/><br/>
 			          			<button class="btn btn-primary btn-sm" ng-click="createSession(2)">Start Session</button>
-			          			<button class="btn btn-default btn-sm">Demo</button>
+			          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoGsmUrl); %>'">Demo</button>
 			          		</td>
 			          	</tr>
 			          	<tr>
@@ -57,7 +57,7 @@
 			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-2.png" width="120" /></td>
 			          		<td valign="top">
 			          			<h4>Virtual Whiteboard</h4>
-			          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting.<br/>
+			          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting (factors: glad, control).<br/>
 			          			<span class="footer-text">Optimal for small teams</span>
 			          			<br/><br/>
 			          			<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>

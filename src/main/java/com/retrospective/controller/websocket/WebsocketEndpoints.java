@@ -7,6 +7,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import com.retrospective.dao.HostDao;
+import com.retrospective.exception.AuthorizationException;
+import com.retrospective.exception.DaoException;
 import com.retrospective.model.ActiveSessionList;
 import com.retrospective.model.websocket.ParticipantJoinedBroadcastMessage;
 import com.retrospective.model.websocket.ParticipantJoinedMessage;
@@ -22,6 +25,9 @@ public class WebsocketEndpoints {
 	@Autowired
 	private ActiveSessionList activeSessionList;
 	
+	@Autowired
+	private HostDao hostDao;
+	
 	private Object activeSessionLock = new Object();
 	
 	public WebsocketEndpoints() {
@@ -32,6 +38,14 @@ public class WebsocketEndpoints {
 	 */
 	@MessageMapping("/board/join/{code}/{token}")
     public void websocketJoin(@Payload ParticipantJoinedMessage message, @DestinationVariable("code") int code, @DestinationVariable("token") String token) throws Exception {
+		
+		try {
+			this.assertLockedSession(code, token);	
+		}
+		catch (AuthorizationException error) {
+			// do not panic, someone just tried to join the demo dashboard
+			return;
+		}
 		
 		ParticipantJoinedBroadcastMessage result = new ParticipantJoinedBroadcastMessage();
 		result.setUsername(message.getUsername());
@@ -55,8 +69,23 @@ public class WebsocketEndpoints {
 	 */
 	@MessageMapping("/board/sticker/{code}/{token}")
     public void websocketPublishSticker(@Payload PublishStickerMessage message, @DestinationVariable("code") int code, @DestinationVariable("token") String token) throws Exception {
+		
+		try {
+			this.assertLockedSession(code, token);	
+		}
+		catch (AuthorizationException error) {
+			// do not panic, someone just tried to join the demo dashboard
+			return;
+		}
+		
 		simpMessagingTemplate.convertAndSend(
 				String.format("/topic/sticker/%s/%s", code, token), 
 				message);
     }
+	
+	private void assertLockedSession(int code, String token) throws AuthorizationException, DaoException {
+		if (this.hostDao.getSessionDetails(code, token).isLocked()) {
+			throw new AuthorizationException("Session has been locked.");
+		}
+	}
 }

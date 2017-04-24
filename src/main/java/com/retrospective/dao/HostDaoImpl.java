@@ -32,7 +32,7 @@ public class HostDaoImpl implements HostDao {
 		sessionDetails.setDashboardType(boardType);
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 0, 1, ?)", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 1, 0, ?)", 
 					new Object[] { 
 							sessionDetails.getCode(),
 							sessionDetails.getToken(),
@@ -169,7 +169,7 @@ public class HostDaoImpl implements HostDao {
 	
 	public SessionDetails getSessionDetails(int sessionCode, String sessionToken) throws DaoException {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT board_type FROM session WHERE code = ? AND token = ?", 
+			return this.jdbcTemplate.queryForObject("SELECT board_type, is_locked FROM session WHERE code = ? AND token = ?", 
 					new Object[] { sessionCode, sessionToken },
 					new RowMapper<SessionDetails>() {
 
@@ -179,6 +179,7 @@ public class HostDaoImpl implements HostDao {
 							row.setCode(sessionCode);
 							row.setToken(sessionToken);
 							row.setDashboardType(rs.getInt("board_type"));
+							row.setLocked(rs.getInt("is_locked") == 1);
 							
 							return row;
 						}

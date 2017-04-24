@@ -32,6 +32,7 @@ app.controller("board-page", function BoardPageController(
 		offset: {},
 		stickers: [],
 		sessionParameters: {},
+		isLocked: false,
 		token: null
 	};
 	
@@ -181,7 +182,7 @@ app.controller("board-page", function BoardPageController(
 	$scope.refreshStickers = function() {
 		
 		loadingService.start();
-		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings, sessionParameters) {
+		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings, sessionParameters, isLocked) {
 			
 			try {
 				if (offsetSettings != null) {
@@ -200,7 +201,10 @@ app.controller("board-page", function BoardPageController(
 			
 			// set post-it size
 			try {
+				
 				$scope.state.sessionParameters = sessionParameters;
+				$scope.state.isLocked = isLocked;
+				
 				$scope.setPostItSize(sessionParameters.size);
 				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
 				$('#sessionComment').val(Utils.htmlEncode($scope.state.sessionParameters.comment));

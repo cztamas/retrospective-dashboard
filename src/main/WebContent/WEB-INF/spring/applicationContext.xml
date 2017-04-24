@@ -18,6 +18,8 @@
 	<bean id="constants" class="com.retrospective.utils.Constants">
 	   <constructor-arg value="${application.baseUrl}"/>
 	   <constructor-arg value="${application.monitor.token}"/>
+	   <constructor-arg value="${demo.gladsadmad.code}"/>
+	   <constructor-arg value="${demo.gladsadmad.token}"/>
 	</bean>
 	
 	<bean id="activeSessionsStorage" class="com.retrospective.model.ActiveSessionList"></bean>

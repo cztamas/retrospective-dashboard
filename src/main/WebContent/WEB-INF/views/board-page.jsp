@@ -36,7 +36,10 @@
 	    <nav class="navbar navbar-default navbar-fixed-top">
 	      <div class="container-fullwidth">
 	        <div class="navbar-header">
+	        
 	          <a class="navbar-brand" href="#" ng-bind="state.sessionParameters.name"></a>
+	          <a ng-if="state.isLocked" class="navbar-brand" href="#" title="No modifications are allowed on this session">(locked session)</a>
+	          
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
