@@ -61,7 +61,7 @@
 			          			<span class="footer-text">Optimal for small teams</span>
 			          			<br/><br/>
 			          			<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>
-			          			<button class="btn btn-default btn-sm">Demo</button>
+			          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoBoardUrl); %>'">Demo</button>
 			          			<br/><br/>
 			          		</td>
 			          	</tr>

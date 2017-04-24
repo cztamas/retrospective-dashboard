@@ -5,14 +5,16 @@ public class Constants {
 	public static String WebRoot = "";
 	public static String MonitorToken = "";
 	public static String DemoGsmUrl = "";
+	public static String DemoBoardUrl = "";
 	
 	public final static String CookieWebRoot = "/";
 	public final static int OneYearInSeconds = 31556926;
 	
-	public Constants(String webRoot, String monitorToken, String gsmCode, String gsmToken) {
+	public Constants(String webRoot, String monitorToken, String demoGsmUrl, String demoBoardUrl) {
 		WebRoot = webRoot;
 		MonitorToken = monitorToken;
-		DemoGsmUrl = String.format("%s/dashboard/%s/%s", webRoot, gsmCode, gsmToken);
+		DemoGsmUrl = String.format("%s%s", webRoot, demoGsmUrl);
+		DemoBoardUrl = String.format("%s%s", webRoot, demoBoardUrl);
 	}
 	
 	public enum Cookies {
