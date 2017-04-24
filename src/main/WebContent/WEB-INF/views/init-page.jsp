@@ -38,7 +38,7 @@
    					<br/><br/>
    					<table width="700">
 			          	<tr>
-			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px; border: solid 1px #aaaaaa;" src="resources/images/retro-layout-1.png" width="120" /></td>
+			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-1.png" width="120" /></td>
 			          		<td valign="top">
 			          			<h4>Glad, Sad, Mad</h4>
 			          			Traditional "glad, sad, mad" type of retrospective meeting. <br/>
@@ -54,7 +54,7 @@
 			          		</td>
 			          	</tr>
 			          	<tr style="border-bottom: solid 1px #cccccc;">
-			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px; border: solid 1px #aaaaaa;" src="resources/images/retro-layout-2.png" width="120" /></td>
+			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-2.png" width="120" /></td>
 			          		<td valign="top">
 			          			<h4>Virtual Whiteboard</h4>
 			          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting.<br/>
