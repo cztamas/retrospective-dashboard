@@ -74,10 +74,10 @@ public class HostController {
 
 	@ResponseBody
 	@RequestMapping(value = "/session", consumes = "application/json", method = RequestMethod.POST)
-	public CreateSessionResponse createSession() {
+	public CreateSessionResponse createSession(@RequestBody int boardType) {
 		
 		try {
-			SessionDetails sessionDetails = this.hostDao.createSession();
+			SessionDetails sessionDetails = this.hostDao.createSession(boardType);
 			
 			CreateSessionResponse result = new CreateSessionResponse();
 			result.setSessionDetails(sessionDetails);

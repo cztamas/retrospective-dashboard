@@ -10,7 +10,7 @@ app.service('gsmEditorPlot', function() {
 		$('#marker-ball').addClass('hidden');
 	};
 	
-	self.renderStickerForMobile = function(sticker, stickersCount) {
+	self.renderStickerForMobile = function(sticker, current, stickersCount) {
 		var gladPercentage = parseInt(sticker.glad / 10);
 		var gladHtml = '<div class="progress">'
 			    + '<div class="progress-bar" role="progressbar" aria-valuenow="'+gladPercentage+'" aria-valuemin="0" aria-valuemax="1000" style="width: '+gladPercentage+'%;"> ' 
@@ -26,8 +26,8 @@ app.service('gsmEditorPlot', function() {
 			    +'</div>';
 		
 		$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
-				+ (i == stickersCount-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
-				+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
+				+ (current == stickersCount-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
+				+ (current == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
 				+ '<strong style="font-size: 16pt;">'+sticker.comment+'</strong>'
 				+ '<p>'
 				+gladHtml + controlHtml

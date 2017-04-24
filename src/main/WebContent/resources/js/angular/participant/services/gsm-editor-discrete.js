@@ -3,21 +3,16 @@ app.service('gsmEditorDiscrete', function() {
 	var self = this;
 	
 	self.editSticker = function(sticker, isMobileView) {
-		var happinessIndex = null;
-		if (sticker.glad == 1.0) happinessIndex = 'glad';
-		if (sticker.glad == 0.5) happinessIndex = 'sad';
-		if (sticker.glad == 0.0) happinessIndex = 'mad';
-		
-		happinessIndex = self.getHappinessIndexFrom1To1000(sticker);
+		var happinessIndex = self.getHappinessIndexFrom1To1000(sticker);
 		
 		if (isMobileView) {
-			$('input:radio[name="glad-sad-mad-radio"]').attr('checked', false);
+			$('input:radio[name="glad-sad-mad-radio"]').prop('checked', false);
 			$('label[name="label-gsm"]').removeClass('ui-btn-active');
-			$('input:radio[name="glad-sad-mad-radio"]').filter('[value="'+happinessIndex+'"]').attr('checked', true);
+			$('input:radio[name="glad-sad-mad-radio"]').filter('[value="'+happinessIndex+'"]').prop('checked', true);
 			$('label[id="label-'+happinessIndex+'"]').addClass('ui-btn-active');	
 		}
 		else {
-			
+			happinessIndex = self.getHappinessIndexFrom1To1000(sticker);
 			$('#gsm-glad').prop('checked', false);
 			$('#gsm-sad').prop('checked', false);
 			$('#gsm-mad').prop('checked', false);
@@ -43,15 +38,15 @@ app.service('gsmEditorDiscrete', function() {
 		}
 	};
 	
-	self.renderStickerForMobile = function(sticker, stickersCount) {
-		var happinessIndex = self.getHappinessIndex(sticker);
+	self.renderStickerForMobile = function(sticker, current, stickersCount) {
+		var happinessIndex = self.getHappinessIndexFrom1To1000(sticker);
 		
 		$('#stickersContainer').append('<li class="ui-li-static ui-body-inherit'
-				+ (i == stickersCount-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
-				+ (i == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
+				+ (current == stickersCount-1 ? ' ui-body-inheritui-last-child ui-last-child' : '')
+				+ (current == 0 ? ' ui-body-inheritui-first-child ui-first-child' : '')+'">'
 				+ '<strong style="font-size: 16pt;">'+sticker.comment+'</strong>'
 				+ '<p>'
-				+ happinessIndex
+				+ '<img src="../resources/images/'+happinessIndex+'.png" width="50" />'
 				+ '</p><p>'
 				+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').startDeleteComment(\''+sticker.id+'\')" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-left">Delete</a>'
 				+ '<a href="#" onClick="app.getController(\'participant-page as participantPage\').editSticker(\''+sticker.id+'\')" class="ui-btn ui-btn-inline ui-icon-edit ui-btn-icon-left">Edit</a>'
@@ -82,15 +77,6 @@ app.service('gsmEditorDiscrete', function() {
 				.replaceAll('{happinessIndex}', self.getHappinessIndexFrom1To1000(sticker))
 				.replaceAll('{comment}', sticker.comment)
 				.replaceAll('{stickerId}', sticker.id));
-	};
-	
-	self.getHappinessIndex = function(sticker) {
-		var happinessIndex = null;
-		if (sticker.glad == 1.0) happinessIndex = 'Glad';
-		if (sticker.glad == 0.5) happinessIndex = 'Sad';
-		if (sticker.glad == 0.0) happinessIndex = 'Mad';
-		
-		return happinessIndex;
 	};
 	
 	self.getHappinessIndexFrom1To1000 = function(sticker) {

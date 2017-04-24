@@ -14,7 +14,6 @@ import com.retrospective.exception.DaoException;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.model.SessionParameters;
 import com.retrospective.model.Sticker;
-import com.retrospective.model.enums.BoardType;
 
 public class HostDaoImpl implements HostDao {
 
@@ -25,12 +24,12 @@ public class HostDaoImpl implements HostDao {
 	}
 
 	@Override
-	public SessionDetails createSession() throws DaoException {
+	public SessionDetails createSession(int boardType) throws DaoException {
 		
 		SessionDetails sessionDetails = new SessionDetails();
 		sessionDetails.setToken(UUID.randomUUID().toString());
 		sessionDetails.setCode(this.generate6digitCode());
-		sessionDetails.setDashboardType(BoardType.Vertical.getValue());
+		sessionDetails.setDashboardType(boardType);
 		
 		try {
 			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 1, 1, ?)", 

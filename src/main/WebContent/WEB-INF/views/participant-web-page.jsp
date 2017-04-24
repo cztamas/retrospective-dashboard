@@ -119,7 +119,9 @@
 	      </div>
 	      <div class="modal-body">
 	        Comment:<br/>
-	        <span class="footer-text">keep it short, it will be displayed on a small virtual post-it</span><br/>
+	        <c:if test="${boardType == 1}">
+	        	<span class="footer-text">keep it short, it will be displayed on a small virtual post-it</span><br/>
+	        </c:if>
 	        <textarea type="text" id="comment" style="width: 100%;"></textarea><br/><br/>
 	        
 	        <!-- Slider Selector is disabled -->

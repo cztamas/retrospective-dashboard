@@ -269,7 +269,7 @@ app.controller("participant-page", function ParticipantPageController(
 		$('#stickersContainer').html('');
 		
 		for (var i=0; i!=$scope.stickers.length; i++) {
-			$scope.gsmEditor.renderStickerForMobile($scope.stickers[i], $scope.stickers.length);
+			$scope.gsmEditor.renderStickerForMobile($scope.stickers[i], i, $scope.stickers.length);
 		}
 		
 		if ($scope.stickers.length == 0) {

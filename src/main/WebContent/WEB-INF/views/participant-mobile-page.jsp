@@ -119,13 +119,13 @@
   		
   		<c:if test="${boardType == 2}">
 	  		<fieldset data-role="controlgroup" data-type="horizontal" >
-		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(1.0);" id="radio-choice-1" value="glad" checked="checked" />
+		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(1000);" id="radio-choice-1" value="glad" checked="checked" />
 		     	<label name="label-gsm" id="label-glad" for="radio-choice-1">Glad</label>
 		
-		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(0.5);" id="radio-choice-2" value="sad"  />
+		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(500);" id="radio-choice-2" value="sad"  />
 		     	<label name="label-gsm" id="label-sad" for="radio-choice-2">Sad</label>
 		
-		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(0.0);" id="radio-choice-3" value="mad"  />
+		     	<input type="radio" name="glad-sad-mad-radio" onChange="$('#slider-fill-glad').val(0);" id="radio-choice-3" value="mad"  />
 		     	<label name="label-gsm" id="label-mad" for="radio-choice-3">Mad</label>
 			</fieldset>
         </c:if>

@@ -15,7 +15,8 @@
 
 	<%@ include file="parts/dependencies.jsp" %>
 	<%@ include file="parts/google-analytics.jsp" %>
-
+	
+	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/init-page.css">
   </head>
   
   <body style="margin-left: 120px; background: #eeeeee;">
@@ -25,27 +26,52 @@
    			
    		<div style="margin-left: 250px;">
    		
-   		<table width="100%">
+   		<table width="80%">
    			<tr>
-   				<td width="1" valign="top"><img src="resources/images/retrospective.png" /></td>
+   				<td width="1" valign="top">
+   					<img src="resources/images/retrospective.png" />
+   				</td>
    				<td>
-   					<h2>Online interactive whiteboard for retrospective meetings</h2>
-   					because:
-   					<ul>
-			   			<li>virtual post-it would never fall down from the whiteboard</li>
-			   			<li>participants can prepare their feedbacks before the meeting if you share the join url with them in advance</li>
-			   			<li>you can save permalink of the board instead of taking a picture of the whiteboard at the end of the session</li>
-			   		</ul>
+   					<h2>Interactive whiteboard for retrospective meetings</h2>
+   					This is a <b>FREE</b> tool for Scum Masters to facilitate retrospective meetings. The goal of this project is to make retro meetings more fun for participants, and allow 
+   					scum masters to manage retro meeting results more effectively.
+   					<br/><br/>
+   					<table width="700">
+			          	<tr>
+			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px; border: solid 1px #aaaaaa;" src="resources/images/retro-layout-1.png" width="120" /></td>
+			          		<td valign="top">
+			          			<h4>Glad, Sad, Mad</h4>
+			          			Traditional "glad, sad, mad" type of retrospective meeting. <br/>
+			          			<span class="footer-text">Optimal for large teams (more than 5 members)</span>
+			          			<br/><br/>
+			          			<button class="btn btn-primary btn-sm" ng-click="createSession(2)">Start Session</button>
+			          			<button class="btn btn-default btn-sm">Demo</button>
+			          		</td>
+			          	</tr>
+			          	<tr>
+			          		<td colspan="2" width="100%">
+			          			<div width="100%" id="or">or</div>
+			          		</td>
+			          	</tr>
+			          	<tr style="border-bottom: solid 1px #cccccc;">
+			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px; border: solid 1px #aaaaaa;" src="resources/images/retro-layout-2.png" width="120" /></td>
+			          		<td valign="top">
+			          			<h4>Virtual Whiteboard</h4>
+			          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting.<br/>
+			          			<span class="footer-text">Optimal for small teams</span>
+			          			<br/><br/>
+			          			<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>
+			          			<button class="btn btn-default btn-sm">Demo</button>
+			          			<br/><br/>
+			          		</td>
+			          	</tr>
+		            </table>
 			   		
-			   		<br/>
-			   		<button class="btn btn-primary btn-lg" ng-click="createSession()">Start Retrospective Session</button>
-			   		<br/><br/>
-			   		
+			   		<br>
 			   		<span class="footer-text">
 			   		Inspired by <a href="http://scrumwith.me/" target="out">scrumwith.me</a> | 
 	    		
 		    		Source Code on <a href="https://github.com/akos-sereg/retrospective-dashboard" target="out">GitHub</a> |
-		    		See <a href="#" onClick="$('#how-it-works').toggle();">how it works</a> |  
 		    		Copyright © 2017 Akos Sereg
 		    		</span>
 		    		<br/><br/>
@@ -54,40 +80,6 @@
    		</table>
    		
     	</div>
-    	
-    	<table id="how-it-works" style="display: none; width: 100%; background-color: #ffffff;" align="center">
-    		<tr>
-   				<td width="10%">&nbsp;</td>
-   				<td width="25%"><img src="resources/images/tripod.jpg" /></td>
-   				<td width="25%">
-   					<img src="resources/images/laptop.png" width="180" /> or 
-   					<img src="resources/images/smartphone.png" width="80" />
-   				</td>
-   				<td width="5%">&nbsp;</td>
-   				<td width="25%"><img src="resources/images/tripod-filled.png" /></td>
-   				<td width="10%">&nbsp;</td>
-   			</tr>
-   			<tr>
-   				<td width="10%">&nbsp;</td>
-   				<td valign="top" width="25%">
-   					<h4>1. Start</h4>
-   					Use a beamer in a meeting room and make <br/>the board full screen by pressing F11. 
-   				</td>
-   				<td valign="top" width="25%">
-   					<h4>2. Join</h4>
-   					Team members can join the session on smart phone (by reading QR code) or laptop (by following the join url). If you have sent the join url to them before the meeting, 
-   					they might have prepared their feedbacks in advance.<br/><br/>
-   				
-   				</td>
-   				<td width="5%">&nbsp;</td>
-   				<td valign="top" width="25%">
-   					<h4>3. Evaluate</h4>
-   					Once team members have published their comments, you can make it visible by clicking on "Reveal" button. After that, all newly published post-its are displayed immediately.<br/>
-   					You can drag all elements on the board to adjust positions.
-   				</td>
-   				<td width="10%">&nbsp;</td>
-   			</tr>
-   		</table> 
 	</div>
 	
 	<a href="https://github.com/akos-sereg/retrospective-dashboard"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6625ac1f3ee0a12250227cf83ce904423abf351/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png"></a>

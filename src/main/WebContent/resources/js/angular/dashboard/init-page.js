@@ -1,13 +1,13 @@
 app.controller("init-page", function InitPageController($scope) {
 	
-	$scope.createSession = function () {
+	$scope.createSession = function (boardType) {
 		
 		$.ajax({
 		    method: 'POST',
 		    url: app.rootUrl + "/rest/host/session",
 		    dataType: 'json',
 		    contentType: 'application/json',
-		    data: null,
+		    data: JSON.stringify(boardType),
 		    
 		    statusCode: {
 		    	200: function(data) {
