@@ -74,7 +74,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
-			var usernameClass = 'user-' + stickers[i].username.hashCode();
+			var usernameClass = Context.displayUsernames ? 'user-' + stickers[i].username.hashCode() : '';
 			
 			$("#boardContent").append('<div '
 					+ (isSession ? 'data-toggle="context" ' : '')

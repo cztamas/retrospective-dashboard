@@ -35,7 +35,7 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 			if (stickers[i].glad > -0.10 && stickers[i].glad <= 0.33) stickerPlace = self.configuration.placeholders.mad;
 			
 			var controlId = 'sticker_' + stickers[i].id;
-			var usernameClass = 'user-' + stickers[i].username.hashCode();
+			var usernameClass = Context.displayUsernames ? 'user-' + stickers[i].username.hashCode() : '';
 			$(stickerPlace).append('<div '
 					+ (isSession ? 'data-toggle="context" ' : '')
 					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'

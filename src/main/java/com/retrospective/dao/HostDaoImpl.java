@@ -32,7 +32,7 @@ public class HostDaoImpl implements HostDao {
 		sessionDetails.setDashboardType(boardType);
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 1, 1, ?)", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 0, 1, ?)", 
 					new Object[] { 
 							sessionDetails.getCode(),
 							sessionDetails.getToken(),
