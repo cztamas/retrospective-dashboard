@@ -19,3 +19,9 @@
 .table-header {
 	border-bottom: solid 1px #dddddd;
 }
+
+.board-sticker-container {
+	padding-top: 15px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
