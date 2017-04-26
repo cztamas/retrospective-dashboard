@@ -3,10 +3,13 @@ app.controller("board-page", function BoardPageController(
 		configuration,
 		boardService,
 		stickerBuilderService,
+		stickerBuilderV2Service,
 		stickerColorThemeService,
 		labelBuilderService,
 		loadingService,
 		revealDropdownProviderService) {
+	
+	$scope.stickerBuilderProvider = stickerBuilderService;
 	
 	$scope.enum = { 
 		mode: { 
@@ -28,13 +31,29 @@ app.controller("board-page", function BoardPageController(
 		usersWithPublishedStickers: [], // item: { username: "akos-sereg", isRevealed: true }
 		offset: {},
 		stickers: [],
+		deletedStickerCount: 0,
 		sessionParameters: {},
+		isLocked: false,
 		token: null
 	};
 	
 	$scope.$watch('state.usersWithPublishedStickers');
 	
-	$scope.initialize = function(shareUrl, code, token) {
+	$scope.initialize = function(shareUrl, code, token, boardType) {
+		
+		switch (boardType) {
+		
+			// Plot
+			case 1:
+				$scope.stickerBuilderProvider = stickerBuilderService;
+				break;
+				
+			// Vertical
+			case 2: 
+				$scope.stickerBuilderProvider = stickerBuilderV2Service;
+				break;
+		}
+		
 		$scope.state.token = token;
 		
 		if ($scope.state.mode == $scope.enum.mode.session) {
@@ -79,7 +98,7 @@ app.controller("board-page", function BoardPageController(
 			return;
 		}
 		
-		stickerBuilderService.build(
+		$scope.stickerBuilderProvider.build(
 				$scope.state.stickers, 
 				$scope.state.offset, 
 				$scope.getBoardHeight(), 
@@ -125,8 +144,8 @@ app.controller("board-page", function BoardPageController(
 			return;
 		}
 		
-		stickerBuilderService.configuration.boxSizeRatio = configs[size].boxSizeRatio;
-		stickerBuilderService.configuration.stickerFontSize = configs[size].stickerFontSize;
+		$scope.stickerBuilderProvider.configuration.boxSizeRatio = configs[size].boxSizeRatio;
+		$scope.stickerBuilderProvider.configuration.stickerFontSize = configs[size].stickerFontSize;
 		
 		$scope.state.sessionParameters.size = size;
 	};
@@ -164,7 +183,7 @@ app.controller("board-page", function BoardPageController(
 	$scope.refreshStickers = function() {
 		
 		loadingService.start();
-		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings, sessionParameters) {
+		boardService.getSessionDetails(Context.code, function(stickers, offsetSettings, sessionParameters, isLocked) {
 			
 			try {
 				if (offsetSettings != null) {
@@ -177,13 +196,17 @@ app.controller("board-page", function BoardPageController(
 			
 			// initialize stickers
 			$scope.state.stickers = stickers;
+			$scope.state.deletedStickerCount = $scope.getDeletedStickerCount();
 			
 			$scope.state.usersWithPublishedStickers = revealDropdownProviderService.extractUsers(stickers, $scope.state.revealedUsers);
 			$scope.safeDigest();
 			
 			// set post-it size
 			try {
+				
 				$scope.state.sessionParameters = sessionParameters;
+				$scope.state.isLocked = isLocked;
+				
 				$scope.setPostItSize(sessionParameters.size);
 				$('#sessionName').val(Utils.htmlEncode($scope.state.sessionParameters.name));
 				$('#sessionComment').val(Utils.htmlEncode($scope.state.sessionParameters.comment));
@@ -254,5 +277,23 @@ app.controller("board-page", function BoardPageController(
     		
     	}
     	
+    };
+    
+    $scope.getDeletedStickerCount = function() {
+    	
+    	var count = 0;
+    	
+    	try {
+    		for (var i=0; i!=$scope.state.stickers.length; i++) {
+        		if ($scope.state.offset[$scope.state.stickers[i].id] && $scope.state.offset[$scope.state.stickers[i].id].removed && $scope.state.offset[$scope.state.stickers[i].id].removed === true) {
+        			count++;
+        		}
+        	}
+    		
+    		return count;
+    	}
+    	catch (error) {
+    		return 0;
+    	}
     };
 });

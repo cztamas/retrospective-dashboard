@@ -27,6 +27,7 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 	};
 	
 	self.build = function(stickers, offset, boardHeight, boardWidth, isSession, revealedUsers) {
+		
 		for (var i=0; i!=stickers.length; i++) {
 			
 			// sticker got removed
@@ -73,6 +74,8 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
+			var usernameClass = Context.displayUsernames ? 'user-' + Math.abs(stickers[i].username.hashCode()) : '';
+			
 			$("#boardContent").append('<div '
 					+ (isSession ? 'data-toggle="context" ' : '')
 					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
@@ -80,10 +83,12 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'data-sticker-id="'+stickers[i].id+'" '
 					+ 'data-original-bottom="'+bottom+'" '
 					+ 'data-original-left="'+left+'" '
+					+ 'onMouseOver="$(\'.sticker\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \''+configuration.stickerOpacity+'\');" '
+					+ 'onMouseOut="$(\'.sticker\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \'\');" ' // change color in style.css/.sticker-v2/border
 					+ 'id='+controlId+' ' 
-					+ 'class="sticker ui-widget-content" '
+					+ 'class="sticker ui-widget-content '+usernameClass+'" '
 					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'"' : '')
-					+ 'style="'
+					+ ' style="'
 					+ (isSession ? 'cursor: move; ' : '')
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
 					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 
@@ -92,11 +97,10 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 					+ 'position: absolute; '
 					+ 'transform: rotate('+stickers[i].transform+'deg); '
 					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+leftWithOffset+'px;" '
+					+ 'left: '+leftWithOffset+'px; '
+					+ '" '
 					+ 'onMouseUp="'+onDraggingOver+'" '
 					+ 'onMouseDown="'+onDragging+'" '
-					+ 'onMouseOver="$(\'#remove_image_'+controlId+'\').show();" '
-					+ 'onMouseOut="$(\'#remove_image_'+controlId+'\').hide();" '
 					+'>'+Utils.htmlEncode(stickers[i].message) + '</div>');
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
@@ -130,7 +134,6 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			}
 			
 			$('#' + controlOriginalPlaceholderId).hide();
-			$('#remove_image_' + controlId).hide();
 		}
 	};
 	

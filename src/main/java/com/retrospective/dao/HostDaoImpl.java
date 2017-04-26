@@ -24,17 +24,20 @@ public class HostDaoImpl implements HostDao {
 	}
 
 	@Override
-	public SessionDetails createSession() throws DaoException {
+	public SessionDetails createSession(int boardType) throws DaoException {
 		
 		SessionDetails sessionDetails = new SessionDetails();
 		sessionDetails.setToken(UUID.randomUUID().toString());
 		sessionDetails.setCode(this.generate6digitCode());
+		sessionDetails.setDashboardType(boardType);
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous) VALUES (default, ?, ?, NOW(), 'Retro', 1, 1)", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 1, 0, ?)", 
 					new Object[] { 
 							sessionDetails.getCode(),
-							sessionDetails.getToken() });
+							sessionDetails.getToken(),
+							sessionDetails.getDashboardType()
+					});
 			
 			return sessionDetails;
 		}
@@ -161,6 +164,31 @@ public class HostDaoImpl implements HostDao {
 		catch (Exception error) {
 			error.printStackTrace();
 			throw new DaoException("Database error occurred while fetching session parameters", error);
+		}
+	}
+	
+	public SessionDetails getSessionDetails(int sessionCode, String sessionToken) throws DaoException {
+		try {
+			return this.jdbcTemplate.queryForObject("SELECT board_type, is_locked FROM session WHERE code = ? AND token = ?", 
+					new Object[] { sessionCode, sessionToken },
+					new RowMapper<SessionDetails>() {
+
+						@Override
+						public SessionDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
+							SessionDetails row = new SessionDetails();
+							row.setCode(sessionCode);
+							row.setToken(sessionToken);
+							row.setDashboardType(rs.getInt("board_type"));
+							row.setLocked(rs.getInt("is_locked") == 1);
+							
+							return row;
+						}
+				
+					});
+		}
+		catch (Exception error) {
+			error.printStackTrace();
+			throw new DaoException("Database error occurred while fetching session details", error);
 		}
 	}
 	

@@ -44,7 +44,12 @@ public class HostController {
 		
 		ServerResponse response = new ServerResponse();
 		try {
-			this.hostDao.setSessionParameters(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName()), parameters);
+			String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
+			this.assertLockedSession(code, token);
+			this.hostDao.setSessionParameters(code, token, parameters);
+		}
+		catch (AuthorizationException error) {
+			response.setErrorCode(Constants.ErrorCodes.AccessingToLockedSession.getCode());
 		}
 		catch (DaoException error) {
 			
@@ -61,7 +66,12 @@ public class HostController {
 		
 		ServerResponse response = new ServerResponse();
 		try {
-			this.hostDao.setOffsets(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName()), offsets);
+			String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
+			this.assertLockedSession(code, token);
+			this.hostDao.setOffsets(code, token, offsets);
+		}
+		catch (AuthorizationException error) {
+			response.setErrorCode(Constants.ErrorCodes.AccessingToLockedSession.getCode());
 		}
 		catch (DaoException error) {
 			
@@ -74,10 +84,10 @@ public class HostController {
 
 	@ResponseBody
 	@RequestMapping(value = "/session", consumes = "application/json", method = RequestMethod.POST)
-	public CreateSessionResponse createSession() {
+	public CreateSessionResponse createSession(@RequestBody int boardType) {
 		
 		try {
-			SessionDetails sessionDetails = this.hostDao.createSession();
+			SessionDetails sessionDetails = this.hostDao.createSession(boardType);
 			
 			CreateSessionResponse result = new CreateSessionResponse();
 			result.setSessionDetails(sessionDetails);
@@ -97,12 +107,12 @@ public class HostController {
 		
 		try {
 			GetSessionDetailsResponse result = new GetSessionDetailsResponse();
-			result.setStickers(this.hostDao.getSessionStickers(
-					code, 
-					CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
+			String token = CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName());
 			
-			result.setOffsetSettings(this.hostDao.getOffsetSettings(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
-			result.setSessionParameters(this.hostDao.getSessionParameters(code, CookieHelper.getCookie(request.getCookies(), Constants.Cookies.Token.getName())));
+			result.setStickers(this.hostDao.getSessionStickers(code, token));
+			result.setOffsetSettings(this.hostDao.getOffsetSettings(code, token));
+			result.setSessionParameters(this.hostDao.getSessionParameters(code, token));
+			result.setLocked(this.hostDao.getSessionDetails(code, token).isLocked());
 			
 			return result;
 		}
@@ -114,6 +124,12 @@ public class HostController {
 			
 			ErrorLogger.LogError(new CreateSessionException("Unable to fetch session details (notes and offsets)", error));
 			return GetSessionDetailsResponse.error();	
+		}
+	}
+	
+	private void assertLockedSession(int code, String token) throws AuthorizationException, DaoException {
+		if (this.hostDao.getSessionDetails(code, token).isLocked()) {
+			throw new AuthorizationException("Session has been locked.");
 		}
 	}
 }

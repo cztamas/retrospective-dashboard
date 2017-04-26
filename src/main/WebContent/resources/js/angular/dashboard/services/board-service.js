@@ -156,7 +156,7 @@ app.service('boardService', function BoardService() {
 		    			return;
 		    		}
 		    		
-		    		onSuccess(self.transform(data.stickers), data.offsetSettings, data.sessionParameters);   
+		    		onSuccess(self.transform(data.stickers), data.offsetSettings, data.sessionParameters, data.locked);   
 	            },
 	        }
 		});	

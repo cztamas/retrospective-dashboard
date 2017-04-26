@@ -28,6 +28,7 @@
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/board-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-color-theme-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-builder.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/sticker-builder-v2.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/label-builder.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/loading-service.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/services/reveal-dropdown-provider-service.js?ts=<% out.print(Math.random()); %>"></script>
@@ -41,6 +42,8 @@
 	<c:if test="${isParticipant != null}">
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/participant-page.js?ts=<% out.print(Math.random()); %>"></script>
 		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/services/keepalive-service.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/services/gsm-editor-plot.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/participant/services/gsm-editor-discrete.js?ts=<% out.print(Math.random()); %>"></script>
 	</c:if>
 	
 	<!-- ********** CSS *************************************************************************************** -->

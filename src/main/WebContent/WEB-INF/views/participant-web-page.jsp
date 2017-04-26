@@ -34,7 +34,7 @@
   	    angular.element(document).ready(function() {
   	    	
   	    	var pageController = app.getController('participant-page as participantPage');
- 	    	pageController.initialize(${code}, '${token}', false);
+ 	    	pageController.initialize(${code}, '${token}', false, ${boardType});
  	    	
  	    	Context.code = ${code};
  	    	Context.token = '${token}';
@@ -48,26 +48,31 @@
  	    	$('#slider-fill-control').bootstrapSlider({formatter: sliderFormatter});
  	    	$('#slider-fill-glad').bootstrapSlider({formatter: sliderFormatter});
  	    	
- 	    	// coordinate selector
- 	    	// ----------------------------------------------------------------------------
- 	    	$("#plot-area").click(function(e) {
- 	    	
-			  var offset = $(this).offset();
-			  var relativeX = (e.pageX - offset.left);
-			  var relativeY = (e.pageY - offset.top);
-			  var plotSize = { 
-					width: $("#plot-area").width(), 
-					height: $("#plot-area").height() 
-			  };
-				
-			  var glad = Math.ceil(1000 - ((relativeY / plotSize.height) * 1000));
-			  var noControl = Math.ceil((relativeX / plotSize.width) * 1000);
-			  
-			  pageController.setCrosshair(glad, noControl, 'plot-area', 0);
-			  
-			  $('#slider-fill-glad').bootstrapSlider('setValue', glad);
-			  $('#slider-fill-control').bootstrapSlider('setValue', noControl);
-			});
+ 	    	<c:if test="${boardType == 1}">
+	 	    	// coordinate selector
+	 	    	// ----------------------------------------------------------------------------
+	 	    	$("#plot-area").click(function(e) {
+	 	    	
+				  var offset = $(this).offset();
+				  var relativeX = (e.pageX - offset.left);
+				  var relativeY = (e.pageY - offset.top);
+				  var plotSize = { 
+						width: $("#plot-area").width(), 
+						height: $("#plot-area").height() 
+				  };
+					
+				  var glad = Math.ceil(1000 - ((relativeY / plotSize.height) * 1000));
+				  var noControl = Math.ceil((relativeX / plotSize.width) * 1000);
+				  
+				  pageController.setCrosshair(glad, noControl, 'plot-area', 0);
+				  
+				  $('#slider-fill-glad').bootstrapSlider('setValue', glad);
+				  $('#slider-fill-control').bootstrapSlider('setValue', noControl);
+				});
+			</c:if>
+			<c:if test="${boardType == 2}">
+			   $('#slider-fill-control').val(0.0);
+			</c:if>
   	    });
  	    
    </script>
@@ -114,7 +119,9 @@
 	      </div>
 	      <div class="modal-body">
 	        Comment:<br/>
-	        <span class="footer-text">keep it short, it will be displayed on a small virtual post-it</span><br/>
+	        <c:if test="${boardType == 1}">
+	        	<span class="footer-text">keep it short, it will be displayed on a small virtual post-it</span><br/>
+	        </c:if>
 	        <textarea type="text" id="comment" style="width: 100%;"></textarea><br/><br/>
 	        
 	        <!-- Slider Selector is disabled -->
@@ -126,6 +133,8 @@
 		        <span class="footer-text">indicates how much control you feel about this item. eg.: 0% means you (or your team) have full control on this feedback item.</span><br/>
 		        <input id="slider-fill-control" style="width: 100%;" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="500"/>
 	        </div>
+	        
+	        <c:if test="${boardType == 1}">
 	        <div>
 	        	Indicate your feelings about this item<br/>
 	        	<span class="footer-text">place this feedback item to the correct area below, indicating how glad you are with it and how much control you feel over this item</span><br/><br/>
@@ -140,6 +149,27 @@
 	        	<img src="../../resources/images/ball.png" id="marker-ball" class="hidden" />
 	        	<br/>
 	        </div>
+	        </c:if>
+	        <c:if test="${boardType == 2}">
+	        	<table width="100%">
+	        	<tr>
+	        		<td width="33%" align="middle">
+	        			<label for="gsm-glad"><img style="cursor: hand; cursor: pointer;" src="../../resources/images/glad.png" width="80"></label><br/>
+	        			<input type="radio" onChange="$('#slider-fill-glad').bootstrapSlider('setValue', 1000);" id="gsm-glad" name="glad-sad-mad-radio" value="glad" checked />
+	        		</td>
+	        		<td width="33%" align="middle">
+	        			<label for="gsm-sad"><img style="cursor: hand; cursor: pointer;" src="../../resources/images/sad.png" width="80"></label><br/>
+	        			<input type="radio" onChange="$('#slider-fill-glad').bootstrapSlider('setValue', 500);" id="gsm-sad" name="glad-sad-mad-radio" value="sad" />
+	        		</td>
+	        		<td width="33%" align="middle">
+	        			<label for="gsm-mad"><img style="cursor: hand; cursor: pointer;" src="../../resources/images/mad.png" width="80"></label><br/>
+	        			<input type="radio" onChange="$('#slider-fill-glad').bootstrapSlider('setValue', 1);" id="gsm-mad" name="glad-sad-mad-radio" value="mad" />
+	        		</td>
+	        	</tr>
+	        	</table>
+	        
+	        </c:if>
+	        
 	        
 	        <span id="errorLabel" class="error"></span>
 	      </div>

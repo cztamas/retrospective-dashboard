@@ -7,3 +7,21 @@
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.border-left {
+	border-left: solid 1px #dddddd;
+}
+
+.border-right {
+	border-right: solid 1px #dddddd;
+}
+
+.table-header {
+	border-bottom: solid 1px #dddddd;
+}
+
+.board-sticker-container {
+	padding-top: 15px;
+	padding-left: 30px;
+	padding-right: 30px;
+}

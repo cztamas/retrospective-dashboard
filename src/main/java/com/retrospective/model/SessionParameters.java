@@ -1,5 +1,8 @@
 package com.retrospective.model;
 
+/**
+ * Represents all the session-related properties that can be changed by user. 
+ */
 public class SessionParameters {
 
 	private int size;

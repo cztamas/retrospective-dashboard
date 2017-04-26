@@ -23,12 +23,23 @@
 
   </head>
   
-  <body ng-app="retrospective" style="margin-left: 120px;">
+  <c:choose>
+    <c:when test="${boardType == 1}">
+        <body ng-app="retrospective" style="margin-left: 120px;"> 
+    </c:when>    
+    <c:otherwise>
+        <body ng-app="retrospective">
+    </c:otherwise>
+  </c:choose>
+  
 	<div ng-controller="board-page">
 	    <nav class="navbar navbar-default navbar-fixed-top">
 	      <div class="container-fullwidth">
 	        <div class="navbar-header">
+	        
 	          <a class="navbar-brand" href="#" ng-bind="state.sessionParameters.name"></a>
+	          <a ng-if="state.isLocked" class="navbar-brand" href="#" title="Modifications are not persisted for this session.">(locked session)</a>
+	          
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
@@ -36,7 +47,7 @@
 		            <li>
 		            	
 						<div class="btn-group" style="margin-top: 16px; margin-left: 20px;" >
-						  <button type="button" class="btn btn-xs btn-primary" ng-click="revealAll()">Reveal All <span class="badge">{{state.stickers.length}}</span></button>
+						  <button type="button" class="btn btn-xs btn-primary" ng-click="revealAll()">Reveal All <span class="badge">{{state.stickers.length - state.deletedStickerCount}}</span></button>
 						  <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    <span class="caret"></span>
 						    <span class="sr-only">Toggle Dropdown</span>
@@ -128,7 +139,8 @@
 	      </div>
 	    </nav>
 	    
-	    <%@include file="parts/main-board.jsp" %>
+	    <c:if test="${boardType == 1}"><%@include file="parts/main-board.jsp" %></c:if>
+	    <c:if test="${boardType == 2}"><%@include file="parts/main-board-v2.jsp" %></c:if>
 	</div>
 	
 	<%@include file="parts/widgets/qr-code-widget.jsp" %>
@@ -166,7 +178,7 @@
 			boardPageScope.revealAll();
 		</c:if>
 		
-		boardPageScope.initialize(dashboardUrl, ${code}, '${token}');
+		boardPageScope.initialize(dashboardUrl, ${code}, '${token}', ${boardType});
 	});
 
 	$(window).resize(function() {

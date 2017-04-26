@@ -10,7 +10,7 @@ import com.retrospective.model.Sticker;
 
 public interface HostDao {
 
-	public SessionDetails createSession() throws DaoException;
+	public SessionDetails createSession(int boardType) throws DaoException;
 	
 	public List<Sticker> getSessionStickers(int sessionCode, String sessionToken) throws DaoException, AuthorizationException;
 	
@@ -21,4 +21,6 @@ public interface HostDao {
 	public String getOffsetSettings(int sessionCode, String sessionToken) throws DaoException;
 	
 	public SessionParameters getSessionParameters(int sessionCode, String sessionToken) throws DaoException;
+	
+	public SessionDetails getSessionDetails(int sessionCode, String sessionToken) throws DaoException;
 }

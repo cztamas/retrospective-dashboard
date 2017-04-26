@@ -4,13 +4,17 @@ public class Constants {
 	
 	public static String WebRoot = "";
 	public static String MonitorToken = "";
-	public final static String CookieWebRoot = "/";
+	public static String DemoGsmUrl = "";
+	public static String DemoBoardUrl = "";
 	
+	public final static String CookieWebRoot = "/";
 	public final static int OneYearInSeconds = 31556926;
 	
-	public Constants(String webRoot, String monitorToken) {
+	public Constants(String webRoot, String monitorToken, String demoGsmUrl, String demoBoardUrl) {
 		WebRoot = webRoot;
 		MonitorToken = monitorToken;
+		DemoGsmUrl = String.format("%s%s", webRoot, demoGsmUrl);
+		DemoBoardUrl = String.format("%s%s", webRoot, demoBoardUrl);
 	}
 	
 	public enum Cookies {
@@ -35,7 +39,8 @@ public class Constants {
 		GetSessionDetailsFailed (2),
 		UnableToStoreSticker (3),
 		OffsetRegistrationError (4),
-		SessionParametersRegistrationError (5);
+		SessionParametersRegistrationError (5),
+		AccessingToLockedSession(6);
 		
 		private int code;
 		
