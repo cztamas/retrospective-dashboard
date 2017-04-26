@@ -24,10 +24,10 @@ app.service('gsmEditorDiscrete', function() {
 	self.clearForm = function(isMobileView) {
 		
 		if (isMobileView) {
-			$('#slider-fill-glad').val(1.0);
-			$('input:radio[name="glad-sad-mad-radio"]').attr('checked', false);
+			$('#slider-fill-glad').val(1000);
+			$('input:radio[name="glad-sad-mad-radio"]').prop('checked', false);
 			$('label[name="label-gsm"]').removeClass('ui-btn-active');
-			$('input:radio[name="glad-sad-mad-radio"]').filter('[value="glad"]').attr('checked', true);
+			$('input:radio[name="glad-sad-mad-radio"]').filter('[value="glad"]').prop('checked', true);
 			$('label[id="label-glad"]').addClass('ui-btn-active');	
 		} 
 		else {

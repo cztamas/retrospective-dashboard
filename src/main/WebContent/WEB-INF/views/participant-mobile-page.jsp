@@ -51,6 +51,7 @@
 			  </c:if>
 			  <c:if test="${boardType == 2}">
 			  	  $('#slider-fill-control').val(0.0);
+			  	  $('#slider-fill-glad').val(1000);
 			  </c:if>
 			
   	    });
@@ -88,7 +89,7 @@
     	<div class="hidden">
 	  		<label for="slider-fill">Glad</label>
 	  		<span class="footer-text">indicates how glad you are with this this</span><br/>
-	  		<input type="range" class="ui-hidden-accessible" name="slider-fill-glad" id="slider-fill-glad" value="0" min="0" max="1000" step="50" data-highlight="true" />
+	  		<input type="range" class="ui-hidden-accessible" name="slider-fill-glad" id="slider-fill-glad" value="1000" min="0" max="1000" step="50" data-highlight="true" />
 	  
 	  		<label for="slider-fill">No Control</label>
 	  		<span class="footer-text">indicates how much control you feel about this item. eg.: 0% means you (or your team) have full control on this feedback item.</span><br/>
