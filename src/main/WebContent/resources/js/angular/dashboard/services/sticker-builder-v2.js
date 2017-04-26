@@ -35,16 +35,16 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 			if (stickers[i].glad > -0.10 && stickers[i].glad <= 0.33) stickerPlace = self.configuration.placeholders.mad;
 			
 			var controlId = 'sticker_' + stickers[i].id;
-			var usernameClass = Context.displayUsernames ? 'user-' + stickers[i].username.hashCode() : '';
+			var usernameClass = Context.displayUsernames ? 'user-' + Math.abs(stickers[i].username.hashCode()) : '';
 			$(stickerPlace).append('<div '
 					+ (isSession ? 'data-toggle="context" ' : '')
 					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
 					+ 'data-target="#context-menu" '
 					+ 'data-sticker-id="'+stickers[i].id+'" '
-					+ 'onMouseOver="$(\'.'+usernameClass+'\').css(\'border\', \'solid 1px #888888\');" '
-					+ 'onMouseOut="$(\'.'+usernameClass+'\').css(\'border\', \'solid 1px #ffffff\');" ' // change color in style.css/.sticker-v2/border
+					+ 'onMouseOver="$(\'.sticker-v2\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \''+configuration.stickerOpacity+'\');" '
+					+ 'onMouseOut="$(\'.sticker-v2\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \'\');" ' // change color in style.css/.sticker-v2/border
 					+ 'id='+controlId+' ' 
-					+ 'class="sticker-v2 ui-widget-content '+usernameClass+'" '
+					+ 'class="sticker-v2 ui-widget-content '+(usernameClass)+'" '
 					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'" ' : '')
 					+ ' style="'
 					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
