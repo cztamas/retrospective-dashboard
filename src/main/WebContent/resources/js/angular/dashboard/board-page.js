@@ -31,6 +31,7 @@ app.controller("board-page", function BoardPageController(
 		usersWithPublishedStickers: [], // item: { username: "akos-sereg", isRevealed: true }
 		offset: {},
 		stickers: [],
+		deletedStickerCount: 0,
 		sessionParameters: {},
 		isLocked: false,
 		token: null
@@ -195,6 +196,7 @@ app.controller("board-page", function BoardPageController(
 			
 			// initialize stickers
 			$scope.state.stickers = stickers;
+			$scope.state.deletedStickerCount = $scope.getDeletedStickerCount();
 			
 			$scope.state.usersWithPublishedStickers = revealDropdownProviderService.extractUsers(stickers, $scope.state.revealedUsers);
 			$scope.safeDigest();
@@ -275,5 +277,23 @@ app.controller("board-page", function BoardPageController(
     		
     	}
     	
+    };
+    
+    $scope.getDeletedStickerCount = function() {
+    	
+    	var count = 0;
+    	
+    	try {
+    		for (var i=0; i!=$scope.state.stickers.length; i++) {
+        		if ($scope.state.offset[$scope.state.stickers[i].id] && $scope.state.offset[$scope.state.stickers[i].id].removed && $scope.state.offset[$scope.state.stickers[i].id].removed === true) {
+        			count++;
+        		}
+        	}
+    		
+    		return count;
+    	}
+    	catch (error) {
+    		return 0;
+    	}
     };
 });
