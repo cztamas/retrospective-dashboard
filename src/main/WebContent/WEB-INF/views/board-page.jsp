@@ -176,6 +176,7 @@
 			qrCodeWidget.hide();
 			boardPageScope.state.mode = boardPageScope.enum.mode.dashboard;
 			boardPageScope.revealAll();
+			userListWidget.startRefreshingParticipants();
 		</c:if>
 		
 		boardPageScope.initialize(dashboardUrl, ${code}, '${token}', ${boardType});

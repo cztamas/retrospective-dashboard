@@ -17,13 +17,13 @@ app.service('stickerBuilderCommonService', function StickerBuilderCommonService(
 		
 		if (Context.displayUsernames) {
 			sticker.attr('title', stickerData.username);
-			sticker.attr('onMouseOver', '$(\'.'+stickerClass+'\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \''+configuration.stickerOpacity+'\');');
-			sticker.attr('onMouseOut', '$(\'.'+stickerClass+'\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \'\');');
+			sticker.attr('onMouseOver', '$(\'.sticker-base\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \''+configuration.stickerOpacity+'\');');
+			sticker.attr('onMouseOut', '$(\'.sticker-base\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \'\');');
 		}
 		
 		stickerColorThemeService.addCss(sticker, (offset && offset.colorTheme) ? offset.colorTheme : stickerColorThemeService.DEFAULT_COLOR_THEME_ID);
 		
-		sticker.attr('class', stickerClass + ' ui-widget-content ' + (usernameClass));
+		sticker.attr('class', stickerClass + ' sticker-base ui-widget-content ' + (usernameClass));
 		sticker.attr('oncontextmenu', 'Context.lastRightClickOnSticker = '+stickerData.id+'; Context.lastRightClickOnStickerControlId = '+controlId+';');
 		sticker.attr('data-sticker-id', stickerData.id);
 		sticker.attr('id', controlId);

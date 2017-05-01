@@ -4,6 +4,7 @@ app.service('boardService', function BoardService() {
 	
 	self.socket = null;
 	self.participants = [];
+	self.stickerOwners = []; // list of usernames - all users who have sent at least one sticker
 	self.participantMaxAge = 10; // after this many seconds, participant is considered to be timed out
 	self.stompClient = null;
 	self.onStickerReceived = null;
@@ -156,11 +157,31 @@ app.service('boardService', function BoardService() {
 		    			return;
 		    		}
 		    		
+		    		try {
+		    			self.extractStickerOwners(data.stickers);
+		    		}
+		    		catch (error) {
+		    			console.log(error);
+		    		}
+		    		
 		    		onSuccess(self.transform(data.stickers), data.offsetSettings, data.sessionParameters, data.locked);   
 	            },
 	        }
 		});	
 		
+	};
+	
+	self.extractStickerOwners = function(stickersFromServer) {
+		
+		var usernames = [];
+		
+		for (var i=0; i!=stickersFromServer.length; i++) {
+			if (!usernames.contains(stickersFromServer[i].username)) {
+				usernames.push(stickersFromServer[i].username);
+			}
+		}
+		
+		self.stickerOwners = usernames;
 	};
 	
 	self.transform = function(stickersFromServer) {

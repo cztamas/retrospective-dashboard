@@ -48,6 +48,7 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 			sticker.css('position', 'float');
 			sticker.css('float', 'left');
 			sticker.css('margin', '4px');
+			sticker.css('cursor', 'pointer');
 			
 			$(stickerPlace).append(sticker);
 			

@@ -119,6 +119,25 @@
     margin-left: 5px;
     margin-right: 5px;
     color: #000000;
+    cursor: hand;
+    cursor: pointer;
+    font-size: 8pt;
+    font-family: Tahoma;
+}
+
+.board-participant-inactive {
+	border-radius: 25px;
+	border: solid 1px #cccccc;
+    background: #eeeeee;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px; 
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #000000;
+    cursor: hand;
+    cursor: pointer;
     font-size: 8pt;
     font-family: Tahoma;
 }

@@ -8,6 +8,7 @@ app.controller("participant-page", function ParticipantPageController(
 	app.controllers.participantPage = $scope;
 	
 	$scope.stickers = [];
+	$scope.confirmCallback = function() {};
 	$scope.gsmEditor = gsmEditorPlot;
 	
 	$scope.state = {
@@ -415,13 +416,16 @@ app.controller("participant-page", function ParticipantPageController(
 	};
 	
 	$scope.confirmDialog = function(title, description, exitButton, callback) {
-		
 		if ($scope.state.isMobileView) {
+			
+			$scope.confirmCallback = callback;
+			
 			$("#sure .sure-1").text(title);
 			$("#sure .sure-2").text(description);
 			$("#sure .sure-do").text(exitButton).on("click.sure", function() {
-				callback();
-				$(this).off("click.sure");
+				$scope.confirmCallback();
+				$scope.confirmCallback = function() {};
+				$("#sure .sure-do").off("click.sure");
 			});
 			
 			$.mobile.changePage("#sure");	
