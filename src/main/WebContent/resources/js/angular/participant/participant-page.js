@@ -5,6 +5,8 @@ app.controller("participant-page", function ParticipantPageController(
 		gsmEditorPlot,
 		gsmEditorDiscrete) {
 	
+	app.controllers.participantPage = $scope;
+	
 	$scope.stickers = [];
 	$scope.gsmEditor = gsmEditorPlot;
 	

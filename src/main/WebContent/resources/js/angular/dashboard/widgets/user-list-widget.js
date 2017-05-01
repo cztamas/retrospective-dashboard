@@ -1,5 +1,7 @@
 app.controller("user-list-widget", function UserListWidgetController($scope, participantService, boardService) {
 	
+	app.controllers.userListWidget = $scope;
+	
 	$scope.state = {
 		users: []
 	};

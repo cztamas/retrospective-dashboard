@@ -1,5 +1,7 @@
 app.controller("qr-code-widget", function QrCodeWidgetController($scope) {
 	
+	app.controllers.qrCodeWidget = $scope;
+	
 	$scope.configuration = {
 		placeholders: {
 			qrCodeContainer: 'qrCodeContainer',

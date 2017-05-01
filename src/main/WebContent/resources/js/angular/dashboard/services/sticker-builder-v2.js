@@ -1,4 +1,4 @@
-app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configuration, stickerColorThemeService) {
+app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configuration, stickerColorThemeService, stickerBuilderCommonService) {
 	
 	var self = this;
 	
@@ -36,24 +36,20 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 			
 			var controlId = 'sticker_' + stickers[i].id;
 			var usernameClass = Context.displayUsernames ? 'user-' + Math.abs(stickers[i].username.hashCode()) : '';
-			$(stickerPlace).append('<div '
-					+ (isSession ? 'data-toggle="context" ' : '')
-					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
-					+ 'data-target="#context-menu" '
-					+ 'data-sticker-id="'+stickers[i].id+'" '
-					+ 'onMouseOver="$(\'.sticker-v2\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \''+configuration.stickerOpacity+'\');" '
-					+ 'onMouseOut="$(\'.sticker-v2\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \'\');" ' // change color in style.css/.sticker-v2/border
-					+ 'id='+controlId+' ' 
-					+ 'class="sticker-v2 ui-widget-content '+(usernameClass)+'" '
-					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'" ' : '')
-					+ ' style="'
-					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
-					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; '
-					+ 'width: '+configuration.stickerWidth+'px; '
-					+ self.getStickerBackgroundCss(offset[stickers[i].id] ? offset[stickers[i].id].colorTheme : undefined)
-					+ 'position: float; float: left;'
-					+ 'margin: 4px; '
-					+'">'+Utils.htmlEncode(stickers[i].message) + '</div>');
+			
+			var sticker = stickerBuilderCommonService.getSticker(
+					stickers[i], 
+					offset[stickers[i].id], 
+					controlId, 
+					'sticker-v2',
+					isSession, 
+					self.configuration);
+			
+			sticker.css('position', 'float');
+			sticker.css('float', 'left');
+			sticker.css('margin', '4px');
+			
+			$(stickerPlace).append(sticker);
 			
 			if (Utils.isOverflowing($('#' + controlId).get(0))) {
 				stickerWidth = configuration.stickerLargerWidth * self.configuration.boxSizeRatio;
@@ -68,14 +64,5 @@ app.service('stickerBuilderV2Service', function StickerBuilderV2Service(configur
 			$('#' + controlId).css('overflow', 'hidden');
 		}
 		
-	};
-	
-	self.getStickerBackgroundCss = function(colorTheme) {
-		if (!colorTheme) {
-			return stickerColorThemeService.getStickerBackgroundCssList()[0];
-		}
-		else {
-			return stickerColorThemeService.getStickerBackgroundCssList()[colorTheme];
-		}
 	};
 });

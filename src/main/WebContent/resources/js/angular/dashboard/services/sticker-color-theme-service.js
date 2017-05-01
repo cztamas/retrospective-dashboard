@@ -2,6 +2,18 @@ app.service('stickerColorThemeService', function StickerColorThemeService() {
 	
 	var self = this;
 	
+	self.DEFAULT_COLOR_THEME_ID = 0;
+	
+	self.addCss = function(element, themeIndex) {
+		
+		var rows = self.getStickerBackgroundCssList()[themeIndex].split(';');
+		
+		for (var i=0; i!=rows.length; i++) {
+			var style = rows[i].split(':');
+			element.css(style[0], style[1]);
+		}
+	};
+	
 	self.getStickerBackgroundCssList = function() {
 		
 		// Gradients taken from http://www.colorzilla.com/gradient-editor/

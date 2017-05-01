@@ -1,5 +1,7 @@
 app.controller("session-settings-widget", function SessionSettingsWidgetController($scope, boardService) {
 	
+	app.controllers.sessionSettingsWidget = $scope;
+	
 	$scope.state = {
 		isAnonymous: null
 	};

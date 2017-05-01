@@ -1,4 +1,4 @@
-app.service('stickerBuilderService', function StickerBuilderService(configuration, stickerColorThemeService) {
+app.service('stickerBuilderService', function StickerBuilderService(configuration, stickerColorThemeService, stickerBuilderCommonService) {
 	
 	var self = this;
 	
@@ -74,34 +74,29 @@ app.service('stickerBuilderService', function StickerBuilderService(configuratio
 			var onDraggingOver = '$(\'#' + controlOriginalPlaceholderId+'\').hide(); ' 
 				+ 'app.getController(\'board-page\').registerOffset(\''+controlId+'\', \''+stickers[i].id+'\'); ';
 			
-			var usernameClass = Context.displayUsernames ? 'user-' + Math.abs(stickers[i].username.hashCode()) : '';
+			var sticker = stickerBuilderCommonService.getSticker(
+					stickers[i], 
+					offset[stickers[i].id], 
+					controlId, 
+					'sticker',
+					isSession, 
+					self.configuration);
 			
-			$("#boardContent").append('<div '
-					+ (isSession ? 'data-toggle="context" ' : '')
-					+ 'oncontextmenu="Context.lastRightClickOnSticker = '+stickers[i].id+'; Context.lastRightClickOnStickerControlId = '+controlId+';"'
-					+ 'data-target="#context-menu" '
-					+ 'data-sticker-id="'+stickers[i].id+'" '
-					+ 'data-original-bottom="'+bottom+'" '
-					+ 'data-original-left="'+left+'" '
-					+ 'onMouseOver="$(\'.sticker\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \''+configuration.stickerOpacity+'\');" '
-					+ 'onMouseOut="$(\'.sticker\').not(\'.'+(usernameClass)+'\').css(\'opacity\', \'\');" ' // change color in style.css/.sticker-v2/border
-					+ 'id='+controlId+' ' 
-					+ 'class="sticker ui-widget-content '+usernameClass+'" '
-					+ (Context.displayUsernames ? 'title="'+stickers[i].username+'"' : '')
-					+ ' style="'
-					+ (isSession ? 'cursor: move; ' : '')
-					+ 'font-size: ' + self.configuration.stickerFontSize + '; '
-					+ 'height: '+(configuration.stickerHeight * self.configuration.boxSizeRatio)+'px; ' 
-					+ 'width: '+stickerWidth+'px; '
-					+ self.getStickerBackgroundCss(offset[stickers[i].id] ? offset[stickers[i].id].colorTheme : undefined)
-					+ 'position: absolute; '
-					+ 'transform: rotate('+stickers[i].transform+'deg); '
-					+ 'bottom: '+bottom+'px; ' 
-					+ 'left: '+leftWithOffset+'px; '
-					+ '" '
-					+ 'onMouseUp="'+onDraggingOver+'" '
-					+ 'onMouseDown="'+onDragging+'" '
-					+'>'+Utils.htmlEncode(stickers[i].message) + '</div>');
+			sticker.data('originalBottom', bottom);
+			sticker.data('originalLeft', left);
+			sticker.attr('onMouseUp', onDraggingOver);
+			sticker.attr('onMouseDown', onDragging);
+			sticker.css('position', 'absolute');
+			sticker.css('transform', 'rotate('+stickers[i].transform+'deg)');
+			sticker.css('bottom', bottom + 'px');
+			sticker.css('left', leftWithOffset + 'px');
+			sticker.css('width', stickerWidth + 'px');
+			
+			if (isSession) {
+				sticker.css('cursor', 'move');
+			}
+			
+			$("#boardContent").append(sticker);
 			
 			// jQuery UI "draggable" is manipulating the control's "top" css property instead of bottom, so we have to store the top 
 			// value before setting the offset-adjusted position

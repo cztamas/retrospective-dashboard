@@ -1,4 +1,4 @@
-<table id="board" width="100%" style="margin-top: 80px;">
+<table id="board" width="100%" style="margin-top: 50px;">
 <tr>
 	<td class="border-left border-right table-header" width="33%" align="middle"><img src="../../resources/images/glad.png" width="60" /></td>
 	<td class="border-right table-header" width="33%" align="middle"><img src="../../resources/images/sad.png" width="60" /></td>

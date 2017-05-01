@@ -9,6 +9,7 @@ app.controller("board-page", function BoardPageController(
 		loadingService,
 		revealDropdownProviderService) {
 	
+	app.controllers.boardPage = $scope;
 	$scope.stickerBuilderProvider = stickerBuilderService;
 	
 	$scope.enum = { 
