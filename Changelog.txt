@@ -1,3 +1,6 @@
+2017-05-01:
+ * Show disconnected users on Dashboard and during Session
+
 2017-04-23:
   * Partial reveal support: allow scrum master to reveal feedbacks from specific participants
   * Participant page / mobile: Glad / Control selection plot area

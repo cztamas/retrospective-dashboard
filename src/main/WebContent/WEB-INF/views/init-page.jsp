@@ -16,7 +16,7 @@
 	<%@ include file="parts/dependencies.jsp" %>
 	<%@ include file="parts/google-analytics.jsp" %>
 	
-	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/init-page.css">
+	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/init-page.css?ts=<% out.print(Math.random()); %>">
   </head>
   
   <body style="margin-left: 120px; background: #eeeeee;">
