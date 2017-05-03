@@ -9,6 +9,10 @@ public class AccountDetails {
 	private String registrationDate;
 	
 	private String ipAddress;
+	
+	private String verificationToken;
+	
+	private boolean isEmailVerified;
 
 	public int getId() {
 		return id;
@@ -40,6 +44,22 @@ public class AccountDetails {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	public String getVerificationToken() {
+		return verificationToken;
+	}
+
+	public void setVerificationToken(String verificationToken) {
+		this.verificationToken = verificationToken;
+	}
+
+	public boolean isEmailVerified() {
+		return isEmailVerified;
+	}
+
+	public void setEmailVerified(boolean isEmailVerified) {
+		this.isEmailVerified = isEmailVerified;
 	}
 	
 	

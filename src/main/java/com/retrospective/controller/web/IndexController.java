@@ -33,14 +33,6 @@ public class IndexController {
 		this.hostDao = hostDao;
 	}
 	
-	@RequestMapping(value = "/logout")
-	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		request.getSession().removeAttribute(AccountController.SESSION_KEY_ACCOUNT);
-		
-		response.sendRedirect(Constants.WebRoot);
-	}
-	
 	@RequestMapping(value = "/")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -48,14 +40,6 @@ public class IndexController {
 		modelView.addObject("isInitPage", true);
 		modelView.addObject("isLoggedIn", this.getLoggedInAccountDetails(request) != null);
 		modelView.addObject("accountDetails", this.getLoggedInAccountDetails(request));
-		
-		return modelView;
-	}
-	
-	@RequestMapping(value = "/account")
-	public ModelAndView loggedInPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		ModelAndView modelView = new ModelAndView("logged-in-page");
 		
 		return modelView;
 	}

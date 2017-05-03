@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.retrospective.dao.AccountDao;
 import com.retrospective.exception.AccountAlreadyExistsException;
 import com.retrospective.exception.DaoException;
+import com.retrospective.external.EmailSender;
 import com.retrospective.model.AccountDetails;
 import com.retrospective.model.LoginRequest;
 import com.retrospective.model.RegistrationRequest;
@@ -26,9 +27,16 @@ public class AccountController {
 	
 	private AccountDao accountDao;
 	
+	private EmailSender emailSender;
+	
 	@Autowired
 	public void setHostDao(AccountDao accountDao) {
 		this.accountDao = accountDao;
+	}
+	
+	@Autowired
+	public void setEmailSender(EmailSender emailSender) {
+		this.emailSender = emailSender;
 	}
 	
 	@ResponseBody
@@ -42,6 +50,11 @@ public class AccountController {
 			
 			if (accountDetails == null) {
 				response.setErrorCode(Constants.ErrorCodes.AuthenticationFailure.getCode());
+				return response;
+			}
+			
+			if (!accountDetails.isEmailVerified()) {
+				response.setErrorCode(Constants.ErrorCodes.EmailNotVerified.getCode());
 				return response;
 			}
 			
@@ -77,7 +90,7 @@ public class AccountController {
 					registrationRequest.getPassword(),
 					request.getRemoteAddr());
 			
-			request.getSession().setAttribute(SESSION_KEY_ACCOUNT, accountDetails);
+			this.emailSender.sendAccountVerification(accountDetails.getEmail(), accountDetails.getVerificationToken());
 		}
 		catch (DaoException error) {
 			response.setErrorCode(Constants.ErrorCodes.DatabaseError.getCode());

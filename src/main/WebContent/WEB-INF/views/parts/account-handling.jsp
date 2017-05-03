@@ -13,7 +13,7 @@
         		<br/>
         		You are already logged in as <b>${accountDetails.email}</b><br/><br/>
         		
-        		<a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account">Account Page</a> | <a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/logout">Logout</a> 
+        		<a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account">Account Page</a> | <a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account/logout">Logout</a> 
         		
         	</c:if>
         	

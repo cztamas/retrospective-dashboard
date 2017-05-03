@@ -18,6 +18,9 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     				case 8:
     					message = 'Email address or password not valid.';
     					break;
+    				case 12:
+    					message = 'Email address not verified.';
+    					break;
     			}
     			
     			BootstrapDialog.show({ type: BootstrapDialog.TYPE_DANGER, title: 'Login', message: message });

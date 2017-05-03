@@ -13,9 +13,10 @@
    http://www.springframework.org/schema/websocket/spring-websocket.xsd
    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-	<context:property-placeholder location="classpath:com/retrospective/config/application.dev.properties"/>
+	<context:property-placeholder location="classpath:com/retrospective/config/application.local.properties"/>
 	
 	<bean id="constants" class="com.retrospective.utils.Constants">
+	   <constructor-arg value="${application.domain}"/>
 	   <constructor-arg value="${application.baseUrl}"/>
 	   <constructor-arg value="${application.monitor.token}"/>
 	   <constructor-arg value="${demo.gsmUrl}"/>
@@ -23,6 +24,14 @@
 	</bean>
 	
 	<bean id="activeSessionsStorage" class="com.retrospective.model.ActiveSessionList"></bean>
+
+	<!-- Email -->
+	<bean id="emailSender" class="com.retrospective.external.EmailSenderImpl">
+		<constructor-arg value="${email.smtp.host}" />
+		<constructor-arg value="${email.smtp.username}" />
+		<constructor-arg value="${email.smtp.password}" />
+		<constructor-arg value="${email.smtp.fromEmailAddress}" />
+	</bean>
 
     <!-- Database -->
 	<bean id="hostDao" class="com.retrospective.dao.HostDaoImpl"><constructor-arg ref="jdbcTemplate" /></bean>

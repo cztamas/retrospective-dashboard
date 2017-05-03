@@ -2,6 +2,7 @@ package com.retrospective.utils;
 
 public class Constants {
 	
+	public static String Domain = "";
 	public static String WebRoot = "";
 	public static String MonitorToken = "";
 	public static String DemoGsmUrl = "";
@@ -10,7 +11,8 @@ public class Constants {
 	public final static String CookieWebRoot = "/";
 	public final static int OneYearInSeconds = 31556926;
 	
-	public Constants(String webRoot, String monitorToken, String demoGsmUrl, String demoBoardUrl) {
+	public Constants(String domain, String webRoot, String monitorToken, String demoGsmUrl, String demoBoardUrl) {
+		Domain = domain;
 		WebRoot = webRoot;
 		MonitorToken = monitorToken;
 		DemoGsmUrl = String.format("%s%s", webRoot, demoGsmUrl);
@@ -45,7 +47,8 @@ public class Constants {
 		AuthenticationFailure (8),
 		AccountAlreadyExist (9),
 		PasswordTooShort (10),
-		InvalidEmailAddress (11);
+		InvalidEmailAddress (11),
+		EmailNotVerified (12);
 		
 		private int code;
 		
