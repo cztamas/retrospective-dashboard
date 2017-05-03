@@ -19,7 +19,11 @@
 	
 	<!-- ********** Init page dependencies **************************************************** -->
 	<c:if test="${isInitPage == true}">
-		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/dashboard/init-page.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/landing-page/init-page.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/landing-page/widgets/account-widget.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/landing-page/services/account-service.js?ts=<% out.print(Math.random()); %>"></script>
+		<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
+		<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
 	</c:if>
 	
 	<!-- ********** Dashboard and Session view dependencies **************************************************** -->

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.retrospective.controller.rest.AccountController;
 import com.retrospective.dao.HostDao;
 import com.retrospective.exception.DaoException;
+import com.retrospective.model.AccountDetails;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.utils.Constants;
 import com.retrospective.utils.CookieHelper;
@@ -31,11 +33,29 @@ public class IndexController {
 		this.hostDao = hostDao;
 	}
 	
+	@RequestMapping(value = "/logout")
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		request.getSession().removeAttribute(AccountController.SESSION_KEY_ACCOUNT);
+		
+		response.sendRedirect(Constants.WebRoot);
+	}
+	
 	@RequestMapping(value = "/")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ModelAndView modelView = new ModelAndView("init-page");
 		modelView.addObject("isInitPage", true);
+		modelView.addObject("isLoggedIn", this.getLoggedInAccountDetails(request) != null);
+		modelView.addObject("accountDetails", this.getLoggedInAccountDetails(request));
+		
+		return modelView;
+	}
+	
+	@RequestMapping(value = "/account")
+	public ModelAndView loggedInPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		ModelAndView modelView = new ModelAndView("logged-in-page");
 		
 		return modelView;
 	}
@@ -140,5 +160,17 @@ public class IndexController {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String handleDaoException(DaoException ex) {
 		return ex.getMessage();
+	}
+	
+	private AccountDetails getLoggedInAccountDetails(HttpServletRequest request) {
+		if (request.getSession() == null) {
+			return null;
+		}
+		
+		if (request.getSession().getAttribute(AccountController.SESSION_KEY_ACCOUNT) != null) {
+			return (AccountDetails) request.getSession().getAttribute(AccountController.SESSION_KEY_ACCOUNT);
+		}
+		
+		return null;
 	}
 }

@@ -40,7 +40,12 @@ public class Constants {
 		UnableToStoreSticker (3),
 		OffsetRegistrationError (4),
 		SessionParametersRegistrationError (5),
-		AccessingToLockedSession(6);
+		AccessingToLockedSession (6),
+		DatabaseError (7),
+		AuthenticationFailure (8),
+		AccountAlreadyExist (9),
+		PasswordTooShort (10),
+		InvalidEmailAddress (11);
 		
 		private int code;
 		

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,54 +20,75 @@
 	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/init-page.css?ts=<% out.print(Math.random()); %>">
   </head>
   
-  <body style="margin-left: 120px; background: #eeeeee;">
+  <body style="margin-left: 50px; margin-left: 100px;">
   
-	<div ng-app="retrospective" ng-controller="init-page" class="centered banner">
-   
+	<div ng-app="retrospective" ng-controller="init-page" class="">
    			
-   		<div style="margin-left: 250px;">
-   		
-   		<table width="80%">
+   		<div>
+   		<br/><br/>
+   		<table width="100%">
    			<tr>
-   				<td width="1" valign="top">
+   				<td width="20%">&nbsp;</td>
+   				<td style="background-color: #5B5B5B; height: 60px; padding-left: 30px;">
+   					<h1 style="color: #ffffff;">RETROSPECTIVE DASHBOARD</h1>
+   					
+   				</td>
+   				<td width="20%">&nbsp;</td>
+   			</tr>
+   			<tr>
+   				<!-- <td width="1" valign="top">
    					<img src="resources/images/retrospective.png" />
    				</td>
-   				<td>
+   				 -->
+   				<td width="20%">&nbsp;</td>
+   				<td style="border-bottom: solid 1px #dddddd; border-left: solid 1px #dddddd; border-right: solid 1px #dddddd; padding-left: 30px; padding-right: 30px;">
    					<h2>Interactive whiteboard for retrospective meetings</h2>
    					This is a <b>FREE</b> tool for Scum Masters to facilitate retrospective meetings. The goal of this project is to make retro meetings more fun for participants, and allow 
    					scum masters to manage retro meeting results more effectively.
    					<br/><br/>
-   					<table width="700">
-			          	<tr>
-			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-1.png" width="120" /></td>
-			          		<td valign="top">
-			          			<h4>Glad, Sad, Mad</h4>
-			          			Traditional "glad, sad, mad" type of retrospective meeting. <br/>
-			          			<span class="footer-text">Optimal for large teams (more than 5 members)</span>
-			          			<br/><br/>
-			          			<button class="btn btn-primary btn-sm" ng-click="createSession(2)">Start Session</button>
-			          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoGsmUrl); %>'">Demo</button>
-			          		</td>
-			          	</tr>
-			          	<tr>
-			          		<td colspan="2" width="100%">
-			          			<div width="100%" id="or">or</div>
-			          		</td>
-			          	</tr>
-			          	<tr style="border-bottom: solid 1px #cccccc;">
-			          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-2.png" width="120" /></td>
-			          		<td valign="top">
-			          			<h4>Virtual Whiteboard</h4>
-			          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting (factors: glad, control).<br/>
-			          			<span class="footer-text">Optimal for small teams</span>
-			          			<br/><br/>
-			          			<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>
-			          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoBoardUrl); %>'">Demo</button>
-			          			<br/><br/>
-			          		</td>
-			          	</tr>
+   					<table>
+   					<tr>
+   						<td width="50%"valign="top" style="padding: 5px; border-right: solid 1px #cccccc;">
+   						
+   						<%@ include file="parts/account-handling.jsp" %>
+   						
+   						</td>
+   						<td valign="top" style="padding-left: 20px;">
+		   					<table width="700">
+					          	<tr>
+					          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-1.png" width="120" /></td>
+					          		<td valign="top">
+					          			<h4>Glad, Sad, Mad</h4>
+					          			Traditional "glad, sad, mad" type of retrospective meeting. <br/>
+					          			<span class="footer-text">Optimal for large teams (more than 5 members)</span>
+					          			<br/><br/>
+					          			<button class="btn btn-primary btn-sm" ng-click="createSession(2)">Start Session</button>
+					          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoGsmUrl); %>'">Demo</button>
+					          		</td>
+					          	</tr>
+					          	<tr>
+					          		<td colspan="2" width="100%">
+					          			<div style="width: 100%;" id="or">or</div>
+					          		</td>
+					          	</tr>
+					          	<tr>
+					          		<td valign="top" width="10%" style="padding-right: 20px;"><img style="margin-top: 10px;" src="resources/images/retro-layout-2.png" width="120" /></td>
+					          		<td valign="top">
+					          			<h4>Virtual Whiteboard</h4>
+					          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting (factors: glad, control).<br/>
+					          			<span class="footer-text">Optimal for small teams</span>
+					          			<br/><br/>
+					          			<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>
+					          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoBoardUrl); %>'">Demo</button>
+					          			<br/><br/>
+					          		</td>
+					          	</tr>
+				            </table>
+				       	</td>
+				    </tr>
 		            </table>
 			   		
+			   		<div style="width: 100%; border-bottom: solid 1px #cccccc;">&nbsp;</div>
 			   		<br>
 			   		<span class="footer-text">
 			   		Inspired by <a href="http://scrumwith.me/" target="out">scrumwith.me</a> | 
@@ -76,6 +98,7 @@
 		    		</span>
 		    		<br/><br/>
    				</td>
+   				<td width="20%">&nbsp;</td>
    			</tr>
    		</table>
    		
