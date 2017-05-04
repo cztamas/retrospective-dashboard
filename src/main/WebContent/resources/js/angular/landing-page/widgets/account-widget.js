@@ -45,8 +45,15 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     		
     		// on success
     		function() {
-    			var startUrl = app.domain + app.rootUrl + "/account";
-    			location.href = startUrl;
+    		
+    			$scope.clearRegistrationForm();
+    			$('.nav-tabs a[href="#1"]').tab('show');
+    		
+    			BootstrapDialog.show({ 
+    				type: BootstrapDialog.TYPE_INFO, 
+    				title: 'Registration', 
+    				message: 'An email has been sent to your email address. Please follow the email verification link to complete your registration.' 
+    			});
     		},
     		
     		// on error
@@ -69,9 +76,13 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     			}
     			
     			BootstrapDialog.show({ type: BootstrapDialog.TYPE_DANGER, title: 'Registration', message: message });
-    		});
-    	
-		
-    }
+    		});	
+    };
+    
+    $scope.clearRegistrationForm = function() {
+    	$('#register-email').val('');
+    	$('#register-password1').val('');
+    	$('#register-password2').val('');
+    };
 	
 });

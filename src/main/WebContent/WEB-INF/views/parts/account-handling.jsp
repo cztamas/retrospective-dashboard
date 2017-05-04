@@ -22,8 +22,9 @@
 					<tr>
 						<td colspan="2">
 							<br/>
-								<span style="font-size: 9pt; color: #888888;">Registered users have more features: retrospective session <b>listing</b> grouped by 
-								<b>scrum teams</b>, session <b>locking</b>, and more ...</span> 
+								Registration is not required.<br/>
+								<span style="font-size: 9pt; color: #888888;">... however, registered Scrum Masters have more features: managing scrum teams, 
+								listing retrospective sessions, session locking, email summary, etc ...</span> 
 							<br/>
 							<br/>
 						</td>
