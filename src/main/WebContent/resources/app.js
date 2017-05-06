@@ -29,6 +29,10 @@ app.getController = function(controllerName) {
 			controller = app.controllers.qrCodeWidget;
 			break;
 			
+		case 'navigation-widget':
+			controller = app.controllers.navigationWidget;
+			break;
+			
 		default:
 			controller = angular.element(document.querySelector('[ng-controller=\''+controllerName+'\']')).scope();
 			break;
