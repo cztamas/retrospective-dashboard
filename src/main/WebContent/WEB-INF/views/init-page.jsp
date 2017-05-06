@@ -50,7 +50,7 @@
    					<tr>
    						<td width="50%"valign="top" style="padding: 5px; border-right: solid 1px #cccccc;">
    						
-   						<%@ include file="parts/account-handling.jsp" %>
+   						<%@ include file="account/widgets/account-handling.jsp" %>
    						
    						</td>
    						<td valign="top" style="padding-left: 20px;">

@@ -88,8 +88,28 @@
 				</tr>
 			</table>
 		</div>
+		
 	    <div class="tab-pane" id="3">
-	    	
+	    	<table width="100%">
+				<tr>
+					<td colspan="2">
+						<br/>
+						<br/>
+					</td>
+				</tr>
+				<tr style="height: 40px;">
+					<td align="right" width="10%" style="padding-right: 30px;">Email:</td>
+					<td valign="top" width="80%" style="padding-right: 10px;">
+						<input id="forgot-password-email" type="text" class="input-group-sm form-control" placeholder="Email Address" aria-describedby="sizing-addon3">
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td valign="top" width="10%" align="right" style="padding-right: 10px;">
+						<button ng-click="forgotPassword()" class="btn btn-default">Recover</button>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
   </div>

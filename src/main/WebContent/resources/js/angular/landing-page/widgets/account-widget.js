@@ -19,11 +19,11 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     					message = 'Email address or password not valid.';
     					break;
     				case 12:
-    					message = 'Email address not verified.';
+    					message = 'Email address has not been verified. Please check your emails for the verification URL.';
     					break;
     			}
     			
-    			BootstrapDialog.show({ type: BootstrapDialog.TYPE_DANGER, title: 'Login', message: message });
+    			BootstrapDialog.show({ type: BootstrapDialog.TYPE_WARNING, title: 'Login', message: message });
 			});
     };
     
@@ -33,7 +33,7 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     	if ($('#register-password1').val() != $('#register-password2').val()) {
     		
     		BootstrapDialog.show({ 
-    			type: BootstrapDialog.TYPE_DANGER, 
+    			type: BootstrapDialog.TYPE_WARNING, 
     			title: 'Registration', 
     			message: 'Password mismatch.' 
     		});
@@ -50,7 +50,7 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     			$('.nav-tabs a[href="#1"]').tab('show');
     		
     			BootstrapDialog.show({ 
-    				type: BootstrapDialog.TYPE_INFO, 
+    				type: BootstrapDialog.TYPE_PRIMARY, 
     				title: 'Registration', 
     				message: 'An email has been sent to your email address. Please follow the email verification link to complete your registration.' 
     			});
@@ -75,8 +75,41 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
     					break;
     			}
     			
-    			BootstrapDialog.show({ type: BootstrapDialog.TYPE_DANGER, title: 'Registration', message: message });
+    			BootstrapDialog.show({ type: BootstrapDialog.TYPE_WARNING, title: 'Registration', message: message });
     		});	
+    };
+    
+    $scope.forgotPassword = function() {
+    	var email = $('#forgot-password-email').val();
+    	if (email == null || email == '') {
+    		BootstrapDialog.show({ type: BootstrapDialog.TYPE_WARNING, title: 'Registration', message: 'Email address is missing.' });
+    		return;
+    	}
+    	
+    	accountService.forgotPassword(email,
+    		// on success
+    		function() {
+	    		BootstrapDialog.show({ 
+					type: BootstrapDialog.TYPE_PRIMARY, 
+					title: 'Account Recovery', 
+					message: 'An email has been sent to your email address. Please follow the URL to reset your password.' 
+				});
+    		},
+    		
+    		// on error
+    		function(errorCode) {
+    			
+    			var message = 'Unexpected issue on server side, cant recover account right now. Send us a punch email or something to hurry the fix.';
+    			switch (errorCode) {
+    			
+    				case 13:
+    					message = 'Account not found.';
+    					break;
+
+    			}
+    			
+    			BootstrapDialog.show({ type: BootstrapDialog.TYPE_WARNING, title: 'Account Recovery', message: message });
+    		});
     };
     
     $scope.clearRegistrationForm = function() {

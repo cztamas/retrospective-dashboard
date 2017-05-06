@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.retrospective.dao.AccountDao;
 import com.retrospective.exception.AccountAlreadyExistsException;
+import com.retrospective.exception.AccountNotFoundException;
 import com.retrospective.exception.DaoException;
+import com.retrospective.exception.PasswordValidationException;
 import com.retrospective.external.EmailSender;
 import com.retrospective.model.AccountDetails;
 import com.retrospective.model.LoginRequest;
 import com.retrospective.model.RegistrationRequest;
 import com.retrospective.model.ServerResponse;
+import com.retrospective.utils.AccountHelper;
 import com.retrospective.utils.Constants;
 
 @Controller
@@ -73,11 +76,16 @@ public class AccountController {
 		
 		ServerResponse response = new ServerResponse();
 		
-		if (registrationRequest.getPassword() == null || registrationRequest.getPassword().length() < 6) {
-			response.setErrorCode(Constants.ErrorCodes.PasswordTooShort.getCode());
+		// Validate password
+		try {
+			AccountHelper.validatePassword(registrationRequest.getPassword());
+		}
+		catch (PasswordValidationException error) {
+			response.setErrorCode(error.getErrorCode());
 			return response;
 		}
 		
+		// Validate email address
 		if (registrationRequest.getEmail() == null || registrationRequest.getEmail().length() == 0 || !registrationRequest.getEmail().contains("@")) {
 			response.setErrorCode(Constants.ErrorCodes.InvalidEmailAddress.getCode());
 			return response;
@@ -101,5 +109,31 @@ public class AccountController {
 		return response;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/forgot-password", consumes = "application/json", method = RequestMethod.POST)
+	public ServerResponse forgotPassword(@RequestBody String email, HttpServletRequest request) {
+		
+		ServerResponse response = new ServerResponse();
+		
+		try {
+			
+			AccountDetails accountDetails = this.accountDao.getAccount(email);
+			
+			if (accountDetails == null) {
+				throw new AccountNotFoundException(String.format("User account not found: %s", email));
+			}
+			
+			String passwordResetToken = this.accountDao.generatePasswordResetToken(accountDetails.getId());
+			
+			this.emailSender.sendPasswordResetEmail(accountDetails.getEmail(), passwordResetToken);
+		}
+		catch (DaoException error) {
+			response.setErrorCode(Constants.ErrorCodes.DatabaseError.getCode());
+		} catch (AccountNotFoundException e) {
+			response.setErrorCode(Constants.ErrorCodes.AccountNotFound.getCode());
+		}
+		
+		return response;
+	}
 	
 }

@@ -48,7 +48,8 @@ public class Constants {
 		AccountAlreadyExist (9),
 		PasswordTooShort (10),
 		InvalidEmailAddress (11),
-		EmailNotVerified (12);
+		EmailNotVerified (12),
+		AccountNotFound (13);
 		
 		private int code;
 		

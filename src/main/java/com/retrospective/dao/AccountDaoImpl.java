@@ -22,11 +22,13 @@ public class AccountDaoImpl implements AccountDao {
 		public AccountDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
 			AccountDetails accountDetails = new AccountDetails();
 			
+			accountDetails.setId(rs.getInt("id"));
 			accountDetails.setEmail(rs.getString("email"));
 			accountDetails.setRegistrationDate(rs.getString("registration_date"));
 			accountDetails.setIpAddress(rs.getString("ip_address"));
 			accountDetails.setVerificationToken(rs.getString("verification_token"));
 			accountDetails.setEmailVerified(rs.getInt("is_email_verified") == 1);
+			accountDetails.setResetPasswordToken(rs.getString("reset_password_token"));
 			
 		    return accountDetails;
 		}
@@ -41,7 +43,7 @@ public class AccountDaoImpl implements AccountDao {
 		
 		try {
 			List<AccountDetails> result = this.jdbcTemplate.query(
-					"SELECT id, email, password, registration_date, ip_address, verification_token, is_email_verified FROM user WHERE email = ? AND UPPER(password) = UPPER(MD5(MD5(?)))", 
+					"SELECT id, email, password, registration_date, ip_address, verification_token, is_email_verified, reset_password_token FROM user WHERE UPPER(email) = UPPER(?) AND UPPER(password) = UPPER(MD5(MD5(?)))", 
 					new Object [] { email, password }, 
 					accountRowMapper);
 			
@@ -54,11 +56,50 @@ public class AccountDaoImpl implements AccountDao {
 	}
 	
 	@Override
+	public AccountDetails getAccount(String email) throws DaoException {
+		try {
+			
+			List<AccountDetails> result = this.jdbcTemplate.query(
+					  "SELECT " 
+					+ "  id, email, password, registration_date, ip_address, verification_token, is_email_verified, reset_password_token " 
+					+ "FROM user " 
+					+ "WHERE UPPER(email) = UPPER(?)", 
+					new Object [] { email }, 
+					accountRowMapper);
+			
+			return result.size() == 0 ? null : result.get(0);
+		}
+		catch (Exception error) {
+			error.printStackTrace();
+			throw new DaoException("Database error occurred while fetching user details", error);
+		}
+	}
+	
+	@Override
+	public AccountDetails getAccountByResetPasswordToken(String resetToken) throws DaoException {
+		try {
+			List<AccountDetails> result = this.jdbcTemplate.query(
+					  "SELECT " 
+					+ "  id, email, password, registration_date, ip_address, verification_token, is_email_verified, reset_password_token " 
+					+ "FROM user " 
+					+ "WHERE UPPER(reset_password_token) = UPPER(?)", 
+					new Object [] { resetToken }, 
+					accountRowMapper);
+			
+			return result.size() == 0 ? null : result.get(0);
+		}
+		catch (Exception error) {
+			error.printStackTrace();
+			throw new DaoException("Database error occurred while fetching user details by reset token", error);
+		}
+	}
+	
+	@Override
 	public AccountDetails verifyAccount(String token) throws DaoException {
 		
 		try {
 			List<AccountDetails> result = this.jdbcTemplate.query(
-					"SELECT id FROM user WHERE verification_token = ?", 
+					"SELECT id FROM user WHERE verification_token = ? AND is_email_verified = 0", 
 					new Object [] { token }, 
 					accountRowMapper);
 			
@@ -97,5 +138,31 @@ public class AccountDaoImpl implements AccountDao {
 		}
 		
 		return this.getAccount(email, password);
+	}
+	
+	@Override
+	public String generatePasswordResetToken(int userId) throws DaoException {
+		
+		String token = UUID.randomUUID().toString();
+		
+		try {
+			this.jdbcTemplate.update("UPDATE user SET reset_password_token = ? WHERE id = ?", new Object[] { token, userId });	
+		}
+		catch (Exception error) {
+			throw new DaoException("Database error occurred while setting password reset token", error);
+		}
+		
+		return token;
+	}
+	
+	@Override
+	public void resetPassword(int userId, String newPassword) throws DaoException {
+		
+		try {
+			this.jdbcTemplate.update("UPDATE user SET reset_password_token = NULL, is_email_verified = 1, password = MD5(MD5(?)) WHERE id = ?", new Object[] { newPassword, userId });	
+		}
+		catch (Exception error) {
+			throw new DaoException("Database error occurred during password reset", error);
+		}
 	}
 }

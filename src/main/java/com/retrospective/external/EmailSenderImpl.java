@@ -33,7 +33,7 @@ public class EmailSenderImpl implements EmailSender {
 
 	}
 
-	public void sendAccountVerification(String email, String token) {
+	public void sendAccountVerification(String email, String verificationToken) {
 
 		Properties props = new Properties();
 		//props.put("mail.smtp.starttls.enable", "true");
@@ -57,7 +57,45 @@ public class EmailSenderImpl implements EmailSender {
 			StringBuilder text = new StringBuilder();
 			text.append("Dear User,\n\n");
 			text.append("Please follow below link to finalize your registration:\n");
-			text.append(String.format("%s%s/account/email-verification/%s", Constants.Domain, Constants.WebRoot, token));
+			text.append(String.format("%s%s/account/email-verification/%s", Constants.Domain, Constants.WebRoot, verificationToken));
+			text.append("\n\n");
+			text.append("Thanks!\n\n");
+			
+			message.setText(text.toString());
+
+			Transport.send(message);
+
+			System.out.println("Done");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendPasswordResetEmail(String email, String resetToken) {
+		Properties props = new Properties();
+		//props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.host", this.smtpHost);
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(this.fromEmailAddress));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+			message.setSubject("Retrospective Dashboard - Account Verification");
+			
+			StringBuilder text = new StringBuilder();
+			text.append("Dear User,\n\n");
+			text.append("Please follow below link to reset your password:\n");
+			text.append(String.format("%s%s/account/forgot-password/%s", Constants.Domain, Constants.WebRoot, resetToken));
 			text.append("\n\n");
 			text.append("Thanks!\n\n");
 			

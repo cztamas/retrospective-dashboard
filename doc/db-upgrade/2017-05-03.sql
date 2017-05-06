@@ -5,5 +5,6 @@ CREATE TABLE user (
 	registration_date DATETIME, 
 	ip_address VARCHAR(32), 
 	verification_token VARCHAR(64),
-	is_email_verified INT(11)
+	is_email_verified INT(11),
+	reset_password_token VARCHAR(64)
 );

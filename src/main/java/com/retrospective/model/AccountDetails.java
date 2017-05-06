@@ -13,6 +13,8 @@ public class AccountDetails {
 	private String verificationToken;
 	
 	private boolean isEmailVerified;
+	
+	private String resetPasswordToken;
 
 	public int getId() {
 		return id;
@@ -60,6 +62,14 @@ public class AccountDetails {
 
 	public void setEmailVerified(boolean isEmailVerified) {
 		this.isEmailVerified = isEmailVerified;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 	
 	
