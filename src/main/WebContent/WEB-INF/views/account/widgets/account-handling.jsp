@@ -14,7 +14,7 @@
         		Already logged in as <b>${accountDetails.email}</b><br/><br/>
         		
         		<div class="btn-group">
-				  <button type="button" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account';" class="btn btn-sm btn-default">Loggedin Page</button>
+				  <button type="button" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/scrum-master';" class="btn btn-sm btn-default">Go to SM Dashboard</button>
 				  <button type="button" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account/logout';" class="btn btn-sm btn-default">Logout</button>
 				</div>
 

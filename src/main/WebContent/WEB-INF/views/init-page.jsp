@@ -62,7 +62,12 @@
 					          			Traditional "glad, sad, mad" type of retrospective meeting. <br/>
 					          			<span class="footer-text">Optimal for large teams (more than 5 members)</span>
 					          			<br/><br/>
-					          			<button class="btn btn-primary btn-sm" ng-click="createSession(2)">Start Session</button>
+					          			<c:if test="${isLoggedIn == false}">
+							        		<button class="btn btn-primary btn-sm" ng-click="createSession(2)">Start Session</button>	
+							        	</c:if>
+							        	<c:if test="${isLoggedIn == true}">
+							        		<button class="btn btn-success btn-sm" ng-click="createSession(2)">Start as ${accountDetails.email}</button>
+							        	</c:if>
 					          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoGsmUrl); %>'">Demo</button>
 					          		</td>
 					          	</tr>
@@ -78,7 +83,12 @@
 					          			Participants are allowed to place their feedbacks anywhere on the board, as if you were using a real whiteboard during the meeting (factors: glad, control).<br/>
 					          			<span class="footer-text">Optimal for small teams</span>
 					          			<br/><br/>
-					          			<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>
+					          			<c:if test="${isLoggedIn == false}">
+					          				<button class="btn btn-primary btn-sm" ng-click="createSession(1)">Start Session</button>
+					          			</c:if>
+					          			<c:if test="${isLoggedIn == true}">
+					          				<button class="btn btn-success btn-sm" ng-click="createSession(1)">Start as ${accountDetails.email}</button>
+					          			</c:if>
 					          			<button class="btn btn-default btn-sm" onClick="document.location.href='<% out.print(com.retrospective.utils.Constants.DemoBoardUrl); %>'">Demo</button>
 					          			<br/><br/>
 					          		</td>

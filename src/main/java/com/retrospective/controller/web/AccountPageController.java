@@ -39,14 +39,6 @@ public class AccountPageController {
 		response.sendRedirect(Constants.WebRoot);
 	}
 	
-	@RequestMapping(value = "/account")
-	public ModelAndView loggedInPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		ModelAndView modelView = new ModelAndView("logged-in-page");
-		
-		return modelView;
-	}
-	
 	@RequestMapping(value = "/account/email-verification/{token}")
 	public void verifyEmailAddress(@PathVariable(value="token") String verificationToken, HttpServletRequest request, HttpServletResponse response) throws IOException {
 

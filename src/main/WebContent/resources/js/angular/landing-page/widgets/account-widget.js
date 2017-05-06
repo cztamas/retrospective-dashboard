@@ -6,7 +6,7 @@ app.controller("account-widget", function AccountWidgetController($scope, accoun
 				
 			// on success
 			function() {
-				var startUrl = app.domain + app.rootUrl + "/account";
+				var startUrl = app.domain + app.rootUrl + "/scrum-master";
 				location.href = startUrl;
 			},
 			

@@ -99,7 +99,8 @@ public class AccountDaoImpl implements AccountDao {
 		
 		try {
 			List<AccountDetails> result = this.jdbcTemplate.query(
-					"SELECT id FROM user WHERE verification_token = ? AND is_email_verified = 0", 
+					"SELECT id, email, password, registration_date, ip_address, verification_token, is_email_verified, reset_password_token " 
+					+ "FROM user WHERE verification_token = ? AND is_email_verified = 0", 
 					new Object [] { token }, 
 					accountRowMapper);
 			
