@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.retrospective.exception.AuthorizationException;
 import com.retrospective.exception.DaoException;
+import com.retrospective.model.AccountDetails;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.model.SessionParameters;
 import com.retrospective.model.Sticker;
@@ -24,7 +25,7 @@ public class HostDaoImpl implements HostDao {
 	}
 
 	@Override
-	public SessionDetails createSession(int boardType) throws DaoException {
+	public SessionDetails createSession(int boardType, AccountDetails accountDetails) throws DaoException {
 		
 		SessionDetails sessionDetails = new SessionDetails();
 		sessionDetails.setToken(UUID.randomUUID().toString());
@@ -32,11 +33,12 @@ public class HostDaoImpl implements HostDao {
 		sessionDetails.setDashboardType(boardType);
 		
 		try {
-			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type) VALUES (default, ?, ?, NOW(), 'Retro', 1, 0, ?)", 
+			this.jdbcTemplate.update("INSERT INTO session (id, code, token, created_at, name, size, is_anonymous, board_type, user_id) VALUES (default, ?, ?, NOW(), 'Retro', 1, 0, ?, ?)", 
 					new Object[] { 
 							sessionDetails.getCode(),
 							sessionDetails.getToken(),
-							sessionDetails.getDashboardType()
+							sessionDetails.getDashboardType(),
+							accountDetails == null ? null : accountDetails.getId()
 					});
 			
 			return sessionDetails;

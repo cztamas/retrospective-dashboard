@@ -23,6 +23,7 @@ import com.retrospective.model.GetSessionDetailsResponse;
 import com.retrospective.model.ServerResponse;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.model.SessionParameters;
+import com.retrospective.utils.AccountHelper;
 import com.retrospective.utils.Constants;
 import com.retrospective.utils.CookieHelper;
 import com.retrospective.utils.ErrorLogger;
@@ -84,10 +85,10 @@ public class HostController {
 
 	@ResponseBody
 	@RequestMapping(value = "/session", consumes = "application/json", method = RequestMethod.POST)
-	public CreateSessionResponse createSession(@RequestBody int boardType) {
+	public CreateSessionResponse createSession(@RequestBody int boardType, HttpServletRequest request) {
 		
 		try {
-			SessionDetails sessionDetails = this.hostDao.createSession(boardType);
+			SessionDetails sessionDetails = this.hostDao.createSession(boardType, AccountHelper.getLoggedInAccountDetails(request));
 			
 			CreateSessionResponse result = new CreateSessionResponse();
 			result.setSessionDetails(sessionDetails);

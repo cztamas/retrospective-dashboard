@@ -8,3 +8,5 @@ CREATE TABLE user (
 	is_email_verified INT(11),
 	reset_password_token VARCHAR(64)
 );
+
+ALTER TABLE session ADD COLUMN user_id INT(11);

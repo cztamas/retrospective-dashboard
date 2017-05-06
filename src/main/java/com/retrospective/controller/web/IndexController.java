@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.retrospective.controller.rest.AccountController;
 import com.retrospective.dao.HostDao;
 import com.retrospective.exception.DaoException;
-import com.retrospective.model.AccountDetails;
 import com.retrospective.model.SessionDetails;
+import com.retrospective.utils.AccountHelper;
 import com.retrospective.utils.Constants;
 import com.retrospective.utils.CookieHelper;
 
@@ -38,8 +37,8 @@ public class IndexController {
 
 		ModelAndView modelView = new ModelAndView("init-page");
 		modelView.addObject("isInitPage", true);
-		modelView.addObject("isLoggedIn", this.getLoggedInAccountDetails(request) != null);
-		modelView.addObject("accountDetails", this.getLoggedInAccountDetails(request));
+		modelView.addObject("isLoggedIn", AccountHelper.isLoggedIn(request));
+		modelView.addObject("accountDetails", AccountHelper.getLoggedInAccountDetails(request));
 		
 		return modelView;
 	}
@@ -144,17 +143,5 @@ public class IndexController {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String handleDaoException(DaoException ex) {
 		return ex.getMessage();
-	}
-	
-	private AccountDetails getLoggedInAccountDetails(HttpServletRequest request) {
-		if (request.getSession() == null) {
-			return null;
-		}
-		
-		if (request.getSession().getAttribute(AccountController.SESSION_KEY_ACCOUNT) != null) {
-			return (AccountDetails) request.getSession().getAttribute(AccountController.SESSION_KEY_ACCOUNT);
-		}
-		
-		return null;
 	}
 }

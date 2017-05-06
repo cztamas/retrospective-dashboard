@@ -11,10 +11,13 @@
         	
         	<c:if test="${isLoggedIn == true}">
         		<br/>
-        		You are already logged in as <b>${accountDetails.email}</b><br/><br/>
+        		Already logged in as <b>${accountDetails.email}</b><br/><br/>
         		
-        		<a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account">Account Page</a> | <a href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account/logout">Logout</a> 
-        		
+        		<div class="btn-group">
+				  <button type="button" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account';" class="btn btn-sm btn-default">Loggedin Page</button>
+				  <button type="button" onClick="location.href = '<% out.print(com.retrospective.utils.Constants.WebRoot); %>/account/logout';" class="btn btn-sm btn-default">Logout</button>
+				</div>
+
         	</c:if>
         	
         	<c:if test="${isLoggedIn == false}">

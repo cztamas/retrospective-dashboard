@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.retrospective.exception.AuthorizationException;
 import com.retrospective.exception.DaoException;
+import com.retrospective.model.AccountDetails;
 import com.retrospective.model.SessionDetails;
 import com.retrospective.model.SessionParameters;
 import com.retrospective.model.Sticker;
 
 public interface HostDao {
 
-	public SessionDetails createSession(int boardType) throws DaoException;
+	public SessionDetails createSession(int boardType, AccountDetails accountDetails) throws DaoException;
 	
 	public List<Sticker> getSessionStickers(int sessionCode, String sessionToken) throws DaoException, AuthorizationException;
 	

@@ -26,8 +26,6 @@ import com.retrospective.utils.Constants;
 @RequestMapping("/rest/account")
 public class AccountController {
 
-	public final static String SESSION_KEY_ACCOUNT = "AccountDetails";
-	
 	private AccountDao accountDao;
 	
 	private EmailSender emailSender;
@@ -61,7 +59,7 @@ public class AccountController {
 				return response;
 			}
 			
-			request.getSession().setAttribute(SESSION_KEY_ACCOUNT, accountDetails);
+			AccountHelper.logUserIn(accountDetails, request);
 		}
 		catch (DaoException error) {
 			response.setErrorCode(Constants.ErrorCodes.DatabaseError.getCode());

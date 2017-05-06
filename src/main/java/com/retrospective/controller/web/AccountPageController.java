@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.retrospective.controller.rest.AccountController;
 import com.retrospective.dao.AccountDao;
 import com.retrospective.exception.AccountNotFoundException;
 import com.retrospective.exception.DaoException;
@@ -35,7 +34,7 @@ public class AccountPageController {
 	@RequestMapping(value = "/account/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		request.getSession().removeAttribute(AccountController.SESSION_KEY_ACCOUNT);
+		AccountHelper.logUserOut(request);
 		
 		response.sendRedirect(Constants.WebRoot);
 	}
@@ -54,7 +53,7 @@ public class AccountPageController {
 		try {
 			AccountDetails verifiedAccountDetails = accountDao.verifyAccount(verificationToken);
 			
-			request.getSession().setAttribute(AccountController.SESSION_KEY_ACCOUNT, verifiedAccountDetails);
+			AccountHelper.logUserIn(verifiedAccountDetails, request);
 			response.sendRedirect(Constants.WebRoot);
 		}
 		catch (Exception error) {

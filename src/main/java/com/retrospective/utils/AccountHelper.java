@@ -1,8 +1,13 @@
 package com.retrospective.utils;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.retrospective.exception.PasswordValidationException;
+import com.retrospective.model.AccountDetails;
 
 public class AccountHelper {
+	
+	public final static String SESSION_KEY_ACCOUNT = "AccountDetails";
 
 	public static void validatePassword(String password) throws PasswordValidationException {
 		if (password == null || password.length() < 6) {
@@ -10,4 +15,23 @@ public class AccountHelper {
 		}
 	}
 	
+	public static void logUserIn(AccountDetails accountDetails, HttpServletRequest request) {
+		request.getSession().setAttribute(SESSION_KEY_ACCOUNT, accountDetails);	
+	}
+	
+	public static void logUserOut(HttpServletRequest request) {
+		request.getSession().removeAttribute(SESSION_KEY_ACCOUNT);
+	}
+	
+	public static boolean isLoggedIn(HttpServletRequest request) {
+		return getLoggedInAccountDetails(request) != null;
+	}
+	
+	public static AccountDetails getLoggedInAccountDetails(HttpServletRequest request) {
+		if (request.getSession().getAttribute(SESSION_KEY_ACCOUNT) == null) {
+			return null;
+		}
+		
+		return (AccountDetails) request.getSession().getAttribute(SESSION_KEY_ACCOUNT);
+	}
 }
