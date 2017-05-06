@@ -10,3 +10,39 @@ CREATE TABLE user (
 );
 
 ALTER TABLE session ADD COLUMN user_id INT(11);
+
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS `retrospective`.`sf_get_feedback_count` $$
+CREATE FUNCTION `retrospective`.`sf_get_feedback_count` (code INT(11), token VARCHAR(128)) RETURNS INT
+BEGIN
+  DECLARE feedbackCount INT(11);
+
+  SELECT COUNT(*) INTO feedbackCount FROM note WHERE session_code = code AND session_token = token;
+
+  RETURN feedbackCount;
+END $$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS `retrospective`.`sf_get_participant_count` $$
+CREATE FUNCTION `retrospective`.`sf_get_participant_count` (code INT(11), token VARCHAR(128)) RETURNS INT
+BEGIN
+
+  DECLARE participantCount INT(11);
+
+  SELECT COUNT(*) INTO participantCount FROM (
+    SELECT DISTINCT username
+    FROM note
+    WHERE session_code = code
+      AND session_token = token
+  ) as tbl1;
+
+  RETURN participantCount;
+
+END $$
+
+DELIMITER ;

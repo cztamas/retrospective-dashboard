@@ -15,6 +15,8 @@
 	</script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/scrum-master-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/widgets/navigation-widget.js?ts=<% out.print(Math.random()); %>"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/services/scrum-master-service.js?ts=<% out.print(Math.random()); %>"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/pages/retrospective-history-page.js?ts=<% out.print(Math.random()); %>"></script>
 	
 	<link href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" >
 	<link href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/scrum-master.css" rel="stylesheet">

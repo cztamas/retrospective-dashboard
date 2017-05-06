@@ -13,7 +13,7 @@ import com.retrospective.utils.AccountHelper;
 import com.retrospective.utils.Constants;
 
 @Controller 
-public class ScrumMasterController {
+public class ScrumMasterPageController {
 
 	@RequestMapping(value = "/scrum-master")
 	public ModelAndView loggedInPage(HttpServletRequest request, HttpServletResponse response) throws IOException {

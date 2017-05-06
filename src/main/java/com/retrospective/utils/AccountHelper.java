@@ -2,6 +2,7 @@ package com.retrospective.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.retrospective.exception.AuthenticationException;
 import com.retrospective.exception.PasswordValidationException;
 import com.retrospective.model.AccountDetails;
 
@@ -33,5 +34,13 @@ public class AccountHelper {
 		}
 		
 		return (AccountDetails) request.getSession().getAttribute(SESSION_KEY_ACCOUNT);
+	}
+	
+	public static int getUserId(HttpServletRequest request) throws AuthenticationException {
+		if (!isLoggedIn(request)) {
+			throw new AuthenticationException("User is not authenticated, session may be expired.");
+		}
+		
+		return getLoggedInAccountDetails(request).getId();
 	}
 }

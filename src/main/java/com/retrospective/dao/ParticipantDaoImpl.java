@@ -7,7 +7,7 @@ import com.retrospective.model.Sticker;
 
 public class ParticipantDaoImpl implements ParticipantDao {
 
-private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	
 	public ParticipantDaoImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;

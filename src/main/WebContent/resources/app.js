@@ -33,6 +33,10 @@ app.getController = function(controllerName) {
 			controller = app.controllers.navigationWidget;
 			break;
 			
+		case 'retrospective-history-page':
+			controller = app.controllers.retrospectiveHistoryPage;
+			break;
+			
 		default:
 			controller = angular.element(document.querySelector('[ng-controller=\''+controllerName+'\']')).scope();
 			break;

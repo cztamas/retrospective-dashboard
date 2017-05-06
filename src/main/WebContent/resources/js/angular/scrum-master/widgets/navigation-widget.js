@@ -15,6 +15,12 @@ app.controller("navigation-widget", function NavigationWidgetController($scope) 
 		// display relevant content page only
 		$('.page-content').hide();
 		$('#content-' + target).show();
+		
+		switch (target) {
+			case 'retrospective-history':
+				app.getController('retrospective-history-page').refresh();
+				break;
+		}
 	};
 	
 });

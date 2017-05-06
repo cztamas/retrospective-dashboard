@@ -37,6 +37,7 @@
 	<bean id="hostDao" class="com.retrospective.dao.HostDaoImpl"><constructor-arg ref="jdbcTemplate" /></bean>
 	<bean id="participantDao" class="com.retrospective.dao.ParticipantDaoImpl"><constructor-arg ref="jdbcTemplate" /></bean>
 	<bean id="accountDao" class="com.retrospective.dao.AccountDaoImpl"><constructor-arg ref="jdbcTemplate" /></bean>
+	<bean id="sessionDao" class="com.retrospective.dao.SessionDaoImpl"><constructor-arg ref="jdbcTemplate" /></bean>
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource" />
