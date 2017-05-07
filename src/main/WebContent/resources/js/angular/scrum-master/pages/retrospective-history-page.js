@@ -1,4 +1,4 @@
-app.controller("retrospective-history-page", function RetrospectiveHistoryPageController($scope, scrumMasterService) {
+app.controller("retrospective-history-page", function RetrospectiveHistoryPageController($scope, scrumMasterService, errorHandlerService) {
 	
 	app.controllers.retrospectiveHistoryPage = $scope;
 	
@@ -16,14 +16,7 @@ app.controller("retrospective-history-page", function RetrospectiveHistoryPageCo
 			},
 			
 			// on error
-			function(errorCode) {
-				
-				// session expired, user is not authenticated at the moment
-				if (errorCode == 8) {
-					location.href = app.rootUrl;
-				}
-				
-			});
+			errorHandlerService.handle);
 		
 	};
 });

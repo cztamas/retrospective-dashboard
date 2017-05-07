@@ -9,6 +9,12 @@ CREATE TABLE user (
 	reset_password_token VARCHAR(64)
 );
 
+CREATE TABLE scrum_team (
+	id int(11) primary key AUTO_INCREMENT,
+	user_id int(11),
+	name varchar(64)
+);
+
 ALTER TABLE session ADD COLUMN user_id INT(11);
 
 DELIMITER $$

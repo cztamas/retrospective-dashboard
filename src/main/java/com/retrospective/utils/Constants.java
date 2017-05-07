@@ -49,7 +49,9 @@ public class Constants {
 		PasswordTooShort (10),
 		InvalidEmailAddress (11),
 		EmailNotVerified (12),
-		AccountNotFound (13);
+		AccountNotFound (13),
+		ScrumTeamNameMissing (14),
+		ScrumTeamAlreadyExist (15);
 		
 		private int code;
 		

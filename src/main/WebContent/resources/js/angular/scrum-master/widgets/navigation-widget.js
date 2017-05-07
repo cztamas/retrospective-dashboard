@@ -17,8 +17,13 @@ app.controller("navigation-widget", function NavigationWidgetController($scope) 
 		$('#content-' + target).show();
 		
 		switch (target) {
+		
 			case 'retrospective-history':
 				app.getController('retrospective-history-page').refresh();
+				break;
+				
+			case 'scrum-teams':
+				app.getController('scrum-teams-page').refresh();
 				break;
 		}
 	};

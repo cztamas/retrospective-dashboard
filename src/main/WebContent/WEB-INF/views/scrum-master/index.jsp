@@ -16,8 +16,11 @@
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/scrum-master-page.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/widgets/navigation-widget.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/services/scrum-master-service.js?ts=<% out.print(Math.random()); %>"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/services/error-handler-service.js?ts=<% out.print(Math.random()); %>"></script>
 	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/pages/retrospective-history-page.js?ts=<% out.print(Math.random()); %>"></script>
+	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/js/angular/scrum-master/pages/scrum-teams-page.js?ts=<% out.print(Math.random()); %>"></script>
 	
+	<link rel="stylesheet" href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css">
 	<link href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" >
 	<link href="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/css/scrum-master.css" rel="stylesheet">
 	 
@@ -82,6 +85,7 @@
   
   	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/jquery/dist/jquery.min.js"></script>
   	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  	<script src="<% out.print(com.retrospective.utils.Constants.WebRoot); %>/resources/bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
   	
   	<script>
 	  	angular.element(document).ready(function() {

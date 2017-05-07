@@ -37,6 +37,10 @@ app.getController = function(controllerName) {
 			controller = app.controllers.retrospectiveHistoryPage;
 			break;
 			
+		case 'scrum-teams-page':
+			controller = app.controllers.scrumTeamsPage;
+			break;
+			
 		default:
 			controller = angular.element(document.querySelector('[ng-controller=\''+controllerName+'\']')).scope();
 			break;

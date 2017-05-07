@@ -2,6 +2,7 @@
 
 <div ng-controller="retrospective-history-page">
 
+	<div class="table-responsive">
 	<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -26,5 +27,5 @@
 	      </tr>
 	    </tbody>
 	</table>
-
+	</div>
 </div>
